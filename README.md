@@ -130,6 +130,21 @@ Follow the pattern already used by every component in `packages/react/src/`:
 
 ## Releasing
 
-Not yet wired up — release automation via Changesets is planned as a
-follow-up (see Task 13). Until then, tag releases manually (`git tag vX.Y.Z`)
-against a commit where `pnpm build && pnpm test` is green.
+Versioning and changelogs are managed with [Changesets](https://github.com/changesets/changesets).
+
+```bash
+pnpm changeset          # record an intent-to-release for the packages you touched
+pnpm version-packages    # changeset version — bumps package.json + writes CHANGELOG.md per package
+pnpm release             # turbo run build && changeset publish — NOT wired to a registry yet
+```
+
+There is no npm/GitHub Packages registry configured yet, so `pnpm release`
+(`changeset publish`) is not run in this repo today. The actual distribution
+mechanism for now is the git tag described above (`pnpm add
+github:<org>/hubex-ui#vX.Y.Z`); `changeset version` is used to keep
+`package.json` versions and `CHANGELOG.md` files accurate as of each tag.
+Switching to GitHub Packages with a CI job that runs `pnpm release` on tag
+push is the planned follow-up, out of scope for now.
+
+The first tagged release is `v0.1.0` (`@hubex/tokens`, `@hubex/css`,
+`@hubex/react` all at `0.1.0`).

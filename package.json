@@ -3,14 +3,20 @@
   "private": true,
   "type": "module",
   "packageManager": "pnpm@11.13.1",
-  "engines": { "node": ">=20", "pnpm": ">=9" },
+  "engines": {
+    "node": ">=20",
+    "pnpm": ">=9"
+  },
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "test": "turbo run test",
-    "harvest": "node tools/harvest.mjs source/Образцы raw-inventory.json"
+    "harvest": "node tools/harvest.mjs source/Образцы raw-inventory.json",
+    "version-packages": "changeset version",
+    "release": "turbo run build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.31.1",
     "turbo": "^2.1.0",
     "typescript": "^5.5.0"
   }
