@@ -18,7 +18,11 @@ test("importing only Button yields a tiny, react-free bundle", async () => {
   assert.ok(bytes < 8000, `Button-only bundle too large: ${bytes} bytes (expected < 8000)`);
   assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
   assert.ok(
-    !/role=.switch./.test(out) && !out.includes("hx-select"),
-    "Button-only bundle must not pull in other components (Toggle's role=\"switch\" or Select's hx-select found)"
+    !out.includes("hx-toggle"),
+    "Button-only bundle must not pull in other components (Toggle's hx-toggle class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Button-only bundle must not pull in other components (Select's hx-select class found)"
   );
 });

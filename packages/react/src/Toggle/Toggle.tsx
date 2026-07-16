@@ -11,7 +11,20 @@ export interface ToggleProps
 // separate assignment statement (it's required for cross-component tree-shaking).
 export const Toggle = /* @__PURE__ */ Object.assign(
   /* @__PURE__ */ React.forwardRef<HTMLButtonElement, ToggleProps>(
-    ({ checked = false, onChange, disabled, className, onClick, ...rest }, ref) => {
+    (
+      {
+        checked = false,
+        onChange,
+        disabled,
+        className,
+        onClick,
+        type: _type,
+        role: _role,
+        "aria-checked": _ariaChecked,
+        ...rest
+      },
+      ref
+    ) => {
       const cls = ["hx-toggle", className].filter(Boolean).join(" ");
       return (
         <button
