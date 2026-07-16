@@ -27,3 +27,77 @@
 }
 .hx-input:focus { outline: none; border-color: var(--hx-color-brand); }
 .hx-input--invalid { border-color: var(--hx-color-danger); }
+
+/* Checkbox — source: "Создание сотрудника.css" (Образцы). 18x18 box, radius 2px;
+   checked bg/border = #32B4EB == --hx-color-brand; check glyph white == --hx-color-on-accent.
+   Unchecked border mapped onto the shared neutral border token (--hx-color-border-strong)
+   for consistency with Input/Select rather than the mockup's one-off gray. */
+.hx-checkbox {
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: none; margin: 0;
+  width: 18px; height: 18px;
+  border: 1px solid var(--hx-color-border-strong); border-radius: 2px;
+  background: var(--hx-color-surface);
+  cursor: pointer;
+}
+.hx-checkbox:checked { background: var(--hx-color-brand); border-color: var(--hx-color-brand); }
+.hx-checkbox:checked::after {
+  content: ""; position: absolute; left: 5px; top: 2px;
+  width: 5px; height: 9px;
+  border: solid var(--hx-color-on-accent); border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.hx-checkbox:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-checkbox:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Radio — source: "Форма заявка Вид работ.css" (Образцы). 18x18 circle (radius 999px);
+   unchecked bg #FFFFFF / border #CCCCCC -> --hx-color-border-strong; checked = brand ring
+   + filled brand dot (no explicit checked dump found, matches checkbox's fill treatment). */
+.hx-radio {
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: none; margin: 0;
+  width: 18px; height: 18px;
+  border: 1px solid var(--hx-color-border-strong); border-radius: 999px;
+  background: var(--hx-color-surface);
+  cursor: pointer;
+}
+.hx-radio:checked { border-color: var(--hx-color-brand); }
+.hx-radio:checked::after {
+  content: ""; position: absolute; inset: 4px;
+  border-radius: 999px; background: var(--hx-color-brand);
+}
+.hx-radio:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-radio:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Toggle — source: "Логирование заявки.css" (Образцы). Track 24x14, radius 999px,
+   padding 2px; checked bg #32B4EB == --hx-color-brand; thumb 10x10 white circle ==
+   --hx-color-on-accent; unchecked track uses --hx-color-border-strong (no explicit
+   unchecked dump found; neutral border tone matches the rest of the control scale). */
+.hx-toggle {
+  display: inline-flex; align-items: center;
+  width: 24px; height: 14px; padding: 2px;
+  border: none; border-radius: 999px;
+  background: var(--hx-color-border-strong);
+  cursor: pointer;
+  justify-content: flex-start;
+}
+.hx-toggle[aria-checked="true"] { background: var(--hx-color-brand); justify-content: flex-end; }
+.hx-toggle::after { content: ""; width: 10px; height: 10px; border-radius: 999px; background: var(--hx-color-on-accent); }
+.hx-toggle:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-toggle:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Select — source: "Создание договора.css" (Образцы). Mockup: height 32px, padding
+   7px 10px, border 1px solid #EEEEEE, radius 3px. Mapped onto the established control
+   scale to match Input exactly: height 32px, --hx-space-3 padding, --hx-radius-sm,
+   --hx-color-border-strong border, --hx-color-brand focus ring. */
+.hx-select {
+  height: 32px; padding: 0 var(--hx-space-3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+  cursor: pointer;
+}
+.hx-select:focus { outline: none; border-color: var(--hx-color-brand); }
+.hx-select--invalid { border-color: var(--hx-color-danger); }
+.hx-select:disabled { opacity: .5; cursor: not-allowed; }
