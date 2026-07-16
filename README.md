@@ -157,7 +157,8 @@ publishes any package whose version isn't already on npm.
 1. Create the `hubex` org/scope on [npmjs.com](https://www.npmjs.com) and sign in.
 2. Create an npm **Automation** access token (npmjs.com → Access Tokens).
 3. Add it to this repo: **Settings → Secrets and variables → Actions → New
-   repository secret**, named `NPM_TOKEN`.
+   repository secret**, named `NPMJS_TOKEN`. (This is a GitHub Actions
+   *secret* in repo settings — not a `.env` file; CI never reads `.env`.)
 
 **Cutting a release afterwards:**
 

@@ -7,7 +7,8 @@ name: Release (publish to npm)
 #   1. Create the npm org / scope "hubex" on npmjs.com and log in.
 #   2. Create an npm "Automation" access token (npmjs.com -> Access Tokens).
 #   3. Add it to this repo: Settings -> Secrets and variables -> Actions ->
-#      New repository secret, name it NPM_TOKEN.
+#      New repository secret, name it NPMJS_TOKEN. This is a GitHub Actions
+#      SECRET (repo settings), NOT a .env file — a .env is never read by CI.
 # After that, pushing a tag (e.g. `git tag v0.1.0 && git push origin v0.1.0`)
 # publishes any package whose version isn't already on npm.
 
@@ -54,5 +55,5 @@ jobs:
       - name: Publish to npm
         run: pnpm exec changeset publish
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
