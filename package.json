@@ -1,0 +1,17 @@
+{
+  "name": "hubex-ui",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.13.1",
+  "engines": { "node": ">=20", "pnpm": ">=9" },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "harvest": "node tools/harvest.mjs source/Образцы raw-inventory.json"
+  },
+  "devDependencies": {
+    "turbo": "^2.1.0",
+    "typescript": "^5.5.0"
+  }
+}
