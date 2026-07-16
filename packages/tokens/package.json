@@ -8,6 +8,6 @@
     "./json": "./dist/tokens.json"
   },
   "files": ["dist"],
-  "scripts": { "build": "style-dictionary build --config style-dictionary.config.mjs" },
+  "scripts": { "build": "style-dictionary build --config style-dictionary.config.mjs", "test": "node --test build.test.mjs" },
   "devDependencies": { "style-dictionary": "^4.0.0" }
 }
