@@ -11,9 +11,9 @@
   cursor: pointer; user-select: none;
 }
 .hx-btn--sm { height: 26px; padding: 0 var(--hx-space-3); font-size: var(--hx-font-size-sm); }
-.hx-btn--primary { background: var(--hx-color-brand); color: #fff; }
+.hx-btn--primary { background: var(--hx-color-brand); color: var(--hx-color-on-accent); }
 .hx-btn--secondary { background: var(--hx-color-surface); color: var(--hx-color-text); border-color: var(--hx-color-border-strong); }
-.hx-btn--danger { background: var(--hx-color-danger); color: #fff; }
+.hx-btn--danger { background: var(--hx-color-danger); color: var(--hx-color-on-accent); }
 .hx-btn[disabled] { opacity: .5; cursor: not-allowed; }
 
 .hx-field { display: flex; flex-direction: column; gap: var(--hx-space-1); }
