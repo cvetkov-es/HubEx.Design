@@ -471,3 +471,59 @@
   font-size: 20px; line-height: 1; display: inline-flex;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Calendar / DatePicker — source: "Date-Picker" frame in "Создание
+   договора.css" (Образцы): trigger box padding 7px 10px (rounds to
+   --hx-space-2 vertical / --hx-space-3 horizontal), background #FFFFFF
+   (--hx-color-surface), border 1px solid #EEEEEE (--hx-color-border,
+   exact), border-radius 3px (--hx-radius-sm, closest token), value text
+   body/font-body-regular 13px #1F1F1F (--hx-font-size-base /
+   --hx-color-text), formatted as DD.MM.YYYY per the "01.09.2024" sample
+   text in that frame. No distinct "Calendar"/"CalendarDay"/"CalendarHead"
+   frames were present in the Образцы dumps, so the grid below follows the
+   shared control-scale conventions used elsewhere (32px-ish square day
+   cells, --hx-space-* gaps, --hx-radius-sm cells) with the accent color
+   #32B4EB == --hx-color-brand used for the popover's calendar-icon Union
+   layer reused here as the selected-day fill. */
+.hx-datepicker { width: 198px; cursor: pointer; }
+.hx-datepicker__popover {
+  z-index: 1000;
+  margin: var(--hx-space-1) 0 0;
+  padding: var(--hx-space-3);
+  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border);
+  border-radius: var(--hx-radius-sm);
+}
+.hx-calendar {
+  display: flex; flex-direction: column; gap: var(--hx-space-2);
+  width: 252px;
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+}
+.hx-calendar__nav { display: flex; align-items: center; justify-content: space-between; }
+.hx-calendar__nav-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 24px; height: 24px;
+  background: transparent; border: none; border-radius: var(--hx-radius-sm);
+  color: var(--hx-color-text); cursor: pointer;
+}
+.hx-calendar__nav-btn:hover { background: var(--hx-color-surface-sunken); }
+.hx-calendar__nav-btn:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-calendar__month-label { font-weight: 500; }
+.hx-calendar__head, .hx-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--hx-space-1); }
+.hx-calendar__weekday {
+  display: flex; align-items: center; justify-content: center;
+  height: 24px; font-size: var(--hx-font-size-sm); color: var(--hx-color-text-muted);
+}
+.hx-calendar__day {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 1; padding: 0;
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+  background: transparent; border: none; border-radius: var(--hx-radius-sm);
+  cursor: pointer;
+}
+.hx-calendar__day:hover { background: var(--hx-color-surface-sunken); }
+.hx-calendar__day:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-calendar__day--muted { color: var(--hx-color-text-muted); }
+.hx-calendar__day--selected, .hx-calendar__day--selected:hover {
+  background: var(--hx-color-brand); color: var(--hx-color-on-accent);
+}

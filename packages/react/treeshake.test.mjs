@@ -81,4 +81,12 @@ test("importing only Button yields a tiny, react-free bundle", async () => {
     !out.includes("hx-icon"),
     "Button-only bundle must not pull in other components (Icon's hx-icon class found)"
   );
+  assert.ok(
+    !out.includes("hx-calendar"),
+    "Button-only bundle must not pull in other components (Calendar's hx-calendar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-datepicker"),
+    "Button-only bundle must not pull in other components (DatePicker's hx-datepicker class found)"
+  );
 });

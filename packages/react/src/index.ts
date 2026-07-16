@@ -45,3 +45,7 @@ export { Alert } from "./Alert/Alert";
 export type { AlertProps } from "./Alert/Alert";
 export { Icon } from "./Icon/Icon";
 export type { IconProps } from "./Icon/Icon";
+export { Calendar } from "./Calendar/Calendar";
+export type { CalendarProps } from "./Calendar/Calendar";
+export { DatePicker } from "./DatePicker/DatePicker";
+export type { DatePickerProps } from "./DatePicker/DatePicker";
