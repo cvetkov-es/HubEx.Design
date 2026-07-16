@@ -2,6 +2,14 @@
   "name": "@hubex/css",
   "version": "0.1.0",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cvetkov-es/HubEx.Design.git",
+    "directory": "packages/css"
+  },
   "exports": {
     ".": "./dist/hubex.css"
   },

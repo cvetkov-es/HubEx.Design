@@ -36,20 +36,29 @@ dependency chain:
 
 ## Install (plugin authors)
 
-The packages aren't published to a registry yet. Until then, install
-straight from a git tag:
+The packages publish to the public npm registry — install them like any
+other dependency (no extra config):
 
 ```bash
-pnpm add github:cvetkov-es/HubEx.Design#v0.1.0
+pnpm add @hubex/react @hubex/css
 ```
 
-That installs the monorepo at a tagged commit; point your own `package.json`
-dependency at the specific subpackage path if your package manager needs it
-(e.g. `"@hubex/react": "github:cvetkov-es/HubEx.Design#v0.1.0&path:packages/react"`).
-Bump the tag as new versions are released.
+Then import the stylesheet once at your app entry, and use the components:
 
-GitHub Packages + a CI-driven publish step are planned but out of scope for
-now (see "Releasing" below).
+```tsx
+// app entry (e.g. main.tsx) — load the styles exactly once
+import "@hubex/css";
+
+import { Button } from "@hubex/react";
+```
+
+`@hubex/react` never imports CSS itself (so it tree-shakes); `@hubex/css`
+is the single stylesheet you load once. For `Icon`, also load the Material
+Icons font in your app.
+
+> Until the first `npm publish` runs (see "Releasing"), you can install
+> straight from a git tag instead:
+> `pnpm add github:cvetkov-es/HubEx.Design#v0.1.0`.
 
 ### Required setup
 
@@ -138,13 +147,27 @@ pnpm version-packages    # changeset version — bumps package.json + writes CHA
 pnpm release             # turbo run build && changeset publish — NOT wired to a registry yet
 ```
 
-There is no npm/GitHub Packages registry configured yet, so `pnpm release`
-(`changeset publish`) is not run in this repo today. The actual distribution
-mechanism for now is the git tag described above (`pnpm add
-github:cvetkov-es/HubEx.Design#vX.Y.Z`); `changeset version` is used to keep
-`package.json` versions and `CHANGELOG.md` files accurate as of each tag.
-Switching to GitHub Packages with a CI job that runs `pnpm release` on tag
-push is the planned follow-up, out of scope for now.
+Publishing to the public npm registry is automated by
+[`.github/workflows/release.yml`](.github/workflows/release.yml): pushing a
+version tag (`v*`) builds, tests, and runs `changeset publish`, which
+publishes any package whose version isn't already on npm.
+
+**One-time setup (a human does this once):**
+
+1. Create the `hubex` org/scope on [npmjs.com](https://www.npmjs.com) and sign in.
+2. Create an npm **Automation** access token (npmjs.com → Access Tokens).
+3. Add it to this repo: **Settings → Secrets and variables → Actions → New
+   repository secret**, named `NPM_TOKEN`.
+
+**Cutting a release afterwards:**
+
+```bash
+pnpm changeset          # record what changed (patch/minor/major per package)
+pnpm version-packages    # bump package.json versions + write CHANGELOG.md
+git commit -am "chore: release" && git tag vX.Y.Z && git push --follow-tags
+# → the release workflow publishes to npm automatically
+```
 
 The first tagged release is `v0.1.0` (`@hubex/tokens`, `@hubex/css`,
-`@hubex/react` all at `0.1.0`).
+`@hubex/react` all at `0.1.0`). It publishes on the first tag push after
+`NPM_TOKEN` is configured.
