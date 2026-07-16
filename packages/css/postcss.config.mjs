@@ -12,12 +12,12 @@ const require = createRequire(import.meta.url);
 // regardless of node_modules hoisting (e.g. pnpm's symlinked layout).
 function resolveTokensCssPath() {
   try {
-    // Honors the "./css" export of @hubex/tokens -> dist/variables.css
-    return require.resolve("@hubex/tokens/css");
+    // Honors the "./css" export of @cvetkov_es/tokens -> dist/variables.css
+    return require.resolve("@cvetkov_es/tokens/css");
   } catch {
     // Fallback for older/incomplete exports resolution: locate the
     // package root via its package.json and join the known dist path.
-    const pkgJsonPath = require.resolve("@hubex/tokens/package.json");
+    const pkgJsonPath = require.resolve("@cvetkov_es/tokens/package.json");
     return join(dirname(pkgJsonPath), "dist", "variables.css");
   }
 }
@@ -26,8 +26,8 @@ const tokensCssPath = resolveTokensCssPath();
 
 // Custom resolver to handle package exports
 function resolvePackageExport(id, basedir, importOptions) {
-  // Handle @hubex/tokens/css -> resolved dist/variables.css path
-  if (id === "@hubex/tokens/css") {
+  // Handle @cvetkov_es/tokens/css -> resolved dist/variables.css path
+  if (id === "@cvetkov_es/tokens/css") {
     return tokensCssPath;
   }
   // Return original id for other imports (postcss-import will handle them)

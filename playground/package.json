@@ -8,8 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@hubex/css": "workspace:*",
-    "@hubex/react": "workspace:*",
+    "@cvetkov_es/css": "workspace:*",
+    "@cvetkov_es/react": "workspace:*",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

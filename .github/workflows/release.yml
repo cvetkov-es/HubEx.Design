@@ -1,12 +1,15 @@
 name: Release (publish to npm)
 
-# Publishes @hubex/tokens, @hubex/css, @hubex/react to the public npm registry.
+# Publishes @cvetkov_es/tokens, @cvetkov_es/css, @cvetkov_es/react to the public npm registry.
 # Runs when a version tag (v*) is pushed, or manually via the Actions tab.
 #
+# Packages publish under the @cvetkov_es scope (the maintainer's own npm
+# username scope — no npm organization needed).
+#
 # ONE-TIME SETUP (done by a human):
-#   1. Create the npm org / scope "hubex" on npmjs.com and log in.
-#   2. Create an npm "Automation" access token (npmjs.com -> Access Tokens).
-#   3. Add it to this repo: Settings -> Secrets and variables -> Actions ->
+#   1. Create an npm "Automation" access token (npmjs.com -> Access Tokens)
+#      with publish rights for @cvetkov_es/*.
+#   2. Add it to this repo: Settings -> Secrets and variables -> Actions ->
 #      New repository secret, name it NPMJS_TOKEN. This is a GitHub Actions
 #      SECRET (repo settings), NOT a .env file — a .env is never read by CI.
 # After that, pushing a tag (e.g. `git tag v0.1.0 && git push origin v0.1.0`)

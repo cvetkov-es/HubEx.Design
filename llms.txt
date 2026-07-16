@@ -3,8 +3,8 @@
 ## Purpose
 
 HubEx UI is the design system for HubEx plugins: a React component library
-(`@hubex/react`), its stylesheet (`@hubex/css`), and the design tokens that
-back both (`@hubex/tokens`). If you are an AI building UI for a HubEx plugin,
+(`@cvetkov_es/react`), its stylesheet (`@cvetkov_es/css`), and the design tokens that
+back both (`@cvetkov_es/tokens`). If you are an AI building UI for a HubEx plugin,
 this file is the single reference for what exists and how to use it correctly
 — read it before hand-rolling any button, input, table, modal, badge, etc.
 Every control below reproduces an existing pattern from the HubEx product; a
@@ -14,22 +14,22 @@ of the system.
 ## Install
 
 ```bash
-pnpm add @hubex/react @hubex/css
+pnpm add @cvetkov_es/react @cvetkov_es/css
 ```
 
-Both packages are required: `@hubex/react` ships components with **no**
+Both packages are required: `@cvetkov_es/react` ships components with **no**
 CSS of their own (by design — this preserves tree-shaking, see Rules), and
-`@hubex/css` ships the stylesheet those components' class names point at.
+`@cvetkov_es/css` ships the stylesheet those components' class names point at.
 
 **Critical setup — do this once, at your app's entry point:**
 
 ```ts
 // main.tsx / index.tsx — top level, once
-import "@hubex/css";
+import "@cvetkov_es/css";
 ```
 
 This single import loads every `.hx-*` class and every `--hx-*` CSS custom
-property for the whole app. Do **not** import `@hubex/css` more than once,
+property for the whole app. Do **not** import `@cvetkov_es/css` more than once,
 and do not import it from inside a component file — it belongs at the entry
 point only.
 
@@ -43,7 +43,7 @@ a self-hosted `@font-face` under that family name). If the font isn't loaded,
 ## Design tokens
 
 Every token below is a real CSS custom property defined in
-`@hubex/tokens` and loaded globally once you `import "@hubex/css"`. **For any
+`@cvetkov_es/tokens` and loaded globally once you `import "@cvetkov_es/css"`. **For any
 custom UI, use these variables (or the `.hx-*` classes below) — never
 hardcode a hex value, a font stack, a radius, or a spacing number.**
 
@@ -79,7 +79,7 @@ hardcode a hex value, a font stack, a radius, or a spacing number.**
 
 ## Component index
 
-All 24 components are named exports of `@hubex/react`. Every component also
+All 24 components are named exports of `@cvetkov_es/react`. Every component also
 accepts native HTML attributes for its host element (it extends the matching
 `React.*HTMLAttributes` interface) and merges any `className` you pass with
 its own `.hx-*` classes. Props shown below are only the component-specific
@@ -298,9 +298,9 @@ ones on top of that.
 ## Rules
 
 DO:
-- Import components from `@hubex/react` before hand-rolling any UI element —
+- Import components from `@cvetkov_es/react` before hand-rolling any UI element —
   check this file first.
-- `import "@hubex/css"` exactly once, at your app's entry point.
+- `import "@cvetkov_es/css"` exactly once, at your app's entry point.
 - Use `--hx-*` CSS variables (or the existing `.hx-*` classes) for any custom
   element that isn't covered by a component.
 - Use the Roboto font stack, 13px base size, and brand color `#32B4EB` —
@@ -312,10 +312,10 @@ DO:
 DON'T:
 - Don't hardcode colors, fonts, radii, or spacing — reference the tokens
   above instead.
-- Don't import CSS from inside library/component code — `@hubex/react`
+- Don't import CSS from inside library/component code — `@cvetkov_es/react`
   intentionally ships no CSS of its own so consumers can tree-shake unused
-  components; only the consumer app imports `@hubex/css`, once.
-- Don't `require("@hubex/react")` or `require("@hubex/css")` — both packages
+  components; only the consumer app imports `@cvetkov_es/css`, once.
+- Don't `require("@cvetkov_es/react")` or `require("@cvetkov_es/css")` — both packages
   are ESM-only (`"type": "module"`, no CJS build). Use `import`.
 
 ### Good vs bad

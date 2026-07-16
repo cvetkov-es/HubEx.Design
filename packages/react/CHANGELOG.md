@@ -1,4 +1,4 @@
-# @hubex/react
+# @cvetkov_es/react
 
 ## 0.1.0
 
@@ -9,5 +9,5 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @hubex/tokens@0.1.0
-  - @hubex/css@0.1.0
+  - @cvetkov_es/tokens@0.1.0
+  - @cvetkov_es/css@0.1.0

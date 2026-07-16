@@ -1,5 +1,5 @@
 {
-  "name": "@hubex/react",
+  "name": "@cvetkov_es/react",
   "version": "0.1.0",
   "type": "module",
   "sideEffects": false,
@@ -30,7 +30,7 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@hubex/css": "workspace:*"
+    "@cvetkov_es/css": "workspace:*"
   },
   "devDependencies": {
     "react": "^19.0.0",

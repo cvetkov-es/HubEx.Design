@@ -17,21 +17,21 @@ This is a monorepo of three npm packages with a strict, one-directional
 dependency chain:
 
 ```
-@hubex/tokens  →  @hubex/css  →  @hubex/react
+@cvetkov_es/tokens  →  @cvetkov_es/css  →  @cvetkov_es/react
 ```
 
-- **`@hubex/tokens`** — the source of truth for design values (colors, font,
+- **`@cvetkov_es/tokens`** — the source of truth for design values (colors, font,
   radii, spacing). Built with Style Dictionary from `packages/tokens/src/tokens.json`
   into `--hx-*` CSS custom properties (`dist/variables.css`) and a JS/JSON
   export.
-- **`@hubex/css`** — the stylesheet. Every `.hx-*` class a component renders
+- **`@cvetkov_es/css`** — the stylesheet. Every `.hx-*` class a component renders
   is defined here, built from `--hx-*` tokens via PostCSS into
-  `dist/hubex.css`. Depends on `@hubex/tokens`.
-- **`@hubex/react`** — the components. Each component maps its props to
+  `dist/hubex.css`. Depends on `@cvetkov_es/tokens`.
+- **`@cvetkov_es/react`** — the components. Each component maps its props to
   `.hx-*` class names; it renders no CSS of its own and imports no
   stylesheet — this keeps the package tree-shakeable (`"sideEffects": false`,
-  one esbuild chunk per component). Depends on `@hubex/css` and
-  `@hubex/tokens` only as `dependencies` for typing/tooling purposes — at
+  one esbuild chunk per component). Depends on `@cvetkov_es/css` and
+  `@cvetkov_es/tokens` only as `dependencies` for typing/tooling purposes — at
   runtime the consumer app is the one that loads the stylesheet (see below).
 
 ## Install (plugin authors)
@@ -40,19 +40,19 @@ The packages publish to the public npm registry — install them like any
 other dependency (no extra config):
 
 ```bash
-pnpm add @hubex/react @hubex/css
+pnpm add @cvetkov_es/react @cvetkov_es/css
 ```
 
 Then import the stylesheet once at your app entry, and use the components:
 
 ```tsx
 // app entry (e.g. main.tsx) — load the styles exactly once
-import "@hubex/css";
+import "@cvetkov_es/css";
 
-import { Button } from "@hubex/react";
+import { Button } from "@cvetkov_es/react";
 ```
 
-`@hubex/react` never imports CSS itself (so it tree-shakes); `@hubex/css`
+`@cvetkov_es/react` never imports CSS itself (so it tree-shakes); `@cvetkov_es/css`
 is the single stylesheet you load once. For `Icon`, also load the Material
 Icons font in your app.
 
@@ -64,7 +64,7 @@ Icons font in your app.
 
 ```ts
 // your app's entry point — once
-import "@hubex/css";
+import "@cvetkov_es/css";
 ```
 
 This loads every `.hx-*` class and `--hx-*` token globally. Components
@@ -89,14 +89,14 @@ pnpm dev           # turbo run dev — watch mode across packages
 pnpm harvest       # node tools/harvest.mjs — re-scan source/Образцы into raw-inventory.json
 ```
 
-To run the playground app (the one consumer of `@hubex/css` + `@hubex/react`
+To run the playground app (the one consumer of `@cvetkov_es/css` + `@cvetkov_es/react`
 in this repo, useful for visually checking a component):
 
 ```bash
 cd playground && pnpm dev
 ```
 
-`@hubex/react`'s `tsup` build (which emits `.d.ts` files) can run out of
+`@cvetkov_es/react`'s `tsup` build (which emits `.d.ts` files) can run out of
 memory on low-RAM machines. If `pnpm build` OOMs in `packages/react`, retry
 with a larger heap:
 
@@ -152,11 +152,13 @@ Publishing to the public npm registry is automated by
 version tag (`v*`) builds, tests, and runs `changeset publish`, which
 publishes any package whose version isn't already on npm.
 
-**One-time setup (a human does this once):**
+Packages publish under the `@cvetkov_es` scope (the maintainer's own npm
+username scope — no npm organization required).
 
-1. Create the `hubex` org/scope on [npmjs.com](https://www.npmjs.com) and sign in.
-2. Create an npm **Automation** access token (npmjs.com → Access Tokens).
-3. Add it to this repo: **Settings → Secrets and variables → Actions → New
+**One-time setup for automated CI publishing (a human does this once):**
+
+1. Create an npm **Automation** access token at [npmjs.com](https://www.npmjs.com) → Access Tokens (must have publish rights for `@cvetkov_es/*`).
+2. Add it to this repo: **Settings → Secrets and variables → Actions → New
    repository secret**, named `NPMJS_TOKEN`. (This is a GitHub Actions
    *secret* in repo settings — not a `.env` file; CI never reads `.env`.)
 
@@ -169,6 +171,6 @@ git commit -am "chore: release" && git tag vX.Y.Z && git push --follow-tags
 # → the release workflow publishes to npm automatically
 ```
 
-The first tagged release is `v0.1.0` (`@hubex/tokens`, `@hubex/css`,
-`@hubex/react` all at `0.1.0`). It publishes on the first tag push after
+The first tagged release is `v0.1.0` (`@cvetkov_es/tokens`, `@cvetkov_es/css`,
+`@cvetkov_es/react` all at `0.1.0`). It publishes on the first tag push after
 `NPM_TOKEN` is configured.

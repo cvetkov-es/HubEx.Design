@@ -1,4 +1,4 @@
-# @hubex/tokens
+# @cvetkov_es/tokens
 
 ## 0.1.0
 

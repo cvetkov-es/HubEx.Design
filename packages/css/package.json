@@ -1,5 +1,5 @@
 {
-  "name": "@hubex/css",
+  "name": "@cvetkov_es/css",
   "version": "0.1.0",
   "type": "module",
   "publishConfig": {
@@ -21,7 +21,7 @@
     "test": "node --test build.test.mjs"
   },
   "dependencies": {
-    "@hubex/tokens": "workspace:*"
+    "@cvetkov_es/tokens": "workspace:*"
   },
   "devDependencies": {
     "postcss": "^8.4.0",

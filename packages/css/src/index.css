@@ -1,4 +1,4 @@
-@import "@hubex/tokens/css";
+@import "@cvetkov_es/tokens/css";
 
 :root { color: var(--hx-color-text); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
 

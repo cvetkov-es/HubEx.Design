@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build a monorepo publishing `@hubex/tokens`, `@hubex/css`, `@hubex/react` so all HubEx plugins share one centrally-updatable design, consumable by AI via a single `llms.txt` link.
+**Goal:** Build a monorepo publishing `@cvetkov_es/tokens`, `@cvetkov_es/css`, `@cvetkov_es/react` so all HubEx plugins share one centrally-updatable design, consumable by AI via a single `llms.txt` link.
 
 **Architecture:** pnpm-workspaces monorepo, three layered packages (`tokens` ← `css` ← `react`). Tokens are generated from `tokens.json` via Style Dictionary; CSS classes are authored on top of the CSS variables via PostCSS; React components are built with tsup and consume both. Design values come from `Образцы/` (token values) and `figma_reference/*.fig` (component structure). A Vite playground renders every component for visual QA.
 
@@ -10,10 +10,10 @@
 
 ## Global Constraints
 
-- Package scope: `@hubex/*`. Package names exactly: `@hubex/tokens`, `@hubex/css`, `@hubex/react`.
-- React is a **peerDependency** with range `>=18` in `@hubex/react` — never a direct/regular dependency. Dev-install React 19 for tests.
+- Package scope: `@cvetkov_es/*`. Package names exactly: `@cvetkov_es/tokens`, `@cvetkov_es/css`, `@cvetkov_es/react`.
+- React is a **peerDependency** with range `>=18` in `@cvetkov_es/react` — never a direct/regular dependency. Dev-install React 19 for tests.
 - CSS custom property prefix: `--hx-`. CSS class prefix: `.hx-`.
-- Package dependency direction is strictly `tokens ← css ← react`. `@hubex/tokens` has no workspace deps; `@hubex/css` depends only on `@hubex/tokens`; `@hubex/react` depends on both. Never introduce a reverse edge.
+- Package dependency direction is strictly `tokens ← css ← react`. `@cvetkov_es/tokens` has no workspace deps; `@cvetkov_es/css` depends only on `@cvetkov_es/tokens`; `@cvetkov_es/react` depends on both. Never introduce a reverse edge.
 - All packages are ESM-only (`"type": "module"`), publish `dist/` only, and expose types.
 - Font family stack: `Roboto, -apple-system, "Segoe UI", sans-serif`. Base font-size `13px`, small `11px`, heading `16px`.
 - Base palette (verbatim source of truth for token values): text `#1F1F1F`, muted `#777777` / `#999999`, brand `#32B4EB` (+ `#348AEE`, tint `#E8F7FD`), danger `#ED1940`, borders `#EEEEEE` / `#E8E8E8` / `#DADADA`, surfaces `#FFFFFF` / `#FEFEFE` / `#F8F8F8`.
@@ -22,12 +22,12 @@
 
 ### Bundle-hygiene constraints (from a prior in-house attempt that shipped a 516 KB gzip package)
 
-- **`@hubex/react` MUST set `"sideEffects": false`** in package.json. Components are pure (they only map props to `.hx-*` class strings) — they have no module-level side effects. This is what lets a consumer's bundler drop unused components.
-- **The JS barrel `src/index.ts` MUST NOT import CSS** (no `import "@hubex/css"`). A JS-level stylesheet import is a module side effect that fights tree-shaking and breaks `sideEffects: false`. Styling ships as the separate `@hubex/css` package; the consumer imports it once at app entry (`import "@hubex/css"`). Document this in README/llms.txt.
+- **`@cvetkov_es/react` MUST set `"sideEffects": false`** in package.json. Components are pure (they only map props to `.hx-*` class strings) — they have no module-level side effects. This is what lets a consumer's bundler drop unused components.
+- **The JS barrel `src/index.ts` MUST NOT import CSS** (no `import "@cvetkov_es/css"`). A JS-level stylesheet import is a module side effect that fights tree-shaking and breaks `sideEffects: false`. Styling ships as the separate `@cvetkov_es/css` package; the consumer imports it once at app entry (`import "@cvetkov_es/css"`). Document this in README/llms.txt.
 - **No namespace re-exports** (`export * as Icons from ...`). A namespace object forces bundlers to retain every member. Every component is a named export. This is the specific pattern that made the prior package un-tree-shakeable.
 - **No inlined SVG icon sets.** The `Icon` component renders the Material Icons *font* by glyph name (`<span className="material hx-icon">{name}</span>`). No component may import or inline an SVG icon library. (The prior package bundled 1579 SVGs ≈ 540 KB into one file.)
-- **`@hubex/react` is ESM-only — it ships NO CommonJS build.** `tsup` emits `format: ["esm"]` only. This structurally avoids the CJS default-interop crash the prior package hit (`require(...)` → `B.p is not a function`). Consumers use Vite/modern bundlers (ESM), which our React 18/19 plugins already do.
-- **Zero runtime dependencies** in `@hubex/react` (no styled-components, no emotion, no CSS-in-JS). `dependencies` are only the workspace `@hubex/*` packages; React/React-DOM are peers.
+- **`@cvetkov_es/react` is ESM-only — it ships NO CommonJS build.** `tsup` emits `format: ["esm"]` only. This structurally avoids the CJS default-interop crash the prior package hit (`require(...)` → `B.p is not a function`). Consumers use Vite/modern bundlers (ESM), which our React 18/19 plugins already do.
+- **Zero runtime dependencies** in `@cvetkov_es/react` (no styled-components, no emotion, no CSS-in-JS). `dependencies` are only the workspace `@cvetkov_es/*` packages; React/React-DOM are peers.
 - **tsup config MUST enable `treeshake: true` and `splitting: true`** so the ESM output is code-split and dead-code-eliminable.
 - Task 5 includes a **bundle-size guard**: after build, bundle a fixture that imports only `Button`, and assert the output contains no other component and is under a small byte budget — a regression test for the exact failure above.
 
@@ -306,7 +306,7 @@ git commit -m "feat(tools): harvest script extracts token values from CSS dumps"
 
 ---
 
-### Task 3: `@hubex/tokens`
+### Task 3: `@cvetkov_es/tokens`
 
 **Files:**
 - Create: `packages/tokens/package.json`, `packages/tokens/src/tokens.json`, `packages/tokens/style-dictionary.config.mjs`, `packages/tokens/build.test.mjs`
@@ -314,9 +314,9 @@ git commit -m "feat(tools): harvest script extracts token values from CSS dumps"
 **Interfaces:**
 - Consumes: `raw-inventory.json` (read by the human/AI to choose values — not imported).
 - Produces:
-  - `@hubex/tokens/css` → `dist/variables.css` defining `:root { --hx-color-text: #1F1F1F; ... }`
-  - `@hubex/tokens` (JS) → `dist/tokens.js` exporting `export const token = { color: { text: "#1F1F1F", ... }, ... }`
-  - `@hubex/tokens/json` → `dist/tokens.json`
+  - `@cvetkov_es/tokens/css` → `dist/variables.css` defining `:root { --hx-color-text: #1F1F1F; ... }`
+  - `@cvetkov_es/tokens` (JS) → `dist/tokens.js` exporting `export const token = { color: { text: "#1F1F1F", ... }, ... }`
+  - `@cvetkov_es/tokens/json` → `dist/tokens.json`
   - CSS variable names (stable contract used by `css` and `react`): `--hx-color-text`, `--hx-color-text-muted`, `--hx-color-brand`, `--hx-color-brand-strong`, `--hx-color-brand-tint`, `--hx-color-danger`, `--hx-color-border`, `--hx-color-border-strong`, `--hx-color-surface`, `--hx-color-surface-alt`, `--hx-color-surface-sunken`, `--hx-font-family`, `--hx-font-size-sm`, `--hx-font-size-base`, `--hx-font-size-lg`, `--hx-radius-sm`, `--hx-radius-md`, `--hx-space-1`..`--hx-space-6`.
 
 - [ ] **Step 1: Write `packages/tokens/src/tokens.json`** (Style Dictionary v4 format; values verbatim from Global Constraints)
@@ -386,7 +386,7 @@ export default {
 
 ```json
 {
-  "name": "@hubex/tokens",
+  "name": "@cvetkov_es/tokens",
   "version": "0.0.0",
   "type": "module",
   "exports": {
@@ -417,41 +417,41 @@ test("generated variables.css contains prefixed brand var", () => {
 
 - [ ] **Step 5: Run test to verify it fails**
 
-Run: `pnpm --filter @hubex/tokens exec node --test build.test.mjs`
+Run: `pnpm --filter @cvetkov_es/tokens exec node --test build.test.mjs`
 Expected: FAIL — `dist/variables.css` does not exist.
 
 - [ ] **Step 6: Build tokens**
 
-Run: `pnpm --filter @hubex/tokens install && pnpm --filter @hubex/tokens build`
+Run: `pnpm --filter @cvetkov_es/tokens install && pnpm --filter @cvetkov_es/tokens build`
 Expected: creates `dist/variables.css`, `dist/tokens.js`, `dist/tokens.json`.
 
 - [ ] **Step 7: Run test to verify it passes**
 
-Run: `pnpm --filter @hubex/tokens exec node --test build.test.mjs`
+Run: `pnpm --filter @cvetkov_es/tokens exec node --test build.test.mjs`
 Expected: PASS.
 
 - [ ] **Step 8: Commit**
 
 ```bash
 git add packages/tokens
-git commit -m "feat(tokens): @hubex/tokens via Style Dictionary"
+git commit -m "feat(tokens): @cvetkov_es/tokens via Style Dictionary"
 ```
 
 ---
 
-### Task 4: `@hubex/css`
+### Task 4: `@cvetkov_es/css`
 
 **Files:**
 - Create: `packages/css/package.json`, `packages/css/postcss.config.mjs`, `packages/css/src/index.css`, `packages/css/build.test.mjs`
 
 **Interfaces:**
-- Consumes: `@hubex/tokens/css` variables (imported at top of `src/index.css`).
-- Produces: `@hubex/css` → `dist/hubex.css` with base classes. Class contract used by `react` and plugins: `.hx-btn`, `.hx-btn--primary`, `.hx-btn--secondary`, `.hx-btn--danger`, `.hx-btn--sm`, `.hx-input`, `.hx-input--invalid`, `.hx-field`, `.hx-label`. (More classes added alongside their components in later tasks.)
+- Consumes: `@cvetkov_es/tokens/css` variables (imported at top of `src/index.css`).
+- Produces: `@cvetkov_es/css` → `dist/hubex.css` with base classes. Class contract used by `react` and plugins: `.hx-btn`, `.hx-btn--primary`, `.hx-btn--secondary`, `.hx-btn--danger`, `.hx-btn--sm`, `.hx-input`, `.hx-input--invalid`, `.hx-field`, `.hx-label`. (More classes added alongside their components in later tasks.)
 
 - [ ] **Step 1: Write `packages/css/src/index.css`** (seed with the button + input primitives; values reference token vars only)
 
 ```css
-@import "@hubex/tokens/css";
+@import "@cvetkov_es/tokens/css";
 
 :root { color: var(--hx-color-text); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
 
@@ -495,13 +495,13 @@ export default { plugins: [postcssImport(), autoprefixer(), cssnano({ preset: "d
 
 ```json
 {
-  "name": "@hubex/css",
+  "name": "@cvetkov_es/css",
   "version": "0.0.0",
   "type": "module",
   "exports": { ".": "./dist/hubex.css" },
   "files": ["dist"],
   "scripts": { "build": "postcss src/index.css -o dist/hubex.css" },
-  "dependencies": { "@hubex/tokens": "workspace:*" },
+  "dependencies": { "@cvetkov_es/tokens": "workspace:*" },
   "devDependencies": {
     "postcss": "^8.4.0", "postcss-cli": "^11.0.0", "postcss-import": "^16.1.0",
     "autoprefixer": "^10.4.0", "cssnano": "^7.0.0"
@@ -526,29 +526,29 @@ test("bundled css inlines the token variable value", () => {
 
 - [ ] **Step 5: Run test to verify it fails**
 
-Run: `pnpm --filter @hubex/css exec node --test build.test.mjs`
+Run: `pnpm --filter @cvetkov_es/css exec node --test build.test.mjs`
 Expected: FAIL — `dist/hubex.css` missing.
 
 - [ ] **Step 6: Build css**
 
-Run: `pnpm install && pnpm --filter @hubex/css build`
+Run: `pnpm install && pnpm --filter @cvetkov_es/css build`
 Expected: `dist/hubex.css` created (minified, `.hx-btn` present).
 
 - [ ] **Step 7: Run test to verify it passes**
 
-Run: `pnpm --filter @hubex/css exec node --test build.test.mjs`
+Run: `pnpm --filter @cvetkov_es/css exec node --test build.test.mjs`
 Expected: PASS.
 
 - [ ] **Step 8: Commit**
 
 ```bash
 git add packages/css
-git commit -m "feat(css): @hubex/css base classes on token variables"
+git commit -m "feat(css): @cvetkov_es/css base classes on token variables"
 ```
 
 ---
 
-### Task 5: `@hubex/react` scaffolding + Button (exemplar component)
+### Task 5: `@cvetkov_es/react` scaffolding + Button (exemplar component)
 
 This task establishes the component pattern every later component copies: `.tsx` that maps typed props to `.hx-*` classes, colocated Vitest test, barrel export.
 
@@ -556,16 +556,16 @@ This task establishes the component pattern every later component copies: `.tsx`
 - Create: `packages/react/package.json`, `packages/react/tsup.config.ts`, `packages/react/vitest.config.ts`, `packages/react/vitest.setup.ts`, `packages/react/src/index.ts`, `packages/react/src/Button/Button.tsx`, `packages/react/src/Button/Button.test.tsx`
 
 **Interfaces:**
-- Consumes: `@hubex/tokens` only if a component needs raw values in JS. The barrel does NOT import `@hubex/css` — the stylesheet is a separate, consumer-owned import (see Bundle-hygiene constraints).
+- Consumes: `@cvetkov_es/tokens` only if a component needs raw values in JS. The barrel does NOT import `@cvetkov_es/css` — the stylesheet is a separate, consumer-owned import (see Bundle-hygiene constraints).
 - Produces:
-  - `@hubex/react` barrel exporting every component as a **named export** (never a namespace re-export).
+  - `@cvetkov_es/react` barrel exporting every component as a **named export** (never a namespace re-export).
   - `Button` component: `interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { variant?: "primary" | "secondary" | "danger"; size?: "md" | "sm"; }`. Renders `<button className="hx-btn hx-btn--{variant} [hx-btn--sm]">`. Default `variant="primary"`, `size="md"`.
 
 - [ ] **Step 1: Write `packages/react/package.json`**
 
 ```json
 {
-  "name": "@hubex/react",
+  "name": "@cvetkov_es/react",
   "version": "0.0.0",
   "type": "module",
   "sideEffects": false,
@@ -577,7 +577,7 @@ This task establishes the component pattern every later component copies: `.tsx`
     "test": "vitest run"
   },
   "peerDependencies": { "react": ">=18", "react-dom": ">=18" },
-  "dependencies": { "@hubex/css": "workspace:*", "@hubex/tokens": "workspace:*" },
+  "dependencies": { "@cvetkov_es/css": "workspace:*", "@cvetkov_es/tokens": "workspace:*" },
   "devDependencies": {
     "react": "^19.0.0", "react-dom": "^19.0.0",
     "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0",
@@ -590,7 +590,7 @@ This task establishes the component pattern every later component copies: `.tsx`
 
 **Why these choices (from a prior in-house package that shipped 516 KB gzip):**
 - `"sideEffects": false` — components are pure prop→className maps; this is what lets a consumer drop unused ones.
-- `@hubex/css` stays a runtime `dependency` so it auto-installs for consumers, BUT the JS barrel never `import`s it. The stylesheet is loaded once by the plugin (`import "@hubex/css"` at app entry). Listing a package as a dependency does not bundle it; only an actual `import` does. This is the exact line the prior package got wrong.
+- `@cvetkov_es/css` stays a runtime `dependency` so it auto-installs for consumers, BUT the JS barrel never `import`s it. The stylesheet is loaded once by the plugin (`import "@cvetkov_es/css"` at app entry). Listing a package as a dependency does not bundle it; only an actual `import` does. This is the exact line the prior package got wrong.
 
 - [ ] **Step 2: Write build/test config**
 
@@ -649,7 +649,7 @@ test("forwards native props", () => {
 
 - [ ] **Step 4: Run test to verify it fails**
 
-Run: `pnpm --filter @hubex/react exec vitest run src/Button`
+Run: `pnpm --filter @cvetkov_es/react exec vitest run src/Button`
 Expected: FAIL — cannot resolve `./Button`.
 
 - [ ] **Step 5: Write the implementation**
@@ -676,21 +676,21 @@ Button.displayName = "Button";
 
 ```ts
 // packages/react/src/index.ts
-// NOTE: do NOT `import "@hubex/css"` here — a JS stylesheet import is a module
+// NOTE: do NOT `import "@cvetkov_es/css"` here — a JS stylesheet import is a module
 // side effect that breaks `sideEffects: false` and tree-shaking. The consumer
-// imports the stylesheet once at app entry: `import "@hubex/css"`.
+// imports the stylesheet once at app entry: `import "@cvetkov_es/css"`.
 export { Button } from "./Button/Button";
 export type { ButtonProps } from "./Button/Button";
 ```
 
 - [ ] **Step 6: Run test to verify it passes**
 
-Run: `pnpm install && pnpm --filter @hubex/react exec vitest run src/Button`
+Run: `pnpm install && pnpm --filter @cvetkov_es/react exec vitest run src/Button`
 Expected: PASS (3 tests).
 
 - [ ] **Step 7: Build the package**
 
-Run: `pnpm --filter @hubex/react build`
+Run: `pnpm --filter @cvetkov_es/react build`
 Expected: `dist/index.js` + `dist/index.d.ts` created; no bundled React.
 
 - [ ] **Step 8: Add the bundle-size guard (tree-shaking regression test)**
@@ -722,17 +722,17 @@ test("importing only Button yields a tiny, react-free bundle", async () => {
 ```
 
 Add esbuild to devDependencies and wire the guard into the package `test` script so `pnpm test` runs it:
-- `pnpm --filter @hubex/react add -D esbuild`
-- change `@hubex/react` package.json `test` to: `"test": "vitest run && node --test treeshake.test.mjs"`
+- `pnpm --filter @cvetkov_es/react add -D esbuild`
+- change `@cvetkov_es/react` package.json `test` to: `"test": "vitest run && node --test treeshake.test.mjs"`
 
-Run: `pnpm --filter @hubex/react test`
+Run: `pnpm --filter @cvetkov_es/react test`
 Expected: Vitest 3/3 PASS, then the treeshake guard PASSES (Button-only bundle well under 8 KB, no react-dom).
 
 - [ ] **Step 9: Commit**
 
 ```bash
 git add packages/react
-git commit -m "feat(react): scaffold @hubex/react + Button exemplar + bundle-size guard"
+git commit -m "feat(react): scaffold @cvetkov_es/react + Button exemplar + bundle-size guard"
 ```
 
 ---
@@ -755,13 +755,13 @@ Follow the Task 5 pattern exactly (typed props → `.hx-*` classes, colocated te
 
 - [ ] **Step 2: For EACH component — write the failing test** (mirror Button.test.tsx: assert base class, a state modifier, and native prop forwarding).
 
-Run: `pnpm --filter @hubex/react exec vitest run src/<Name>` → Expected: FAIL.
+Run: `pnpm --filter @cvetkov_es/react exec vitest run src/<Name>` → Expected: FAIL.
 
-- [ ] **Step 3: For EACH component — add CSS classes** to `packages/css/src/index.css` using only token vars, then rebuild css: `pnpm --filter @hubex/css build`.
+- [ ] **Step 3: For EACH component — add CSS classes** to `packages/css/src/index.css` using only token vars, then rebuild css: `pnpm --filter @cvetkov_es/css build`.
 
 - [ ] **Step 4: For EACH component — write the `.tsx`** per its contract above and add its export to `src/index.ts`.
 
-- [ ] **Step 5: Run the tests** `pnpm --filter @hubex/react exec vitest run` → Expected: PASS (all form components).
+- [ ] **Step 5: Run the tests** `pnpm --filter @cvetkov_es/react exec vitest run` → Expected: PASS (all form components).
 
 - [ ] **Step 6: Commit** `git add -A && git commit -m "feat(react): form components (Input, Checkbox, Radio, Toggle, Select)"`.
 
@@ -779,7 +779,7 @@ Same pattern. Table is composed of subcomponents that share styling.
 
 - [ ] **Step 2: Write failing tests** — Table: renders `<table class="hx-table">` and cells via subcomponents; Pagination: prev disabled at page 1, clicking next calls `onPageChange(2)`.
 
-Run: `pnpm --filter @hubex/react exec vitest run src/Table src/Pagination` → Expected: FAIL.
+Run: `pnpm --filter @cvetkov_es/react exec vitest run src/Table src/Pagination` → Expected: FAIL.
 
 - [ ] **Step 3: Add CSS classes** (`.hx-table*`, `.hx-pagination*`) to `index.css`; rebuild css.
 
@@ -807,7 +807,7 @@ Same pattern. Overlays render into a portal.
 
 - [ ] **Step 2: Write failing tests** — Modal: not rendered when `open=false`, rendered with title when `open=true`, Esc calls `onClose`; Tabs: clicking an item calls `onChange` with its value; Menu: item hidden until trigger click.
 
-Run: `pnpm --filter @hubex/react exec vitest run src/Modal src/Tabs src/Menu` → Expected: FAIL.
+Run: `pnpm --filter @cvetkov_es/react exec vitest run src/Modal src/Tabs src/Menu` → Expected: FAIL.
 
 - [ ] **Step 3: Add CSS classes** for all six components; rebuild css.
 
@@ -836,7 +836,7 @@ Same pattern. These are mostly presentational.
 
 - [ ] **Step 2: Write failing tests** — Badge: `variant="count"` renders the count; Avatar: renders initials when no `src`; Alert: applies `hx-alert--danger` for `severity="danger"`.
 
-Run: `pnpm --filter @hubex/react exec vitest run src/Badge src/Avatar src/Alert` → Expected: FAIL.
+Run: `pnpm --filter @cvetkov_es/react exec vitest run src/Badge src/Avatar src/Alert` → Expected: FAIL.
 
 - [ ] **Step 3: Add CSS classes** for all indicators; rebuild css.
 
@@ -860,7 +860,7 @@ Same pattern; the most stateful components.
 
 - [ ] **Step 2: Write failing tests** — Calendar: renders 7 weekday headers and clicking a day calls `onChange` with that date; DatePicker: opens calendar on input click, selecting a day fills the input and closes.
 
-Run: `pnpm --filter @hubex/react exec vitest run src/Calendar src/DatePicker` → Expected: FAIL.
+Run: `pnpm --filter @cvetkov_es/react exec vitest run src/Calendar src/DatePicker` → Expected: FAIL.
 
 - [ ] **Step 3: Add CSS classes** (`.hx-calendar*`); rebuild css.
 
@@ -878,7 +878,7 @@ Run: `pnpm --filter @hubex/react exec vitest run src/Calendar src/DatePicker` �
 - Create: `playground/package.json`, `playground/index.html`, `playground/src/main.tsx`, `playground/vite.config.ts`
 
 **Interfaces:**
-- Consumes: `@hubex/react` (all components).
+- Consumes: `@cvetkov_es/react` (all components).
 - Produces: `pnpm dev` serving a single page that renders every component in every variant, for visual comparison against `source/Образцы` screenshots.
 
 - [ ] **Step 1: Write `playground/package.json`**
@@ -889,7 +889,7 @@ Run: `pnpm --filter @hubex/react exec vitest run src/Calendar src/DatePicker` �
   "private": true,
   "type": "module",
   "scripts": { "dev": "vite" },
-  "dependencies": { "@hubex/react": "workspace:*", "react": "^19.0.0", "react-dom": "^19.0.0" },
+  "dependencies": { "@cvetkov_es/react": "workspace:*", "react": "^19.0.0", "react-dom": "^19.0.0" },
   "devDependencies": { "vite": "^5.4.0", "@vitejs/plugin-react": "^4.3.0", "typescript": "^5.5.0" }
 }
 ```
@@ -914,7 +914,7 @@ export default defineConfig({ plugins: [react()] });
 
 ```tsx
 import { createRoot } from "react-dom/client";
-import { Button, Input, Field, Tag, Alert, Badge } from "@hubex/react";
+import { Button, Input, Field, Tag, Alert, Badge } from "@cvetkov_es/react";
 
 function App() {
   return (
@@ -964,13 +964,13 @@ git commit -m "chore: Vite playground kitchen-sink"
 - Consumes: the final component list and token table.
 - Produces: the single link an AI is pointed at when building a plugin.
 
-- [ ] **Step 1: Write `llms.txt`** — the AI reference. Include: (a) one-paragraph purpose, (b) install line, (c) the full token table (names + values from Task 3), (d) a component index — for each component: import name, props signature (copied from its task contract), and one usage example, (e) a "Rules" section: use `@hubex/react` components before hand-rolling; use `--hx-*` vars / `.hx-*` classes for any custom UI; font Roboto, base 13px, brand `#32B4EB`; do NOT hardcode hex values — reference tokens. Include 2 "good vs bad" snippets.
+- [ ] **Step 1: Write `llms.txt`** — the AI reference. Include: (a) one-paragraph purpose, (b) install line, (c) the full token table (names + values from Task 3), (d) a component index — for each component: import name, props signature (copied from its task contract), and one usage example, (e) a "Rules" section: use `@cvetkov_es/react` components before hand-rolling; use `--hx-*` vars / `.hx-*` classes for any custom UI; font Roboto, base 13px, brand `#32B4EB`; do NOT hardcode hex values — reference tokens. Include 2 "good vs bad" snippets.
 
 - [ ] **Step 2: Write `AGENTS.md`** — the two-line onboarding a plugin repo pastes into its own `CLAUDE.md`/`AGENTS.md`:
 
 ```markdown
 # HubEx design system
-- Components: install `@hubex/react`, import from it before hand-rolling UI.
+- Components: install `@cvetkov_es/react`, import from it before hand-rolling UI.
 - Rules & tokens: read the design reference at <RAW_URL_TO_llms.txt>.
 ```
 
@@ -1040,7 +1040,7 @@ git tag v0.1.0
 
 **Spec coverage:**
 - Monorepo + 3 packages → Tasks 1, 3, 4, 5. ✓
-- React-only components, Vue via tokens+CSS → `@hubex/css` (Task 4) + `@hubex/tokens` (Task 3) are framework-agnostic; React in Tasks 5–10. ✓
+- React-only components, Vue via tokens+CSS → `@cvetkov_es/css` (Task 4) + `@cvetkov_es/tokens` (Task 3) are framework-agnostic; React in Tasks 5–10. ✓
 - Token source = `Образцы/`, harvest safety script → Tasks 2, 3. ✓
 - Component source = `.fig` (~30 components) → Tasks 5–10 cover Button, Input, Checkbox, Radio, Toggle, Select, Table(+Head/Row/Cell), Pagination, Modal, Drawer, Tooltip, Tabs, Menu/Dropdown, Breadcrumbs, Tag, Chip, Badge, Avatar, Label, Alert, Icon, Calendar, DatePicker. ✓
 - Build stack (pnpm+turbo / Style Dictionary / PostCSS / tsup / Changesets) → Tasks 1, 3, 4, 5, 13. ✓

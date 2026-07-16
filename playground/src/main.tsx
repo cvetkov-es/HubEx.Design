@@ -3,8 +3,8 @@ import { createRoot } from "react-dom/client";
 // The playground is the ONE consumer app in this monorepo, and consumer apps
 // are exactly where the HubEx stylesheet is meant to be imported (see the
 // comment atop packages/react/src/index.ts) — this import must appear exactly
-// once, here, and nowhere inside @hubex/react itself.
-import "@hubex/css";
+// once, here, and nowhere inside @cvetkov_es/react itself.
+import "@cvetkov_es/css";
 import {
   Alert,
   Avatar,
@@ -30,7 +30,7 @@ import {
   Tag,
   Toggle,
   Tooltip
-} from "@hubex/react";
+} from "@cvetkov_es/react";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -322,7 +322,7 @@ function App() {
   return (
     <div style={{ padding: 24, display: "grid", gap: 8, maxWidth: 960, margin: "0 auto", fontFamily: "sans-serif" }}>
       <h1>HubEx UI — Playground</h1>
-      <p style={{ color: "#666" }}>Kitchen sink of every @hubex/react component, for visual review against source/Образцы.</p>
+      <p style={{ color: "#666" }}>Kitchen sink of every @cvetkov_es/react component, for visual review against source/Образцы.</p>
       <ButtonSection />
       <InputFieldSection />
       <CheckboxSection />

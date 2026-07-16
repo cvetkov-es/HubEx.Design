@@ -20,7 +20,7 @@ importers:
 
   packages/css:
     dependencies:
-      '@hubex/tokens':
+      '@cvetkov_es/tokens':
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
@@ -42,7 +42,7 @@ importers:
 
   packages/react:
     dependencies:
-      '@hubex/css':
+      '@cvetkov_es/css':
         specifier: workspace:*
         version: link:../css
     devDependencies:
@@ -88,10 +88,10 @@ importers:
 
   playground:
     dependencies:
-      '@hubex/css':
+      '@cvetkov_es/css':
         specifier: workspace:*
         version: link:../packages/css
-      '@hubex/react':
+      '@cvetkov_es/react':
         specifier: workspace:*
         version: link:../packages/react
       react:

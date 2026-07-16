@@ -1,4 +1,4 @@
-# @hubex/css
+# @cvetkov_es/css
 
 ## 0.1.0
 
@@ -9,4 +9,4 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @hubex/tokens@0.1.0
+  - @cvetkov_es/tokens@0.1.0
