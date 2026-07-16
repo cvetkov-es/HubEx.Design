@@ -17,7 +17,7 @@ export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "o
 export function Tabs({ value, onChange, items, className, ...rest }: TabsProps) {
   const cls = ["hx-tabs", className].filter(Boolean).join(" ");
   return (
-    <div className={cls} role="tablist" {...rest}>
+    <div {...rest} className={cls} role="tablist">
       {items.map((item) => {
         const active = item.value === value;
         const itemCls = ["hx-tabs__item", active && "hx-tabs__item--active"].filter(Boolean).join(" ");

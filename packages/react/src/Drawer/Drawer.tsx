@@ -31,7 +31,7 @@ export const Drawer = /* @__PURE__ */ Object.assign(
             if (event.target === event.currentTarget) onClose();
           }}
         >
-          <div className={cls} role="dialog" aria-modal="true" ref={ref} {...rest}>
+          <div {...rest} className={cls} role="dialog" aria-modal="true" ref={ref}>
             {children}
           </div>
         </div>,

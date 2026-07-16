@@ -78,6 +78,16 @@ test("passes native attributes like data-testid and id through to the panel", ()
   expect(panel).toHaveAttribute("id", "delete-modal-el");
 });
 
+test("does not allow a consumer-passed role to override the controlled role=dialog", () => {
+  render(
+    <Modal open onClose={vi.fn()} title="Delete contract" role="alertdialog">
+      Body text
+    </Modal>
+  );
+  const panel = document.querySelector(".hx-modal")!;
+  expect(panel).toHaveAttribute("role", "dialog");
+});
+
 test("renders into a portal at document.body", () => {
   const { container } = render(
     <Modal open onClose={vi.fn()} title="Delete contract">

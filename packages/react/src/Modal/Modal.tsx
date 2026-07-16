@@ -31,7 +31,7 @@ export const Modal = /* @__PURE__ */ Object.assign(
             if (event.target === event.currentTarget) onClose();
           }}
         >
-          <div className={cls} role="dialog" aria-modal="true" aria-label={title} ref={ref} {...rest}>
+          <div {...rest} className={cls} role="dialog" aria-modal="true" aria-label={title} ref={ref}>
             {title && <h2 className="hx-modal__title">{title}</h2>}
             <div className="hx-modal__body">{children}</div>
           </div>

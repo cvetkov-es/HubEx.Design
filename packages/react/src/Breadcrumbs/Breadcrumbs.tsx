@@ -15,7 +15,7 @@ export interface BreadcrumbsProps extends Omit<React.HTMLAttributes<HTMLElement>
 export function Breadcrumbs({ items, className, ...rest }: BreadcrumbsProps) {
   const cls = ["hx-breadcrumbs", className].filter(Boolean).join(" ");
   return (
-    <nav className={cls} aria-label="Breadcrumb" {...rest}>
+    <nav {...rest} className={cls} aria-label="Breadcrumb">
       <ol className="hx-breadcrumbs__list">
         {items.map((item, index) => (
           <li key={`${item.label}-${index}`} className="hx-breadcrumbs__item">
