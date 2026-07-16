@@ -22,8 +22,7 @@
     "react-dom": ">=18"
   },
   "dependencies": {
-    "@hubex/css": "workspace:*",
-    "@hubex/tokens": "workspace:*"
+    "@hubex/css": "workspace:*"
   },
   "devDependencies": {
     "react": "^19.0.0",

@@ -510,6 +510,7 @@
 .hx-calendar__nav-btn:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
 .hx-calendar__month-label { font-weight: 500; }
 .hx-calendar__head, .hx-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--hx-space-1); }
+.hx-calendar__week { display: contents; }
 .hx-calendar__weekday {
   display: flex; align-items: center; justify-content: center;
   height: 24px; font-size: var(--hx-font-size-sm); color: var(--hx-color-text-muted);

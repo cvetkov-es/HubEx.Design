@@ -37,3 +37,13 @@ test("passes native attributes like data-testid through to the root", () => {
   render(<Alert data-testid="alert-el">Something happened</Alert>);
   expect(screen.getByTestId("alert-el")).toBeInTheDocument();
 });
+
+test("severity=danger uses the assertive role=alert", () => {
+  render(<Alert severity="danger">Failed to save</Alert>);
+  expect(document.querySelector(".hx-alert")).toHaveAttribute("role", "alert");
+});
+
+test("severity=info uses the polite role=status", () => {
+  render(<Alert severity="info">Something happened</Alert>);
+  expect(document.querySelector(".hx-alert")).toHaveAttribute("role", "status");
+});

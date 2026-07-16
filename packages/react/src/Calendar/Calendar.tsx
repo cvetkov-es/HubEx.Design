@@ -24,6 +24,13 @@ function sameDay(a: Date | undefined, b: Date): boolean {
   return !!a && a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
 }
 
+// Splits the flat 42-cell grid into 6 rows of 7 for ARIA grid/row grouping.
+function toWeeks(cells: Date[]): Date[][] {
+  const weeks: Date[][] = [];
+  for (let i = 0; i < cells.length; i += 7) weeks.push(cells.slice(i, i + 7));
+  return weeks;
+}
+
 // Always a fixed 6-week (42-cell) Monday-start grid, so the visible day
 // count never varies between months — that keeps rendering (and testing)
 // deterministic. Leading/trailing cells belong to the adjacent month and
@@ -89,29 +96,39 @@ export const Calendar = /* @__PURE__ */ Object.assign(
             ))}
           </div>
           <div className="hx-calendar__grid" role="grid">
-            {cells.map((cellDate) => {
-              const muted = cellDate.getMonth() !== view.monthIdx;
-              const selected = sameDay(value, cellDate);
-              const dayCls = [
-                "hx-calendar__day",
-                muted && "hx-calendar__day--muted",
-                selected && "hx-calendar__day--selected"
-              ]
-                .filter(Boolean)
-                .join(" ");
-              return (
-                <button
-                  key={isoDate(cellDate)}
-                  type="button"
-                  className={dayCls}
-                  data-date={isoDate(cellDate)}
-                  aria-selected={selected}
-                  onClick={() => onChange(cellDate)}
-                >
-                  {cellDate.getDate()}
-                </button>
-              );
-            })}
+            {toWeeks(cells).map((week, weekIndex) => (
+              // display:contents (see hx-calendar__week in CSS) keeps this
+              // row wrapper out of the visual layout so the parent's
+              // `grid-template-columns: repeat(7, 1fr)` still applies to the
+              // day buttons directly, while giving the ARIA grid a real
+              // role="row" ancestor between the grid and its gridcells.
+              <div className="hx-calendar__week" role="row" key={weekIndex}>
+                {week.map((cellDate) => {
+                  const muted = cellDate.getMonth() !== view.monthIdx;
+                  const selected = sameDay(value, cellDate);
+                  const dayCls = [
+                    "hx-calendar__day",
+                    muted && "hx-calendar__day--muted",
+                    selected && "hx-calendar__day--selected"
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
+                  return (
+                    <button
+                      key={isoDate(cellDate)}
+                      type="button"
+                      role="gridcell"
+                      className={dayCls}
+                      data-date={isoDate(cellDate)}
+                      aria-selected={selected}
+                      onClick={() => onChange(cellDate)}
+                    >
+                      {cellDate.getDate()}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
           </div>
         </div>
       );

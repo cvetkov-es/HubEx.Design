@@ -11,8 +11,12 @@ export const Alert = /* @__PURE__ */ Object.assign(
   /* @__PURE__ */ React.forwardRef<HTMLDivElement, AlertProps>(
     ({ severity = "info", title, className, children, ...rest }, ref) => {
       const cls = ["hx-alert", `hx-alert--${severity}`, className].filter(Boolean).join(" ");
+      // role="alert" is an assertive live region — appropriate for
+      // warning/danger, which demand immediate attention. info/success are
+      // announced politely via role="status" instead.
+      const role = severity === "warning" || severity === "danger" ? "alert" : "status";
       return (
-        <div {...rest} ref={ref} className={cls} role="alert">
+        <div {...rest} ref={ref} className={cls} role={role}>
           <div className="hx-alert__body">
             {title && <div className="hx-alert__title">{title}</div>}
             {children}

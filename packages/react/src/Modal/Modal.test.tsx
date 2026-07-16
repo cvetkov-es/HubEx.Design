@@ -88,6 +88,16 @@ test("does not allow a consumer-passed role to override the controlled role=dial
   expect(panel).toHaveAttribute("role", "dialog");
 });
 
+test("a consumer-provided aria-label survives when no title is given", () => {
+  render(
+    <Modal open onClose={vi.fn()} aria-label="Custom">
+      Body text
+    </Modal>
+  );
+  const panel = document.querySelector(".hx-modal")!;
+  expect(panel).toHaveAttribute("aria-label", "Custom");
+});
+
 test("renders into a portal at document.body", () => {
   const { container } = render(
     <Modal open onClose={vi.fn()} title="Delete contract">

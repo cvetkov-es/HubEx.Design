@@ -20,7 +20,7 @@ export const Pagination = /* @__PURE__ */ Object.assign(
         <nav ref={ref} className={cls} aria-label="Pagination" {...rest}>
           <button
             type="button"
-            className="hx-pagination__btn hx-pagination__btn--prev"
+            className="hx-pagination__btn"
             aria-label="Previous page"
             disabled={isFirst}
             onClick={() => onPageChange(page - 1)}
@@ -45,7 +45,7 @@ export const Pagination = /* @__PURE__ */ Object.assign(
           </ul>
           <button
             type="button"
-            className="hx-pagination__btn hx-pagination__btn--next"
+            className="hx-pagination__btn"
             aria-label="Next page"
             disabled={isLast}
             onClick={() => onPageChange(page + 1)}

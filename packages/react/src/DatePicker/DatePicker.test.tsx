@@ -110,3 +110,13 @@ test("forwards the ref to the underlying input element", () => {
   render(<DatePicker ref={ref} onChange={vi.fn()} />);
   expect(ref.current).toBeInstanceOf(HTMLInputElement);
 });
+
+test("aria-expanded reflects the open state", () => {
+  render(<DatePicker value={JAN_15_2026} onChange={vi.fn()} />);
+  const input = document.querySelector("input") as HTMLInputElement;
+  expect(input).toHaveAttribute("aria-haspopup", "dialog");
+  expect(input).toHaveAttribute("aria-expanded", "false");
+
+  fireEvent.click(input);
+  expect(input).toHaveAttribute("aria-expanded", "true");
+});

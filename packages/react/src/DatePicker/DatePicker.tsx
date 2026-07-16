@@ -77,6 +77,8 @@ export const DatePicker = /* @__PURE__ */ Object.assign(
             className={cls}
             value={value ? formatDate(value) : ""}
             placeholder={placeholder}
+            aria-haspopup="dialog"
+            aria-expanded={open}
             onClick={(event) => {
               onClick?.(event);
               setOpen((was) => !was);

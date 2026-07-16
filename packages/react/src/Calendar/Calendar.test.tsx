@@ -75,3 +75,13 @@ test("passes native attributes like data-testid and id through to the root eleme
   expect(root).toHaveAttribute("data-testid", "cal");
   expect(root).toHaveAttribute("id", "cal-el");
 });
+
+test("exposes grid/row/gridcell ARIA roles for the day grid", () => {
+  render(<Calendar month={JAN_15_2026} onChange={vi.fn()} />);
+  expect(document.querySelector(".hx-calendar__grid")).toHaveAttribute("role", "grid");
+  const rows = document.querySelectorAll(".hx-calendar__week");
+  expect(rows).toHaveLength(6);
+  rows.forEach((row) => expect(row).toHaveAttribute("role", "row"));
+  const cell = document.querySelector('[data-date="2026-01-15"]')!;
+  expect(cell).toHaveAttribute("role", "gridcell");
+});

@@ -45,9 +45,6 @@ importers:
       '@hubex/css':
         specifier: workspace:*
         version: link:../css
-      '@hubex/tokens':
-        specifier: workspace:*
-        version: link:../tokens
     devDependencies:
       '@testing-library/jest-dom':
         specifier: ^6.4.0
