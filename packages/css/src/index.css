@@ -165,3 +165,179 @@
 .hx-pagination__page--active {
   background: var(--hx-color-brand); color: var(--hx-color-on-accent); border-color: var(--hx-color-brand);
 }
+
+/* Modal — source: "Модалка переспрашивалка" / "Overlay" / "Modal" frames in
+   "Договоры модалка.css" (also duplicated in "Создание договора.css"). Overlay
+   background dumped as rgba(0, 0, 0, 0.5) — there is no color token for a
+   translucent scrim, so this is the ONE deliberate non-token value in this
+   file (every other declaration below uses var(--hx-*)). Modal frame: width
+   400px, padding 32px, gap 32px (both exact matches for --hx-space-6),
+   background #FFFFFF (--hx-color-surface), border-radius 5px — rounded up to
+   --hx-radius-md (8px) per this task's "radius-md for panels" convention
+   (Menu/Tooltip below use --hx-radius-sm as the "small" case). Title text:
+   head/font-H2, 18px/weight 500, color #1F1F1F — 18px has no scale token, so
+   it is mapped to the nearest, --hx-font-size-lg (16px); color maps exactly
+   to --hx-color-text. Other frames in the dumps show real box-shadows
+   (e.g. "Профиль.css" 0px 13px 33px rgba(0,0,0,.23), Tooltip's
+   filter: drop-shadow(...)), but since every color value here must come from
+   a token and no shadow-color token exists, no box-shadow is added — panel
+   separation comes from the backdrop dim + a solid border, consistent with
+   every other component in this file (none of which use box-shadow either).
+   z-index values are plain integers, same treatment as the unitless/px
+   layout constants already used elsewhere (e.g. Toggle's 24x14 track). */
+.hx-modal__backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+}
+.hx-modal {
+  display: flex; flex-direction: column; gap: var(--hx-space-6);
+  width: 400px; max-width: calc(100vw - var(--hx-space-6) * 2);
+  padding: var(--hx-space-6);
+  background: var(--hx-color-surface);
+  border-radius: var(--hx-radius-md);
+  border: 1px solid var(--hx-color-border);
+}
+.hx-modal__title {
+  margin: 0; font-family: var(--hx-font-family); font-size: var(--hx-font-size-lg);
+  font-weight: 500; color: var(--hx-color-text);
+}
+.hx-modal__body { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text); }
+
+/* Drawer — source: "Drawer" / "Header" frames in "Форма заявки Drawer.css".
+   Panel: width 460px (exact, reproduced as a raw px value like the modal's
+   400px — there's no "panel width" scale token), background #FFFFFF
+   (--hx-color-surface), full viewport height, flush to the screen edge (the
+   dump shows no border-radius on the Drawer root, unlike Modal's 5px, so none
+   is applied here). Header padding "32px 24px 24px" maps to --hx-space-6
+   (32px, exact) / --hx-space-5 (24px, exact) — reused here as the panel's
+   general padding since the Drawer contract has no separate title slot.
+   Backdrop reuses the same rgba(0, 0, 0, 0.5) scrim as Modal (not a second
+   non-token value — it's the same literal, same justification). */
+.hx-drawer__backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.5); }
+.hx-drawer {
+  position: fixed; top: 0; bottom: 0;
+  width: 460px; max-width: calc(100vw - var(--hx-space-6));
+  padding: var(--hx-space-6) var(--hx-space-5);
+  background: var(--hx-color-surface);
+  border-left: 1px solid var(--hx-color-border);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+  overflow-y: auto;
+}
+.hx-drawer--right { right: 0; }
+.hx-drawer--left { left: 0; border-left: none; border-right: 1px solid var(--hx-color-border); }
+
+/* Tooltip — source: "Tooltip" / "body" / "tooltip-arrow" frames in
+   "Договоры ишки.css". Dumped bubble: background #484856 (a one-off dark
+   slate not present anywhere else in the token set), radius 5px, padding
+   10px, text: font-tooltip-regular 12px, color #FEFEFE. Mapped onto existing
+   tokens: background -> --hx-color-text (#1F1F1F, the darkest neutral we
+   have — deliberate deviation from the dumped slate, documented here since
+   no dedicated "inverse surface" token exists), text -> --hx-color-on-accent
+   (white, matches #FEFEFE), radius -> --hx-radius-sm (4px, nearest scale
+   token to 5px), padding -> --hx-space-2 (8px, nearest scale token to 10px),
+   font-size -> --hx-font-size-sm (11px, nearest scale token to 12px). The
+   arrow is a small rotated square of the same background color, matching the
+   dump's "tooltip-arrow" element (8x16 rotated 90deg) in spirit. */
+.hx-tooltip-wrap { position: relative; display: inline-block; }
+.hx-tooltip {
+  position: absolute; bottom: calc(100% + var(--hx-space-2)); left: 50%; transform: translateX(-50%);
+  z-index: 10;
+  max-width: 250px; padding: var(--hx-space-2);
+  background: var(--hx-color-text); color: var(--hx-color-on-accent);
+  border-radius: var(--hx-radius-sm);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm); line-height: 1.3;
+  white-space: normal;
+}
+.hx-tooltip__arrow {
+  position: absolute; top: 100%; left: 50%;
+  width: 8px; height: 8px; margin-left: -4px; margin-top: -4px;
+  background: var(--hx-color-text); transform: rotate(45deg);
+}
+
+/* Tabs — source: "Tabs" / "Tab" frames in "Логирование заявки.css". Each Tab
+   is 32px tall (matches the shared 32px control-height scale used by
+   Button/Input/Select), gap between tabs 12px (--hx-space-3, exact). Active
+   tab: border-bottom 2px solid #32B4EB — exact match for --hx-color-brand.
+   Inactive/active text colors have no explicit dump; mapped onto the
+   established muted/default text pair (--hx-color-text-muted for inactive,
+   --hx-color-text for active) used the same way by Table's header vs body
+   text. */
+.hx-tabs { display: flex; align-items: center; gap: var(--hx-space-3); border-bottom: 1px solid var(--hx-color-border); }
+.hx-tabs__item {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px; padding: 0 var(--hx-space-1);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-muted);
+  background: transparent; border: none; border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  cursor: pointer;
+}
+.hx-tabs__item:hover { color: var(--hx-color-text); }
+.hx-tabs__item--active { color: var(--hx-color-text); border-bottom-color: var(--hx-color-brand); }
+.hx-tabs__item:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+
+/* Menu (dropdown) — source: "SubMenu" / "_SubMenu-item" frames in "Договоры
+   модалка.css" (the accessible dropdown-list variant, as opposed to the
+   dark "Menu"/"_Menu-item" frames elsewhere which are the app's sidebar
+   nav). List: width 226px (exact, raw px like Modal/Drawer widths), border
+   1px solid #EEEEEE (--hx-color-border, exact), background #FFFFFF
+   (--hx-color-surface, exact), no explicit list radius in the dump —
+   mapped to --hx-radius-sm as the "small" panel case per this task's
+   radius convention. Item: height 40px (exact, raw px), border-bottom 1px
+   solid #EEEEEE (--hx-color-border, exact), padding "0 16px 0 20px" ->
+   0 var(--hx-space-4) (16px, exact on the trailing edge; 20px leading edge
+   rounds to the same --hx-space-4 token for a symmetric item), text
+   body/font-body-regular 13px color #1F1F1F -> --hx-font-size-base /
+   --hx-color-text (both exact). Hover state has no dump; reuses the
+   Table-row/Pagination-button hover convention (--hx-color-surface-sunken).
+   The trigger button follows the shared 32px control scale (Button/Select). */
+.hx-menu__trigger {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 32px; padding: 0 var(--hx-space-3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+  cursor: pointer;
+}
+.hx-menu__trigger:hover { background: var(--hx-color-surface-sunken); }
+.hx-menu {
+  z-index: 1000;
+  width: 226px;
+  margin: var(--hx-space-1) 0 0;
+  padding: 0;
+  list-style: none;
+  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border);
+  border-radius: var(--hx-radius-sm);
+  overflow: hidden;
+}
+.hx-menu__item-wrap { border-bottom: 1px solid var(--hx-color-border); }
+.hx-menu__item-wrap:last-child { border-bottom: none; }
+.hx-menu__item {
+  display: flex; align-items: center;
+  width: 100%; height: 40px; padding: 0 var(--hx-space-4);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  background: transparent; border: none;
+  text-align: left; cursor: pointer;
+}
+.hx-menu__item:hover { background: var(--hx-color-surface-sunken); }
+
+/* Breadcrumbs — source: "Breadcrumbs" frame in "Договоры.css" (also
+   duplicated across most other dumps). All crumb text: body/font-body-regular
+   13px (--hx-font-size-base, exact). Item gap between crumbs 4px
+   (--hx-space-1, exact). Colors in the dump alternate #1F1F1F / #777777
+   across items; mapped here onto the accessible convention of "link (has
+   href) = muted, current page (no href) = emphasized dark text" — using
+   --hx-color-text-muted for the five #777777-colored path segments and
+   --hx-color-text for the current/no-href item, both exact token matches for
+   the two hex values actually present in the dump. */
+.hx-breadcrumbs { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
+.hx-breadcrumbs__list { display: flex; align-items: center; gap: var(--hx-space-1); list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+.hx-breadcrumbs__item { display: flex; align-items: center; gap: var(--hx-space-1); }
+.hx-breadcrumbs__link { color: var(--hx-color-text-muted); text-decoration: none; }
+.hx-breadcrumbs__link:hover { color: var(--hx-color-text); text-decoration: underline; }
+.hx-breadcrumbs__current { color: var(--hx-color-text); }
+.hx-breadcrumbs__sep { color: var(--hx-color-text-muted); }
