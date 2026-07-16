@@ -15,3 +15,7 @@ export { Toggle } from "./Toggle/Toggle";
 export type { ToggleProps } from "./Toggle/Toggle";
 export { Select } from "./Select/Select";
 export type { SelectProps } from "./Select/Select";
+export { Table } from "./Table/Table";
+export type { TableProps, TableHeadProps, TableRowProps, TableCellProps, TableHeadCellProps } from "./Table/Table";
+export { Pagination } from "./Pagination/Pagination";
+export type { PaginationProps } from "./Pagination/Pagination";

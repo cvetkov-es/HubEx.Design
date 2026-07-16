@@ -101,3 +101,67 @@
 .hx-select:focus { outline: none; border-color: var(--hx-color-brand); }
 .hx-select--invalid { border-color: var(--hx-color-danger); }
 .hx-select:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Table — source: "TableHead_Contracts" / "TableRow_Contracts" frames dumped in
+   "Договоры.css" and "Логирование заявки.css" (Образцы). Outer border and all row
+   dividers = 1px solid #EEEEEE == --hx-color-border everywhere in the dumps (not
+   the stronger --hx-color-border-strong used by Input/Select). Outer radius dumped
+   as 5px, rounded onto the shared --hx-radius-sm (4px) scale token. Row height in
+   the dumps is 38-40px; reproduced here via --hx-space-2 (8px) vertical + --hx-space-3
+   (12px) horizontal cell padding, closest scale match to the dump's 0/10px padding.
+   Header text: font-caption-regular, 11px == --hx-font-size-sm, color #777777 ==
+   --hx-color-text-muted. Body text: 13px == --hx-font-size-base, color #1F1F1F ==
+   --hx-color-text. Header background is dumped as #FFFFFF in most frames, but is
+   mapped onto --hx-color-surface-sunken here (deliberate deviation) so the header
+   row reads as visually distinct from body rows, consistent with the header-surface
+   token called out for this task. */
+.hx-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--hx-color-border);
+  border-radius: var(--hx-radius-sm);
+  font-family: var(--hx-font-family);
+  color: var(--hx-color-text);
+}
+.hx-table__head { background: var(--hx-color-surface-sunken); }
+.hx-table__row { border-bottom: 1px solid var(--hx-color-border); }
+.hx-table__row:last-child { border-bottom: none; }
+.hx-table__row:hover { background: var(--hx-color-surface-sunken); }
+.hx-table__cell {
+  padding: var(--hx-space-2) var(--hx-space-3);
+  font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  text-align: left;
+}
+.hx-table__headcell {
+  padding: var(--hx-space-2) var(--hx-space-3);
+  font-size: var(--hx-font-size-sm);
+  font-weight: 500;
+  color: var(--hx-color-text-muted);
+  text-align: left;
+}
+
+/* Pagination — no explicit "Pagination" frame was found in the Образцы dumps;
+   nav buttons follow the established 32px control-height scale (matches
+   Button/Input/Select), with the chevron glyphs sized like the 18px icon frames
+   dumped for "keyboard_arrow_left" / "keyboard_arrow_down" elsewhere in
+   "Договоры.css". Border = --hx-color-border-strong (matches Button--secondary's
+   border), radius = --hx-radius-sm, active page = --hx-color-brand background on
+   --hx-color-on-accent text per the task's active-page spec. */
+.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-space-2); }
+.hx-pagination__pages { display: flex; align-items: center; gap: var(--hx-space-1); list-style: none; margin: 0; padding: 0; }
+.hx-pagination__btn, .hx-pagination__page {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 32px; height: 32px; padding: 0 var(--hx-space-2);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+  cursor: pointer;
+}
+.hx-pagination__btn:hover, .hx-pagination__page:hover { background: var(--hx-color-surface-sunken); }
+.hx-pagination__btn:disabled, .hx-pagination__page:disabled { opacity: .5; cursor: not-allowed; }
+.hx-pagination__btn:focus-visible, .hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-pagination__page--active {
+  background: var(--hx-color-brand); color: var(--hx-color-on-accent); border-color: var(--hx-color-brand);
+}
