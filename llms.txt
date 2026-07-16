@@ -1,0 +1,352 @@
+# HubEx UI — AI reference
+
+## Purpose
+
+HubEx UI is the design system for HubEx plugins: a React component library
+(`@hubex/react`), its stylesheet (`@hubex/css`), and the design tokens that
+back both (`@hubex/tokens`). If you are an AI building UI for a HubEx plugin,
+this file is the single reference for what exists and how to use it correctly
+— read it before hand-rolling any button, input, table, modal, badge, etc.
+Every control below reproduces an existing pattern from the HubEx product; a
+hand-rolled equivalent will visually and behaviorally diverge from the rest
+of the system.
+
+## Install
+
+```bash
+pnpm add @hubex/react @hubex/css
+```
+
+Both packages are required: `@hubex/react` ships components with **no**
+CSS of their own (by design — this preserves tree-shaking, see Rules), and
+`@hubex/css` ships the stylesheet those components' class names point at.
+
+**Critical setup — do this once, at your app's entry point:**
+
+```ts
+// main.tsx / index.tsx — top level, once
+import "@hubex/css";
+```
+
+This single import loads every `.hx-*` class and every `--hx-*` CSS custom
+property for the whole app. Do **not** import `@hubex/css` more than once,
+and do not import it from inside a component file — it belongs at the entry
+point only.
+
+**Icons:** the `Icon` component renders glyphs from the Material Icons
+webfont by name (e.g. `<Icon name="home" />`) — it ships no font files and no
+SVGs. Your app must load the Material Icons font itself and alias it to the
+font-family `"material"` (e.g. Google's hosted webfont via a `<link>` tag, or
+a self-hosted `@font-face` under that family name). If the font isn't loaded,
+`Icon` renders the glyph name as plain text instead of the icon.
+
+## Design tokens
+
+Every token below is a real CSS custom property defined in
+`@hubex/tokens` and loaded globally once you `import "@hubex/css"`. **For any
+custom UI, use these variables (or the `.hx-*` classes below) — never
+hardcode a hex value, a font stack, a radius, or a spacing number.**
+
+| Variable | Value | Purpose |
+|---|---|---|
+| `--hx-color-text` | `#1F1F1F` | primary text |
+| `--hx-color-text-muted` | `#777777` | secondary/help text |
+| `--hx-color-text-disabled` | `#999999` | disabled text |
+| `--hx-color-brand` | `#32B4EB` | brand accent (primary buttons, focus, active states) |
+| `--hx-color-brand-strong` | `#348AEE` | brand accent, stronger (tag text on brand-tint) |
+| `--hx-color-brand-tint` | `#E8F7FD` | brand accent, tinted background |
+| `--hx-color-danger` | `#ED1940` | destructive/error |
+| `--hx-color-success` | `#3BA55D` | success |
+| `--hx-color-warning` | `#F9C901` | warning |
+| `--hx-color-border` | `#EEEEEE` | hairline borders |
+| `--hx-color-border-strong` | `#DADADA` | input/control borders |
+| `--hx-color-surface` | `#FFFFFF` | base surface (cards, inputs, popovers) |
+| `--hx-color-surface-alt` | `#FEFEFE` | alternate surface |
+| `--hx-color-surface-sunken` | `#F8F8F8` | sunken surface (table head/row hover) |
+| `--hx-color-on-accent` | `#FFFFFF` | text/icon color on top of a colored surface |
+| `--hx-font-family` | `Roboto, -apple-system, "Segoe UI", sans-serif` | the only font stack to use |
+| `--hx-font-size-sm` | `11px` | small text (labels, hints) |
+| `--hx-font-size-base` | `13px` | body text (default) |
+| `--hx-font-size-lg` | `16px` | large text |
+| `--hx-radius-sm` | `4px` | small radius (buttons, inputs, tags) |
+| `--hx-radius-md` | `8px` | large radius (cards, modals) |
+| `--hx-space-1` | `4px` | spacing scale |
+| `--hx-space-2` | `8px` | spacing scale |
+| `--hx-space-3` | `12px` | spacing scale |
+| `--hx-space-4` | `16px` | spacing scale |
+| `--hx-space-5` | `24px` | spacing scale |
+| `--hx-space-6` | `32px` | spacing scale |
+
+## Component index
+
+All 24 components are named exports of `@hubex/react`. Every component also
+accepts native HTML attributes for its host element (it extends the matching
+`React.*HTMLAttributes` interface) and merges any `className` you pass with
+its own `.hx-*` classes. Props shown below are only the component-specific
+ones on top of that.
+
+### Button
+`ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>`
+- `variant?: "primary" | "secondary" | "danger"` (default `"primary"`)
+- `size?: "md" | "sm"` (default `"md"`)
+```tsx
+<Button variant="danger" onClick={handleDelete}>Delete</Button>
+```
+
+### Input
+`InputProps extends React.InputHTMLAttributes<HTMLInputElement>`
+- `invalid?: boolean`
+```tsx
+<Input placeholder="Email" invalid={!isValidEmail} />
+```
+
+### Field
+`FieldProps`: `{ label?: string; htmlFor?: string; className?: string; children?: React.ReactNode }`
+```tsx
+<Field label="Email" htmlFor="email">
+  <Input id="email" />
+</Field>
+```
+
+### Checkbox
+`CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement>`
+- `label?: string`
+```tsx
+<Checkbox label="I agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+```
+
+### Radio
+`RadioProps extends React.InputHTMLAttributes<HTMLInputElement>`
+- `label?: string`
+```tsx
+<Radio name="plan" label="Pro" value="pro" checked={plan === "pro"} onChange={() => setPlan("pro")} />
+```
+
+### Toggle
+`ToggleProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "checked">`
+- `checked?: boolean` (default `false`)
+- `onChange?: (checked: boolean) => void`
+- `disabled?: boolean`
+```tsx
+<Toggle checked={enabled} onChange={setEnabled} />
+```
+
+### Select
+`SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement>`
+- `invalid?: boolean`
+```tsx
+<Select value={country} onChange={(e) => setCountry(e.target.value)}>
+  <option value="us">US</option>
+  <option value="de">DE</option>
+</Select>
+```
+
+### Table (+ Table.Head / Table.Row / Table.Cell / Table.HeadCell)
+`TableProps extends React.TableHTMLAttributes<HTMLTableElement>`
+`TableHeadProps extends React.HTMLAttributes<HTMLTableSectionElement>`
+`TableRowProps extends React.HTMLAttributes<HTMLTableRowElement>`
+`TableCellProps extends React.TdHTMLAttributes<HTMLTableCellElement>`
+`TableHeadCellProps extends React.ThHTMLAttributes<HTMLTableCellElement>`
+(no component-specific props beyond native attributes)
+```tsx
+<Table>
+  <Table.Head>
+    <Table.Row><Table.HeadCell>Name</Table.HeadCell></Table.Row>
+  </Table.Head>
+  <tbody>
+    <Table.Row><Table.Cell>Alice</Table.Cell></Table.Row>
+  </tbody>
+</Table>
+```
+
+### Pagination
+`PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange">`
+- `page: number`
+- `pageCount: number`
+- `onPageChange: (page: number) => void`
+```tsx
+<Pagination page={page} pageCount={10} onPageChange={setPage} />
+```
+
+### Modal
+`ModalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">`
+- `open: boolean`
+- `onClose: () => void`
+- `title?: string`
+```tsx
+<Modal open={isOpen} onClose={() => setOpen(false)} title="Confirm">
+  Are you sure?
+</Modal>
+```
+
+### Drawer
+`DrawerProps extends React.HTMLAttributes<HTMLDivElement>`
+- `open: boolean`
+- `onClose: () => void`
+- `side?: "right" | "left"` (default `"right"`)
+```tsx
+<Drawer open={isOpen} onClose={() => setOpen(false)} side="right">
+  Panel content
+</Drawer>
+```
+
+### Tooltip
+`TooltipProps`: `{ content: React.ReactNode; children: React.ReactElement }`
+```tsx
+<Tooltip content="Delete this item">
+  <Button variant="danger">Delete</Button>
+</Tooltip>
+```
+
+### Tabs
+`TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "children">`
+- `value: string`
+- `onChange: (value: string) => void`
+- `items: TabItem[]` where `TabItem = { value: string; label: string }`
+```tsx
+<Tabs value={tab} onChange={setTab} items={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
+```
+
+### Menu
+`MenuProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "type" | "aria-haspopup" | "aria-expanded">`
+- `trigger: React.ReactNode`
+- `items: MenuItem[]` where `MenuItem = { label: string; onSelect: () => void }`
+- `className?: string` (applies to the portalled item list, not the trigger)
+```tsx
+<Menu trigger={<Button>Actions</Button>} items={[{ label: "Edit", onSelect: onEdit }]} />
+```
+
+### Breadcrumbs
+`BreadcrumbsProps extends Omit<React.HTMLAttributes<HTMLElement>, "children">`
+- `items: BreadcrumbItem[]` where `BreadcrumbItem = { label: string; href?: string }`
+```tsx
+<Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Settings" }]} />
+```
+
+### Tag
+`TagProps extends React.HTMLAttributes<HTMLSpanElement>`
+- `color?: "neutral" | "brand" | "danger"` (default `"neutral"`)
+```tsx
+<Tag color="brand">New</Tag>
+```
+
+### Chip
+`ChipProps extends React.HTMLAttributes<HTMLSpanElement>`
+- `onRemove?: () => void`
+```tsx
+<Chip onRemove={() => removeFilter("status")}>Status: Open</Chip>
+```
+
+### Badge
+`BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `variant?: "dot" | "count" | "tag"` (default `"tag"`)
+- `count?: number`
+- `children?: React.ReactNode`
+```tsx
+<Badge variant="count" count={3} />
+```
+
+### Avatar
+`AvatarProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `src?: string`
+- `name: string` (required — used for alt text and initials fallback)
+- `size?: "sm" | "md"` (default `"md"`)
+```tsx
+<Avatar name="Ada Lovelace" size="sm" />
+```
+
+### Label
+`LabelProps extends React.HTMLAttributes<HTMLSpanElement>` (no extra props)
+```tsx
+<Label>Optional</Label>
+```
+
+### Alert
+`AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">`
+- `severity?: "info" | "success" | "warning" | "danger"` (default `"info"`)
+- `title?: string`
+```tsx
+<Alert severity="danger" title="Error">Something went wrong.</Alert>
+```
+
+### Icon
+`IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `name: string` (Material Icons glyph name)
+- `size?: number` (px)
+```tsx
+<Icon name="delete" size={16} />
+```
+
+### Calendar
+`CalendarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">`
+- `value?: Date`
+- `onChange: (date: Date) => void`
+- `month?: Date` (controls the displayed month, independent of `value`)
+```tsx
+<Calendar value={date} onChange={setDate} />
+```
+
+### DatePicker
+`DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "type" | "readOnly">`
+- `value?: Date`
+- `onChange: (date: Date) => void`
+- `placeholder?: string`
+```tsx
+<DatePicker value={date} onChange={setDate} placeholder="Pick a date" />
+```
+
+## Rules
+
+DO:
+- Import components from `@hubex/react` before hand-rolling any UI element —
+  check this file first.
+- `import "@hubex/css"` exactly once, at your app's entry point.
+- Use `--hx-*` CSS variables (or the existing `.hx-*` classes) for any custom
+  element that isn't covered by a component.
+- Use the Roboto font stack, 13px base size, and brand color `#32B4EB` —
+  i.e. `var(--hx-font-family)`, `var(--hx-font-size-base)`,
+  `var(--hx-color-brand)` — rather than restating these literals.
+- Load the Material Icons font yourself (aliased to family `"material"`) if
+  you use `Icon`.
+
+DON'T:
+- Don't hardcode colors, fonts, radii, or spacing — reference the tokens
+  above instead.
+- Don't import CSS from inside library/component code — `@hubex/react`
+  intentionally ships no CSS of its own so consumers can tree-shake unused
+  components; only the consumer app imports `@hubex/css`, once.
+- Don't `require("@hubex/react")` or `require("@hubex/css")` — both packages
+  are ESM-only (`"type": "module"`, no CJS build). Use `import`.
+
+### Good vs bad
+
+Good — uses the component and its variant prop:
+```tsx
+<Button variant="danger" onClick={onDelete}>Delete</Button>
+```
+Bad — hand-rolled button with inline hex, ignoring the design system:
+```tsx
+<button style={{ background: "#ED1940", color: "#fff", borderRadius: 4 }} onClick={onDelete}>
+  Delete
+</button>
+```
+
+Good — a one-off custom element still styled from tokens:
+```tsx
+<div style={{
+  padding: "var(--hx-space-3)",
+  borderRadius: "var(--hx-radius-sm)",
+  background: "var(--hx-color-surface-sunken)",
+  color: "var(--hx-color-text-muted)",
+  fontFamily: "var(--hx-font-family)",
+  fontSize: "var(--hx-font-size-sm)"
+}}>
+  Empty state
+</div>
+```
+Bad — same element with hardcoded values that will drift from the design system:
+```tsx
+<div style={{ padding: 12, borderRadius: 4, background: "#F8F8F8", color: "#777", fontFamily: "Arial", fontSize: 11 }}>
+  Empty state
+</div>
+```
