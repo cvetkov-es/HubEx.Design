@@ -40,13 +40,13 @@ The packages aren't published to a registry yet. Until then, install
 straight from a git tag:
 
 ```bash
-pnpm add github:<org>/hubex-ui#v0.1.0
+pnpm add github:cvetkov-es/HubEx.Design#v0.1.0
 ```
 
 That installs the monorepo at a tagged commit; point your own `package.json`
 dependency at the specific subpackage path if your package manager needs it
-(e.g. `"@hubex/react": "github:<org>/hubex-ui#v0.1.0&path:packages/react"`).
-Replace `<org>` and the tag with the real values once the repo is hosted.
+(e.g. `"@hubex/react": "github:cvetkov-es/HubEx.Design#v0.1.0&path:packages/react"`).
+Bump the tag as new versions are released.
 
 GitHub Packages + a CI-driven publish step are planned but out of scope for
 now (see "Releasing" below).
@@ -141,7 +141,7 @@ pnpm release             # turbo run build && changeset publish — NOT wired to
 There is no npm/GitHub Packages registry configured yet, so `pnpm release`
 (`changeset publish`) is not run in this repo today. The actual distribution
 mechanism for now is the git tag described above (`pnpm add
-github:<org>/hubex-ui#vX.Y.Z`); `changeset version` is used to keep
+github:cvetkov-es/HubEx.Design#vX.Y.Z`); `changeset version` is used to keep
 `package.json` versions and `CHANGELOG.md` files accurate as of each tag.
 Switching to GitHub Packages with a CI job that runs `pnpm release` on tag
 push is the planned follow-up, out of scope for now.
