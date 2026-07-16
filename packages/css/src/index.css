@@ -1,0 +1,29 @@
+@import "@hubex/tokens/css";
+
+:root { color: var(--hx-color-text); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
+
+.hx-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hx-space-2);
+  height: 32px; padding: 0 var(--hx-space-4);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  border: 1px solid transparent; border-radius: var(--hx-radius-sm);
+  cursor: pointer; user-select: none;
+}
+.hx-btn--sm { height: 26px; padding: 0 var(--hx-space-3); font-size: var(--hx-font-size-sm); }
+.hx-btn--primary { background: var(--hx-color-brand); color: #fff; }
+.hx-btn--secondary { background: var(--hx-color-surface); color: var(--hx-color-text); border-color: var(--hx-color-border-strong); }
+.hx-btn--danger { background: var(--hx-color-danger); color: #fff; }
+.hx-btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+.hx-field { display: flex; flex-direction: column; gap: var(--hx-space-1); }
+.hx-label { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-muted); }
+.hx-input {
+  height: 32px; padding: 0 var(--hx-space-3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+}
+.hx-input:focus { outline: none; border-color: var(--hx-color-brand); }
+.hx-input--invalid { border-color: var(--hx-color-danger); }
