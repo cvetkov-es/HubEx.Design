@@ -6,3 +6,7 @@ raw-inventory.json
 
 # Figma design-source exports (kept locally, not in git — real source is Figma)
 *.fig
+
+# Secrets — never commit
+.env
+.env.*
