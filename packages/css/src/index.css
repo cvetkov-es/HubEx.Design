@@ -341,3 +341,133 @@
 .hx-breadcrumbs__link:hover { color: var(--hx-color-text); text-decoration: underline; }
 .hx-breadcrumbs__current { color: var(--hx-color-text); }
 .hx-breadcrumbs__sep { color: var(--hx-color-text-muted); }
+
+/* Tag — source: "Tag" frames in "Договоры ишки.css" / "Создание компании.css" /
+   "Создание сотрудника.css" (Образцы). Reference box: padding 4px 10px, radius
+   3px (mapped to --hx-radius-sm, closest token), border 1px solid #EEEEEE
+   (--hx-color-border, exact), text body/font-caption-regular 13px
+   (--hx-font-size-sm used here since Tag is a compact inline label), color
+   #1F1F1F (--hx-color-text, exact). color variants are not distinguished in
+   the dump (only a single neutral Tag was found), so brand/danger follow the
+   Button/Select convention of border+text in the semantic color on a neutral
+   surface. */
+.hx-tag {
+  display: inline-flex; align-items: center;
+  height: 20px; padding: 0 var(--hx-space-2);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  border: 1px solid var(--hx-color-border); border-radius: var(--hx-radius-sm);
+  white-space: nowrap;
+}
+.hx-tag--neutral { background: var(--hx-color-surface); color: var(--hx-color-text); }
+.hx-tag--brand { background: var(--hx-color-brand-tint); color: var(--hx-color-brand-strong); border-color: var(--hx-color-brand); }
+.hx-tag--danger { background: var(--hx-color-surface); color: var(--hx-color-danger); border-color: var(--hx-color-danger); }
+
+/* Chip — source: "chip" frame in "Рекомендуемые чек-листы.css" (Образцы).
+   Reference box: padding 4px 10px (mapped to --hx-space-1/--hx-space-3, close
+   token match), height 24px, border-radius 999px (pill), text
+   body/font-body-regular 13px (--hx-font-size-base, exact). The dump's fill
+   was a semantic (task-status) tinted orange specific to that one screen, not
+   a generic chip color, so the generic Chip here uses the neutral
+   surface-sunken fill shared with hover/selected states elsewhere (Table,
+   Pagination, Menu). */
+.hx-chip {
+  display: inline-flex; align-items: center; gap: var(--hx-space-1);
+  height: 24px; padding: 4px var(--hx-space-3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text);
+  background: var(--hx-color-surface-sunken); border-radius: 999px;
+}
+.hx-chip__remove {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 14px; height: 14px; padding: 0; margin: 0;
+  border: none; border-radius: 999px; background: transparent;
+  color: var(--hx-color-text-muted); font-size: var(--hx-font-size-sm); line-height: 1;
+  cursor: pointer;
+}
+.hx-chip__remove:hover { background: var(--hx-color-border); color: var(--hx-color-text); }
+.hx-chip__remove:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+
+/* Badge — source: "Badge-Dot" / "Badge-Count" / "Badge-Tag" frames across the
+   Образцы dumps (e.g. "Выполнение.css", "Договоры ишки.css", "Форма заявка
+   Адрес объекта.css"). Badge-Dot: 6x6px circle. Badge-Count: 21x16px pill,
+   padding 0 4px, background #ED1940 (--hx-color-danger, exact), label
+   font-caption-regular 11px (--hx-font-size-sm, exact) white text
+   (--hx-color-on-accent). Badge-Tag: 35x20px pill, border 1px solid #ED1940
+   (--hx-color-danger, exact), caption 11px muted text. All three are
+   standalone indicators here (not pinned to a host element), so the dump's
+   `position: absolute` offsets are dropped in favor of normal inline flow. */
+.hx-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--hx-font-family);
+}
+.hx-badge--dot {
+  width: 6px; height: 6px; padding: 0; border-radius: 999px;
+  background: var(--hx-color-danger);
+}
+.hx-badge--count {
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+  background: var(--hx-color-danger); color: var(--hx-color-on-accent);
+  font-size: var(--hx-font-size-sm); line-height: 14px;
+}
+.hx-badge--tag {
+  height: 20px; padding: 3px 6px; border-radius: 999px;
+  border: 1px solid var(--hx-color-danger); color: var(--hx-color-text-muted);
+  font-size: var(--hx-font-size-sm); line-height: 14px;
+}
+
+/* Avatar — source: "Avatar" frames in "Выполнение.css" / "Договоры ишки.css" /
+   "Форма заявка Вид работ.css" (Образцы). Reference: 32x32px circle
+   (--size md, exact), border 1px solid #EEEEEE (--hx-color-border, exact),
+   border-radius 999px, background image (url(...)) when a photo is set. sm is
+   a proportionally smaller 24px variant for compact contexts (table rows,
+   chips) not explicitly dumped. Initials fallback uses the same
+   surface-sunken fill used elsewhere for "empty"/placeholder states. */
+.hx-avatar {
+  display: inline-flex; align-items: center; justify-content: center;
+  overflow: hidden; border-radius: 999px; border: 1px solid var(--hx-color-border);
+  background: var(--hx-color-surface-sunken); color: var(--hx-color-text);
+  font-family: var(--hx-font-family); font-weight: 500;
+  flex: none;
+}
+.hx-avatar--md { width: 32px; height: 32px; font-size: var(--hx-font-size-sm); }
+.hx-avatar--sm { width: 24px; height: 24px; font-size: 10px; }
+.hx-avatar__img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Alert — source: "Alert" frame in "Удаление договора с алертом.css"
+   (Образцы). Reference box: padding 20px (--hx-space-5, exact), border-radius
+   5px (mapped to --hx-radius-sm, closest token), gap 8px (--hx-space-2,
+   exact). The dump filled the whole box with a solid severity color
+   (#8DC26F green); that reads well for a single toast-style alert but not for
+   an inline banner that must also host success/warning/danger/info variants
+   using only existing/new tokens, so this uses the left-accent-border-on-card
+   convention instead (accent color = severity token; info reuses --hx-color-
+   brand as specified in the brief). */
+.hx-alert {
+  display: flex; align-items: flex-start; gap: var(--hx-space-2);
+  padding: var(--hx-space-4); border-radius: var(--hx-radius-sm);
+  border: 1px solid var(--hx-color-border); border-left-width: 4px;
+  background: var(--hx-color-surface);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+}
+.hx-alert--info { border-left-color: var(--hx-color-brand); }
+.hx-alert--success { border-left-color: var(--hx-color-success); }
+.hx-alert--warning { border-left-color: var(--hx-color-warning); }
+.hx-alert--danger { border-left-color: var(--hx-color-danger); }
+.hx-alert__body { display: flex; flex-direction: column; gap: var(--hx-space-1); }
+.hx-alert__title { font-weight: 600; }
+
+/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont,
+   never SVG. A prior in-house package bundled 1579 SVG icons (~540KB) into a
+   single file and destroyed tree-shaking; this component must never regress
+   that. Source: "assignment - material" / "people - material" / "chevron_left
+   - material" layers across the Образцы dumps (e.g. "Профиль.css",
+   "Пользователь.css"), all set with `font-family: 'material'` at font-size
+   20px (exact). CONSUMER RESPONSIBILITY: the host application must load the
+   Material Icons font under the family name "material" (Google's Material
+   Icons webfont, self-hosted or via @font-face, aliased to this family name)
+   — this package ships no font files and no icon glyph data. */
+.hx-icon {
+  font-family: 'material'; font-style: normal; font-weight: normal;
+  font-size: 20px; line-height: 1; display: inline-flex;
+  -webkit-font-smoothing: antialiased;
+}

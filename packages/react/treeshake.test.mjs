@@ -57,4 +57,28 @@ test("importing only Button yields a tiny, react-free bundle", async () => {
     !out.includes("hx-breadcrumbs"),
     "Button-only bundle must not pull in other components (Breadcrumbs's hx-breadcrumbs class found)"
   );
+  assert.ok(
+    !out.includes("hx-tag"),
+    "Button-only bundle must not pull in other components (Tag's hx-tag class found)"
+  );
+  assert.ok(
+    !out.includes("hx-chip"),
+    "Button-only bundle must not pull in other components (Chip's hx-chip class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "Button-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Button-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-alert"),
+    "Button-only bundle must not pull in other components (Alert's hx-alert class found)"
+  );
+  assert.ok(
+    !out.includes("hx-icon"),
+    "Button-only bundle must not pull in other components (Icon's hx-icon class found)"
+  );
 });
