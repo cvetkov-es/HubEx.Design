@@ -20,6 +20,17 @@
 - `.fig` files are NOT parsed by any build step. They are visual/structural reference only, read by the implementer during component tasks.
 - Node `>=20`, pnpm `>=9`.
 
+### Bundle-hygiene constraints (from a prior in-house attempt that shipped a 516 KB gzip package)
+
+- **`@hubex/react` MUST set `"sideEffects": false`** in package.json. Components are pure (they only map props to `.hx-*` class strings) — they have no module-level side effects. This is what lets a consumer's bundler drop unused components.
+- **The JS barrel `src/index.ts` MUST NOT import CSS** (no `import "@hubex/css"`). A JS-level stylesheet import is a module side effect that fights tree-shaking and breaks `sideEffects: false`. Styling ships as the separate `@hubex/css` package; the consumer imports it once at app entry (`import "@hubex/css"`). Document this in README/llms.txt.
+- **No namespace re-exports** (`export * as Icons from ...`). A namespace object forces bundlers to retain every member. Every component is a named export. This is the specific pattern that made the prior package un-tree-shakeable.
+- **No inlined SVG icon sets.** The `Icon` component renders the Material Icons *font* by glyph name (`<span className="material hx-icon">{name}</span>`). No component may import or inline an SVG icon library. (The prior package bundled 1579 SVGs ≈ 540 KB into one file.)
+- **`@hubex/react` is ESM-only — it ships NO CommonJS build.** `tsup` emits `format: ["esm"]` only. This structurally avoids the CJS default-interop crash the prior package hit (`require(...)` → `B.p is not a function`). Consumers use Vite/modern bundlers (ESM), which our React 18/19 plugins already do.
+- **Zero runtime dependencies** in `@hubex/react` (no styled-components, no emotion, no CSS-in-JS). `dependencies` are only the workspace `@hubex/*` packages; React/React-DOM are peers.
+- **tsup config MUST enable `treeshake: true` and `splitting: true`** so the ESM output is code-split and dead-code-eliminable.
+- Task 5 includes a **bundle-size guard**: after build, bundle a fixture that imports only `Button`, and assert the output contains no other component and is under a small byte budget — a regression test for the exact failure above.
+
 ---
 
 ## File Structure
@@ -545,9 +556,9 @@ This task establishes the component pattern every later component copies: `.tsx`
 - Create: `packages/react/package.json`, `packages/react/tsup.config.ts`, `packages/react/vitest.config.ts`, `packages/react/vitest.setup.ts`, `packages/react/src/index.ts`, `packages/react/src/Button/Button.tsx`, `packages/react/src/Button/Button.test.tsx`
 
 **Interfaces:**
-- Consumes: `@hubex/css` (side-effect import of the stylesheet in `src/index.ts`), `@hubex/tokens` if a component needs raw values in JS.
+- Consumes: `@hubex/tokens` only if a component needs raw values in JS. The barrel does NOT import `@hubex/css` — the stylesheet is a separate, consumer-owned import (see Bundle-hygiene constraints).
 - Produces:
-  - `@hubex/react` barrel exporting every component.
+  - `@hubex/react` barrel exporting every component as a **named export** (never a namespace re-export).
   - `Button` component: `interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> { variant?: "primary" | "secondary" | "danger"; size?: "md" | "sm"; }`. Renders `<button className="hx-btn hx-btn--{variant} [hx-btn--sm]">`. Default `variant="primary"`, `size="md"`.
 
 - [ ] **Step 1: Write `packages/react/package.json`**
@@ -557,6 +568,7 @@ This task establishes the component pattern every later component copies: `.tsx`
   "name": "@hubex/react",
   "version": "0.0.0",
   "type": "module",
+  "sideEffects": false,
   "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
   "files": ["dist"],
   "scripts": {
@@ -576,14 +588,24 @@ This task establishes the component pattern every later component copies: `.tsx`
 }
 ```
 
+**Why these choices (from a prior in-house package that shipped 516 KB gzip):**
+- `"sideEffects": false` — components are pure prop→className maps; this is what lets a consumer drop unused ones.
+- `@hubex/css` stays a runtime `dependency` so it auto-installs for consumers, BUT the JS barrel never `import`s it. The stylesheet is loaded once by the plugin (`import "@hubex/css"` at app entry). Listing a package as a dependency does not bundle it; only an actual `import` does. This is the exact line the prior package got wrong.
+
 - [ ] **Step 2: Write build/test config**
 
 ```ts
 // packages/react/tsup.config.ts
 import { defineConfig } from "tsup";
 export default defineConfig({
-  entry: ["src/index.ts"], format: ["esm"], dts: true, clean: true,
-  external: ["react", "react-dom"], injectStyle: false
+  entry: ["src/index.ts"],
+  format: ["esm"],          // ESM-only — no CJS build (avoids default-interop crashes)
+  dts: true,
+  clean: true,
+  treeshake: true,
+  splitting: true,          // code-split ESM so unused components drop
+  external: ["react", "react-dom"],
+  injectStyle: false        // never inline CSS into the JS
 });
 ```
 
@@ -654,7 +676,9 @@ Button.displayName = "Button";
 
 ```ts
 // packages/react/src/index.ts
-import "@hubex/css";
+// NOTE: do NOT `import "@hubex/css"` here — a JS stylesheet import is a module
+// side effect that breaks `sideEffects: false` and tree-shaking. The consumer
+// imports the stylesheet once at app entry: `import "@hubex/css"`.
 export { Button } from "./Button/Button";
 export type { ButtonProps } from "./Button/Button";
 ```
@@ -669,11 +693,46 @@ Expected: PASS (3 tests).
 Run: `pnpm --filter @hubex/react build`
 Expected: `dist/index.js` + `dist/index.d.ts` created; no bundled React.
 
-- [ ] **Step 8: Commit**
+- [ ] **Step 8: Add the bundle-size guard (tree-shaking regression test)**
+
+Create `packages/react/treeshake.test.mjs`. It bundles a fixture that imports only `Button` from the built package with esbuild (react/react-dom external, minified) and asserts the result is tiny and excludes React. This is the regression test for the prior 516 KB failure; later component tasks add `refute` sentinels for other components to prove they drop out.
+
+```js
+// packages/react/treeshake.test.mjs
+import { test } from "node:test";
+import assert from "node:assert/strict";
+import { build } from "esbuild";
+
+async function bundleSize(entryContents) {
+  const r = await build({
+    stdin: { contents: entryContents, resolveDir: process.cwd(), loader: "js" },
+    bundle: true, format: "esm", minify: true, write: false,
+    external: ["react", "react-dom", "react/jsx-runtime"],
+    absWorkingDir: process.cwd()
+  });
+  return r.outputFiles[0].text;
+}
+
+test("importing only Button yields a tiny, react-free bundle", async () => {
+  const out = await bundleSize(`import { Button } from "./dist/index.js"; console.log(Button);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Button-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+});
+```
+
+Add esbuild to devDependencies and wire the guard into the package `test` script so `pnpm test` runs it:
+- `pnpm --filter @hubex/react add -D esbuild`
+- change `@hubex/react` package.json `test` to: `"test": "vitest run && node --test treeshake.test.mjs"`
+
+Run: `pnpm --filter @hubex/react test`
+Expected: Vitest 3/3 PASS, then the treeshake guard PASSES (Button-only bundle well under 8 KB, no react-dom).
+
+- [ ] **Step 9: Commit**
 
 ```bash
 git add packages/react
-git commit -m "feat(react): scaffold @hubex/react + Button exemplar"
+git commit -m "feat(react): scaffold @hubex/react + Button exemplar + bundle-size guard"
 ```
 
 ---
