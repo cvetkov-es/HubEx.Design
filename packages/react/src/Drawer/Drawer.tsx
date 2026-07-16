@@ -1,19 +1,17 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
 
-export interface DrawerProps {
+export interface DrawerProps extends React.HTMLAttributes<HTMLDivElement> {
   open: boolean;
   onClose: () => void;
   side?: "right" | "left";
-  children?: React.ReactNode;
-  className?: string;
 }
 
 // See Button.tsx for why displayName is set via Object.assign instead of a
 // separate assignment statement (it's required for cross-component tree-shaking).
 export const Drawer = /* @__PURE__ */ Object.assign(
   /* @__PURE__ */ React.forwardRef<HTMLDivElement, DrawerProps>(
-    ({ open, onClose, side = "right", children, className }, ref) => {
+    ({ open, onClose, side = "right", children, className, ...rest }, ref) => {
       React.useEffect(() => {
         if (!open) return;
         const onKeyDown = (event: KeyboardEvent) => {
@@ -33,7 +31,7 @@ export const Drawer = /* @__PURE__ */ Object.assign(
             if (event.target === event.currentTarget) onClose();
           }}
         >
-          <div className={cls} role="dialog" aria-modal="true" ref={ref}>
+          <div className={cls} role="dialog" aria-modal="true" ref={ref} {...rest}>
             {children}
           </div>
         </div>,

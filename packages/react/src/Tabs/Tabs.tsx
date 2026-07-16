@@ -5,20 +5,19 @@ export interface TabItem {
   label: string;
 }
 
-export interface TabsProps {
+export interface TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "children"> {
   value: string;
   onChange: (value: string) => void;
   items: TabItem[];
-  className?: string;
 }
 
 // Plain named function component (no forwardRef) — see Table.tsx for why
 // naming the function is sufficient to get a correct displayName without a
 // separate `Tabs.displayName = "Tabs"` side-effect statement.
-export function Tabs({ value, onChange, items, className }: TabsProps) {
+export function Tabs({ value, onChange, items, className, ...rest }: TabsProps) {
   const cls = ["hx-tabs", className].filter(Boolean).join(" ");
   return (
-    <div className={cls} role="tablist">
+    <div className={cls} role="tablist" {...rest}>
       {items.map((item) => {
         const active = item.value === value;
         const itemCls = ["hx-tabs__item", active && "hx-tabs__item--active"].filter(Boolean).join(" ");

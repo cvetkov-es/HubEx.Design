@@ -37,3 +37,10 @@ test("preserves custom className alongside the base class", () => {
   render(<Breadcrumbs items={items} className="custom" />);
   expect(screen.getByRole("navigation")).toHaveClass("hx-breadcrumbs", "custom");
 });
+
+test("passes native attributes like data-testid and id through to the nav", () => {
+  render(<Breadcrumbs items={items} data-testid="crumbs" id="crumbs-el" />);
+  const nav = screen.getByRole("navigation");
+  expect(nav).toHaveAttribute("data-testid", "crumbs");
+  expect(nav).toHaveAttribute("id", "crumbs-el");
+});

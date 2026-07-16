@@ -67,6 +67,17 @@ test("preserves custom className alongside the base class", () => {
   expect(document.querySelector(".hx-modal")).toHaveClass("hx-modal", "custom");
 });
 
+test("passes native attributes like data-testid and id through to the panel", () => {
+  render(
+    <Modal open onClose={vi.fn()} title="Delete contract" data-testid="delete-modal" id="delete-modal-el">
+      Body text
+    </Modal>
+  );
+  const panel = document.querySelector(".hx-modal")!;
+  expect(panel).toHaveAttribute("data-testid", "delete-modal");
+  expect(panel).toHaveAttribute("id", "delete-modal-el");
+});
+
 test("renders into a portal at document.body", () => {
   const { container } = render(
     <Modal open onClose={vi.fn()} title="Delete contract">

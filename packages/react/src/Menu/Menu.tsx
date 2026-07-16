@@ -6,7 +6,11 @@ export interface MenuItem {
   onSelect: () => void;
 }
 
-export interface MenuProps {
+export interface MenuProps
+  extends Omit<
+    React.ButtonHTMLAttributes<HTMLButtonElement>,
+    "children" | "type" | "aria-haspopup" | "aria-expanded"
+  > {
   trigger: React.ReactNode;
   items: MenuItem[];
   className?: string;
@@ -17,8 +21,21 @@ export interface MenuProps {
 // separate `Menu.displayName = "Menu"` side-effect statement. The item list
 // is rendered into a portal (like Modal/Drawer) so it can escape any
 // overflow:hidden ancestor of the trigger, positioned via the trigger's
-// measured bounding box.
-export function Menu({ trigger, items, className }: MenuProps) {
+// measured bounding box. Native attribute passthrough (id, aria-*,
+// data-testid, style, ...) lands on the trigger <button> — the outermost
+// element the component always controls — not on the portalled item list,
+// whose own className continues to merge with the "hx-menu" base class as
+// before. type/aria-haspopup/aria-expanded are swallowed from rest (both at
+// the type level and at runtime) since they encode the component's own
+// controlled open state; onClick is chained so a consumer handler still
+// fires alongside the internal toggle (see Toggle.tsx for the same pattern).
+export function Menu({
+  trigger,
+  items,
+  className,
+  onClick,
+  ...rest
+}: MenuProps) {
   const [open, setOpen] = React.useState(false);
   const [position, setPosition] = React.useState({ top: 0, left: 0 });
   const triggerRef = React.useRef<HTMLButtonElement>(null);
@@ -53,12 +70,16 @@ export function Menu({ trigger, items, className }: MenuProps) {
   return (
     <>
       <button
+        {...rest}
         type="button"
         className="hx-menu__trigger"
         ref={triggerRef}
         aria-haspopup="menu"
         aria-expanded={open}
-        onClick={() => setOpen((was) => !was)}
+        onClick={(event) => {
+          onClick?.(event);
+          setOpen((was) => !was);
+        }}
       >
         {trigger}
       </button>

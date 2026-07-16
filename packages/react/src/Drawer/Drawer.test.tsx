@@ -42,6 +42,17 @@ test("preserves custom className alongside the base and side classes", () => {
   expect(document.querySelector(".hx-drawer")).toHaveClass("hx-drawer", "hx-drawer--right", "custom");
 });
 
+test("passes native attributes like data-testid and id through to the panel", () => {
+  render(
+    <Drawer open onClose={vi.fn()} data-testid="side-drawer" id="side-drawer-el">
+      Drawer content
+    </Drawer>
+  );
+  const panel = document.querySelector(".hx-drawer")!;
+  expect(panel).toHaveAttribute("data-testid", "side-drawer");
+  expect(panel).toHaveAttribute("id", "side-drawer-el");
+});
+
 test("calls onClose when Escape is pressed", () => {
   const onClose = vi.fn();
   render(

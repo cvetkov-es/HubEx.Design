@@ -47,6 +47,20 @@ test("preserves custom className on the item list alongside the base class", () 
   expect(document.querySelector(".hx-menu")).toHaveClass("hx-menu", "custom");
 });
 
+test("passes native attributes like data-testid and id through to the trigger button, and chains a consumer onClick", () => {
+  const onClick = vi.fn();
+  render(
+    <Menu trigger={<span>Actions</span>} items={items} data-testid="actions-menu" id="actions-menu-el" onClick={onClick} />
+  );
+  const triggerButton = screen.getByText("Actions").closest("button")!;
+  expect(triggerButton).toHaveAttribute("data-testid", "actions-menu");
+  expect(triggerButton).toHaveAttribute("id", "actions-menu-el");
+
+  fireEvent.click(triggerButton);
+  expect(onClick).toHaveBeenCalledTimes(1);
+  expect(screen.getByText("Edit")).toBeInTheDocument();
+});
+
 test("closes on Escape", () => {
   render(<Menu trigger={<span>Actions</span>} items={items} />);
   fireEvent.click(screen.getByText("Actions"));

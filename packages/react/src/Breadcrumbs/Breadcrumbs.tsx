@@ -5,18 +5,17 @@ export interface BreadcrumbItem {
   href?: string;
 }
 
-export interface BreadcrumbsProps {
+export interface BreadcrumbsProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   items: BreadcrumbItem[];
-  className?: string;
 }
 
 // Plain named function component (no forwardRef) — see Table.tsx for why
 // naming the function is sufficient to get a correct displayName without a
 // separate `Breadcrumbs.displayName = "Breadcrumbs"` side-effect statement.
-export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
+export function Breadcrumbs({ items, className, ...rest }: BreadcrumbsProps) {
   const cls = ["hx-breadcrumbs", className].filter(Boolean).join(" ");
   return (
-    <nav className={cls} aria-label="Breadcrumb">
+    <nav className={cls} aria-label="Breadcrumb" {...rest}>
       <ol className="hx-breadcrumbs__list">
         {items.map((item, index) => (
           <li key={`${item.label}-${index}`} className="hx-breadcrumbs__item">

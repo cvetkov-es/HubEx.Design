@@ -41,3 +41,10 @@ test("preserves custom className alongside the base class", () => {
   render(<Tabs value="details" onChange={vi.fn()} items={items} className="custom" />);
   expect(document.querySelector(".hx-tabs")).toHaveClass("hx-tabs", "custom");
 });
+
+test("passes native attributes like data-testid and id through to the root", () => {
+  render(<Tabs value="details" onChange={vi.fn()} items={items} data-testid="record-tabs" id="record-tabs-el" />);
+  const root = document.querySelector(".hx-tabs")!;
+  expect(root).toHaveAttribute("data-testid", "record-tabs");
+  expect(root).toHaveAttribute("id", "record-tabs-el");
+});
