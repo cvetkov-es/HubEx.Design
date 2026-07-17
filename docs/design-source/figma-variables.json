@@ -1,0 +1,5598 @@
+[
+ {
+  "name": "HubEx",
+  "type": "VARIABLE_SET",
+  "tokenName": null,
+  "resolvedType": null,
+  "guid": 392,
+  "localID": 7989,
+  "values": [],
+  "setModes": [
+   {
+    "id": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "name": "Value",
+    "sortPosition": "!"
+   }
+  ]
+ },
+ {
+  "name": "colors/text/color-text-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 392,
+  "localID": 7992,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1F1F1F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 392,
+  "localID": 7993,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 392,
+  "localID": 7994,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 392,
+  "localID": 7997,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 392,
+  "localID": 7998,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 392,
+  "localID": 7999,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-page",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16377,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8F8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16380,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FDE8EC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16381,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16382,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFF5E8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16383,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16384,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEF9E5",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16385,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16386,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E5F6EF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16387,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16388,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EBFAE8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16389,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16390,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E7ECF8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16391,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16392,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ECF3FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16393,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16394,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F6E5FB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16395,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16396,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9E5F7",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16397,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16398,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16399,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16400,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16401,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16402,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16403,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16404,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16405,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16406,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-success",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 535,
+  "localID": 16437,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#8DC26F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x0",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 789,
+  "localID": 17880,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 0.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 789,
+  "localID": 17881,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 789,
+  "localID": 17882,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-highlight",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 789,
+  "localID": 17883,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E8F7FD",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 789,
+  "localID": 17885,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1F1F1F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x2",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 830,
+  "localID": 30643,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 8.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x250percent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 830,
+  "localID": 30644,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 10.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-small",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 830,
+  "localID": 30645,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 3.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30646,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30647,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30648,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30649,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8F8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x05",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 830,
+  "localID": 30650,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 2.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30652,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#777777",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30653,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30656,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30657,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30660,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30661,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 830,
+  "localID": 30663,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-default",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15754,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#353535",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-active",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15755,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#242324",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15756,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#39393E",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15759,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEFEFE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-backgroundg-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15760,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-backgroundg-warning",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15761,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15762,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15779,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x4",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 15791,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 16.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x5",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 15792,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 20.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15795,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEFEFE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x1",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 15894,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 4.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-pill",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 15895,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 9999.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15896,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-medium",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 15931,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 5.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 15932,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#353535",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-hoverlist",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 40554,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8FA",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 47155,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#777777",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 47179,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 47289,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 53299,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 58430,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 832,
+  "localID": 58432,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x3",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 72895,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 12.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x6",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 832,
+  "localID": 72896,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 24.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/overlay/color-overlay",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1111,
+  "localID": 16010,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#000000",
+    "alpha": 0.5
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1127,
+  "localID": 19565,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-warning",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1417,
+  "localID": 19562,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23531,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23532,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23533,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23534,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23535,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23536,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23537,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23538,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1617,
+  "localID": 23539,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1716,
+  "localID": 40795,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x1",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1829,
+  "localID": 1786,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 4.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x2",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1829,
+  "localID": 1787,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 8.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x250percent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1829,
+  "localID": 1788,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 10.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "HubEx",
+  "type": "VARIABLE_SET",
+  "tokenName": null,
+  "resolvedType": null,
+  "guid": 225,
+  "localID": 10235,
+  "values": [],
+  "setModes": [
+   {
+    "id": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "name": "Value",
+    "sortPosition": "!"
+   }
+  ]
+ },
+ {
+  "name": "colors/background/color-background-page",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10238,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8F8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10239,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FDE8EC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10240,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10245,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10246,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFF5E8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10247,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10248,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10249,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEF9E5",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10250,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10251,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10252,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E5F6EF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10253,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10254,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10255,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EBFAE8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10256,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10257,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10258,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E7ECF8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10259,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10260,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10261,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ECF3FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10262,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10263,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10264,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F6E5FB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10265,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10266,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10267,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9E5F7",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10268,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10269,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-success",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 225,
+  "localID": 10270,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#8DC26F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 11464,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1F1F1F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 11465,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 11466,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 11468,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 11469,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 11470,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x2",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 231,
+  "localID": 15601,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 8.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x5",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 231,
+  "localID": 15602,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 20.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-pill",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 231,
+  "localID": 15603,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 9999.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-highlight",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 15604,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E8F7FD",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-small",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 231,
+  "localID": 15605,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 3.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 15608,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 15609,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 15610,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 15612,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 231,
+  "localID": 15613,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1F1F1F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x0",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 302,
+  "localID": 14028,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 0.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x250percent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 594,
+  "localID": 27925,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 10.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27926,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27927,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27928,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27929,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8F8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x05",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 594,
+  "localID": 27930,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 2.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27931,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#777777",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27932,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27935,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27936,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27939,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 27940,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 28690,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 28691,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 28692,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 594,
+  "localID": 28693,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 659,
+  "localID": 33478,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#353535",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-backgroundg-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 659,
+  "localID": 33479,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-success",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 659,
+  "localID": 33519,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#8DC26F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-default",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27309,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#353535",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-active",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27310,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#242324",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27311,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#39393E",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27314,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEFEFE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-backgroundg-warning",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27315,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27332,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x4",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 707,
+  "localID": 27344,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 16.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 707,
+  "localID": 27347,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEFEFE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x1",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 707,
+  "localID": 27446,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 4.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-medium",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 707,
+  "localID": 27481,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 5.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-hoverlist",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 708,
+  "localID": 29448,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8FA",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 708,
+  "localID": 30394,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#777777",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 708,
+  "localID": 37601,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/overlay/color-overlay",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 713,
+  "localID": 155320,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#000000",
+    "alpha": 0.5
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-rating",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 713,
+  "localID": 282377,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x3",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1065,
+  "localID": 18813,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 12.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x6",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1065,
+  "localID": 18814,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 24.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-warning",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1164,
+  "localID": 20682,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1206,
+  "localID": 33462,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22298,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22299,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22300,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22301,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22302,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22303,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22304,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22305,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1268,
+  "localID": 22306,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x2",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1380,
+  "localID": 7629,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 8.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x05",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1397,
+  "localID": 7317,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 2.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x1",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1775,
+  "localID": 11196,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 4.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x250percent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 1775,
+  "localID": 11197,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 10.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "HubEx",
+  "type": "VARIABLE_SET",
+  "tokenName": null,
+  "resolvedType": null,
+  "guid": 307,
+  "localID": 15120,
+  "values": [],
+  "setModes": [
+   {
+    "id": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "name": "Value",
+    "sortPosition": "!"
+   }
+  ]
+ },
+ {
+  "name": "colors/text/color-text-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15123,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1F1F1F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15124,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15125,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15128,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15129,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15130,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-page",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15132,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8F8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-small",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 307,
+  "localID": 15133,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 3.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-default",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15134,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#353535",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 307,
+  "localID": 15138,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#39393E",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x0",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 403,
+  "localID": 6971,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 0.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6973,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6974,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-highlight",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6975,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E8F7FD",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6977,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1F1F1F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6978,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FDE8EC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6979,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6981,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6982,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFF5E8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6983,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6984,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6985,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEF9E5",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6986,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6987,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6988,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E5F6EF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6989,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6990,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6991,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EBFAE8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6992,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6993,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6994,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#E7ECF8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6995,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6996,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6997,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ECF3FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6998,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 6999,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7000,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F6E5FB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7001,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7002,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-background",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7003,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9E5F7",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7004,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-text",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7005,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-success",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 403,
+  "localID": 7006,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#8DC26F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 8670,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 8671,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 8672,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#777777",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 8673,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 8674,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 9118,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 9119,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 469,
+  "localID": 9120,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x2",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 507,
+  "localID": 3743,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 8.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x5",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 507,
+  "localID": 3744,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 20.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-pill",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 507,
+  "localID": 3745,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 9999.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-inverse",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 507,
+  "localID": 3747,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FFFFFF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-subtle",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 507,
+  "localID": 3748,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#EEEEEE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 507,
+  "localID": 3749,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#32B4EB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-neutral",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 507,
+  "localID": 3750,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#CCCCCC",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x4",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 525,
+  "localID": 20768,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 16.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-hoverlist",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 525,
+  "localID": 20771,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8FA",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-active",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23091,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#242324",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23092,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEFEFE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-backgroundg-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23093,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-backgroundg-warning",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23094,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-accent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23111,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23125,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FEFEFE",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x1",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 526,
+  "localID": 23212,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 4.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "radius/border-radius-medium",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 526,
+  "localID": 23245,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 5.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-primary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23246,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#353535",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 23378,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x3",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 526,
+  "localID": 61783,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 12.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-secondary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 61784,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#777777",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x6",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 526,
+  "localID": 61785,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 24.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x250percent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 526,
+  "localID": 178586,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 10.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-weak",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 178587,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F8F8F8",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 178588,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/border/color-border-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 178593,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 178615,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "spacing/spacing-x05",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 526,
+  "localID": 200896,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 2.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-warning",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 526,
+  "localID": 214152,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/overlay/color-overlay",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 539,
+  "localID": 21301,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#000000",
+    "alpha": 0.5
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "Collection 1",
+  "type": "VARIABLE_SET",
+  "tokenName": null,
+  "resolvedType": null,
+  "guid": 598,
+  "localID": 2569,
+  "values": [],
+  "setModes": [
+   {
+    "id": {
+     "sessionID": 598,
+     "localID": 0
+    },
+    "name": "Mode 1",
+    "sortPosition": "!"
+   }
+  ]
+ },
+ {
+  "name": "colors/avatar/color-avatar-one-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2439,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-two-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2440,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#FF991F",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-three-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2441,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-four-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2442,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#00A861",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-five-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2443,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#3FCE1B",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-six-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2444,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#1243BF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-seven-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2445,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#4688FF",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-eight-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2446,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#A200DB",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/avatar/color-avatar-nine-border",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 1992,
+  "localID": 2447,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#C500B1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-accent-hover",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 2171,
+  "localID": 128008,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#70CBF1",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-error",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 2395,
+  "localID": 37801,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x05",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 2656,
+  "localID": 28115,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 2.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/menu/color-menu-background-focus",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 2656,
+  "localID": 28117,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#ED1940",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x2",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 2656,
+  "localID": 39306,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 8.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/icon/color-icon-rating",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 2665,
+  "localID": 8135,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#F9C901",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/text/color-text-tertiary",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 3341,
+  "localID": 101740,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#999999",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x1",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 3374,
+  "localID": 3494,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 4.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "size/size-x250percent",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 1,
+  "guid": 3374,
+  "localID": 3495,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "float": 10.0
+   }
+  ],
+  "setModes": null
+ },
+ {
+  "name": "colors/background/color-background-strong",
+  "type": "VARIABLE",
+  "tokenName": null,
+  "resolvedType": 4,
+  "guid": 4086,
+  "localID": 15204,
+  "values": [
+   {
+    "modeID": {
+     "sessionID": 270,
+     "localID": 0
+    },
+    "color": "#484856",
+    "alpha": 1.0
+   }
+  ],
+  "setModes": null
+ }
+]
