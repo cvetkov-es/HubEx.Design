@@ -1,431 +1,465 @@
 @import "@cvetkov_es/tokens/css";
 
-:root { color: var(--hx-color-text); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
+/* Token-name legend used throughout this file (0.2.0 re-base):
+   old (0.1.0, invented)        -> new (Figma-derived, real hex kept identical where a match exists)
+   --hx-color-text              -> --hx-color-text-primary        (#1F1F1F)
+   --hx-color-text-muted        -> --hx-color-text-secondary      (#777777)
+   --hx-color-surface           -> --hx-color-background-inverse  (#FFFFFF — only literal-white bg token)
+   --hx-color-surface-sunken    -> --hx-color-background-hoverlist (#F8F8FA, for :hover states — Task2
+                                    ground truth: "TableRow hover #F8F8FA") or --hx-color-background-subtle
+                                    (#EEEEEE, for static/structural recessed fills) — picked per-usage below.
+   --hx-color-border            -> --hx-color-border-primary      (#EEEEEE)
+   --hx-color-border-strong     -> --hx-color-border-neutral      (#CCCCCC, same hex, correct bg/border role)
+   --hx-color-brand             -> --hx-color-{background,border,text,icon}-accent (#32B4EB, role-dependent)
+   --hx-color-brand-tint        -> --hx-color-background-highlight (#E8F7FD)
+   --hx-color-brand-strong      -> --hx-color-text-accent (no distinct "strong accent" token exists in the
+                                    re-based set; CANT-TELL, see report — collapsed onto the single accent value)
+   --hx-color-on-accent         -> --hx-color-text-inverse / --hx-color-icon-inverse (#FFFFFF, role-dependent)
+   --hx-color-danger            -> --hx-color-{backgroundg,border,text,icon}-error (#ED1940 — note the upstream
+                                    "backgroundg" typo is Figma's real variable name, kept verbatim)
+   --hx-color-success           -> --hx-color-{background,text,icon}-success (#8DC26F) — NO --border-success
+                                    token exists; where a left-border needs the success hue, --hx-color-text-success
+                                    is reused (same #8DC26F hex), flagged inline.
+   --hx-color-warning           -> --hx-color-{backgroundg,border,text,icon}-warning (#FF991F)
+   --hx-radius-sm                -> --hx-radius-small  (3px)   [Tooltip/Modal explicitly move to -medium, see below]
+   --hx-radius-md                -> --hx-radius-medium (5px)
+   --hx-space-1/2/4              -> --hx-spacing-x1/x2/x4 (4/8/16px, exact matches)
+   --hx-space-5 (24px)           -> --hx-spacing-x6 (24px, exact — the re-based scale numbers x1..x6 differently)
+   --hx-space-3 (12px)           -> no --hx-spacing token equals 12px in the re-based scale (it jumps
+                                    x2=8 -> x250percent=10 -> x4=16); reusing --hx-size-x3 (12px, same literal,
+                                    size namespace) — flagged everywhere it's used.
+   --hx-space-6 (32px)           -> no token (spacing/size scales top out at 24px/12px respectively); kept as a
+                                    literal 32px, flagged CANT-TELL (Modal/Drawer only).
+*/
 
+:root { color: var(--hx-color-text-primary); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
+
+/* Button — geometry from `.superpowers/sdd/fig-button-geometry-report.md` (231 decoded
+   `Button` variant masters, byte-exact Kiwi parse) + Task 2 ground truth:
+   height 32px (4925/4941 nodes; no control-height token exists, kept literal), radius
+   PILL (9999, 69.1% of nodes) for Primary/Secondary/Ghost; `Dashed` variant radius 3
+   (30.4% of nodes — the legacy 4px field was stale, see report §4).
+   ANTI-INVENTION RULE (Task 5 preview, applied now): #ED1940/error is for text, icons
+   and borders of errors — NEVER a button fill. There is no red/"danger" button in the
+   design; `.hx-btn--danger` is REMOVED (Task 3 drops the variant from the React API). */
 .hx-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  gap: var(--hx-space-2);
-  height: 32px; padding: 0 var(--hx-space-4);
+  gap: var(--hx-spacing-x2);
+  height: 32px; /* .fig: Button height, 4925/4941 nodes — no control-height token */
+  padding: 0 var(--hx-spacing-x4);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  border: 1px solid transparent; border-radius: var(--hx-radius-sm);
+  border: 1px solid transparent; border-radius: var(--hx-radius-pill);
   cursor: pointer; user-select: none;
 }
-.hx-btn--sm { height: 26px; padding: 0 var(--hx-space-3); font-size: var(--hx-font-size-sm); }
-.hx-btn--primary { background: var(--hx-color-brand); color: var(--hx-color-on-accent); }
-.hx-btn--secondary { background: var(--hx-color-surface); color: var(--hx-color-text); border-color: var(--hx-color-border-strong); }
-.hx-btn--danger { background: var(--hx-color-danger); color: var(--hx-color-on-accent); }
+/* CANT-TELL: no ground truth found for a compact/"sm" text Button variant — the report's
+   231 decoded variant masters are all height 32 (no second height for text Button, unlike
+   Button-Circle's 32/24 Size axis). Height kept unchanged from 0.1.0 (26px, invented then,
+   still unverified now); only the var() names below are fixed. */
+.hx-btn--sm {
+  height: 26px;
+  padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
+  font-size: var(--hx-font-size-sm);
+}
+.hx-btn--primary { background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); }
+.hx-btn--primary:disabled, .hx-btn--primary[disabled] {
+  /* report §5: Primary/Disabled fill #CCCCCC */
+  background: var(--hx-color-background-neutral);
+}
+
+.hx-btn--secondary {
+  /* report §5: Secondary/Normal fill #FFFFFF, stroke #32B4EB 1px. Text color has no
+     ground truth in the report (fill/stroke only); kept as dark body text (0.1.0's own
+     choice), now on the correctly-named token. */
+  background: var(--hx-color-background-inverse); color: var(--hx-color-text-primary);
+  border-color: var(--hx-color-border-accent);
+}
+.hx-btn--secondary:hover, .hx-btn--secondary:active {
+  /* report §5: Secondary/Hover and /Active fill #E8F7FD */
+  background: var(--hx-color-background-highlight);
+}
+.hx-btn--secondary:disabled, .hx-btn--secondary[disabled] {
+  /* report §5: Secondary/Disabled — no fill, stroke #CCCCCC */
+  background: transparent; border-color: var(--hx-color-border-neutral);
+}
+
+.hx-btn--ghost {
+  /* Task 2 mandatory ground truth: Ghost fill #FFFFFF normal -> #EEEEEE hover/active;
+     NO stroke in ANY state (do not invent a hover border). */
+  background: var(--hx-color-background-inverse); color: var(--hx-color-text-primary);
+  border-color: transparent;
+}
+.hx-btn--ghost:hover, .hx-btn--ghost:active { background: var(--hx-color-background-subtle); }
+.hx-btn--ghost:disabled, .hx-btn--ghost[disabled] {
+  /* report §5: Ghost/Disabled — no fill and no stroke at all (fully transparent) */
+  background: transparent;
+}
+
+.hx-btn--dashed {
+  /* Task 2 mandatory ground truth: Dashed variant radius 3. report §5: Normal fill
+     #FFFFFF, stroke #CCCCCC 1px dashed [3,3]; Hover/Active fill #E8F7FD, stroke #32B4EB. */
+  border-radius: var(--hx-radius-small);
+  background: var(--hx-color-background-inverse); color: var(--hx-color-text-primary);
+  border-style: dashed; border-color: var(--hx-color-border-neutral);
+}
+.hx-btn--dashed:hover, .hx-btn--dashed:active {
+  background: var(--hx-color-background-highlight); border-color: var(--hx-color-border-accent);
+}
+.hx-btn--dashed:disabled, .hx-btn--dashed[disabled] {
+  background: transparent; border-color: var(--hx-color-border-neutral);
+}
 .hx-btn[disabled] { opacity: .5; cursor: not-allowed; }
 
-.hx-field { display: flex; flex-direction: column; gap: var(--hx-space-1); }
-.hx-label { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-muted); }
-.hx-input {
-  height: 32px; padding: 0 var(--hx-space-3);
-  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
-  background: var(--hx-color-surface);
-  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
-}
-.hx-input:focus { outline: none; border-color: var(--hx-color-brand); }
-.hx-input--invalid { border-color: var(--hx-color-danger); }
+.hx-field { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-label { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-secondary); }
 
-/* Checkbox — source: "Создание сотрудника.css" (Образцы). 18x18 box, radius 2px;
-   checked bg/border = #32B4EB == --hx-color-brand; check glyph white == --hx-color-on-accent.
-   Unchecked border mapped onto the shared neutral border token (--hx-color-border-strong)
-   for consistency with Input/Select rather than the mockup's one-off gray. */
+/* Input & Select — Task 2 mandatory ground truth: radius 3, height 32, fill #FFFFFF,
+   stroke #EEEEEE -> hover #999999 -> focus #32B4EB; disabled fill #F8F8F8.
+   #F8F8F8 exists as both --hx-color-background-page and --hx-color-background-weak
+   (same hex); "weak" is used here as the better semantic fit for a muted/disabled
+   form-control surface (vs. "page", the whole-canvas background). */
+.hx-input {
+  height: 32px;
+  padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
+}
+.hx-input:hover { border-color: var(--hx-color-border-secondary); }
+.hx-input:focus { outline: none; border-color: var(--hx-color-border-accent); }
+.hx-input--invalid { border-color: var(--hx-color-border-error); }
+.hx-input:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+
+/* Checkbox — Task 2 ground truth: 18x18 box, radius 2. The re-based radius scale only
+   has 3/5/9999 (small/medium/pill) — there is no 2. Per the plan's explicit instruction,
+   --hx-size-x05 (2px) is reused from the size namespace since its literal value matches.
+   Checked bg/border = accent #32B4EB; check glyph white. Unchecked border: old
+   --hx-color-border-strong (#CCCCCC) -> new --hx-color-border-neutral, same hex. */
 .hx-checkbox {
   appearance: none; -webkit-appearance: none;
   position: relative; flex: none; margin: 0;
   width: 18px; height: 18px;
-  border: 1px solid var(--hx-color-border-strong); border-radius: 2px;
-  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-size-x05);
+  background: var(--hx-color-background-inverse);
   cursor: pointer;
 }
-.hx-checkbox:checked { background: var(--hx-color-brand); border-color: var(--hx-color-brand); }
+.hx-checkbox:checked { background: var(--hx-color-background-accent); border-color: var(--hx-color-border-accent); }
 .hx-checkbox:checked::after {
   content: ""; position: absolute; left: 5px; top: 2px;
   width: 5px; height: 9px;
-  border: solid var(--hx-color-on-accent); border-width: 0 2px 2px 0;
+  border: solid var(--hx-color-icon-inverse); border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-.hx-checkbox:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-checkbox:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-checkbox:disabled { opacity: .5; cursor: not-allowed; }
 
-/* Radio — source: "Форма заявка Вид работ.css" (Образцы). 18x18 circle (radius 999px);
-   unchecked bg #FFFFFF / border #CCCCCC -> --hx-color-border-strong; checked = brand ring
-   + filled brand dot (no explicit checked dump found, matches checkbox's fill treatment). */
+/* Radio — Task 2 ground truth: 18x18 circle, radius 999. Per the plan's instruction,
+   999 (radio/circle) and 9999 (pill) collapse onto the single --hx-radius-pill token —
+   both render identically as a full circle at this element size; the design's 999/9999
+   split is a legacy-field artifact (see fig-button-geometry-report.md §4), not a real
+   distinct value. */
 .hx-radio {
   appearance: none; -webkit-appearance: none;
   position: relative; flex: none; margin: 0;
   width: 18px; height: 18px;
-  border: 1px solid var(--hx-color-border-strong); border-radius: 999px;
-  background: var(--hx-color-surface);
+  border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-pill);
+  background: var(--hx-color-background-inverse);
   cursor: pointer;
 }
-.hx-radio:checked { border-color: var(--hx-color-brand); }
+.hx-radio:checked { border-color: var(--hx-color-border-accent); }
 .hx-radio:checked::after {
   content: ""; position: absolute; inset: 4px;
-  border-radius: 999px; background: var(--hx-color-brand);
+  border-radius: var(--hx-radius-pill); background: var(--hx-color-background-accent);
 }
-.hx-radio:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-radio:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-radio:disabled { opacity: .5; cursor: not-allowed; }
 
-/* Toggle — source: "Логирование заявки.css" (Образцы). Track 24x14, radius 999px,
-   padding 2px; checked bg #32B4EB == --hx-color-brand; thumb 10x10 white circle ==
-   --hx-color-on-accent; unchecked track uses --hx-color-border-strong (no explicit
-   unchecked dump found; neutral border tone matches the rest of the control scale). */
+/* Toggle — Task 2 ground truth: track 24x14, radius 999 -> --hx-radius-pill (see Radio's
+   note on the 999/9999 collapse). Checked bg = accent #32B4EB; thumb white. Unchecked
+   track: 0.1.0 misused the BORDER-role token --hx-color-border-strong as a background
+   fill (its own comment: "no explicit unchecked dump found"). The re-based set has a
+   proper BACKGROUND-role token at the same hex — --hx-color-background-neutral
+   (#CCCCCC) — used here instead, fixing the role mismatch as a side effect. */
 .hx-toggle {
   display: inline-flex; align-items: center;
   width: 24px; height: 14px; padding: 2px;
-  border: none; border-radius: 999px;
-  background: var(--hx-color-border-strong);
+  border: none; border-radius: var(--hx-radius-pill);
+  background: var(--hx-color-background-neutral);
   cursor: pointer;
   justify-content: flex-start;
 }
-.hx-toggle[aria-checked="true"] { background: var(--hx-color-brand); justify-content: flex-end; }
-.hx-toggle::after { content: ""; width: 10px; height: 10px; border-radius: 999px; background: var(--hx-color-on-accent); }
-.hx-toggle:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-toggle[aria-checked="true"] { background: var(--hx-color-background-accent); justify-content: flex-end; }
+.hx-toggle::after { content: ""; width: 10px; height: 10px; border-radius: var(--hx-radius-pill); background: var(--hx-color-icon-inverse); }
+.hx-toggle:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-toggle:disabled { opacity: .5; cursor: not-allowed; }
 
-/* Select — source: "Создание договора.css" (Образцы). Mockup: height 32px, padding
-   7px 10px, border 1px solid #EEEEEE, radius 3px. Mapped onto the established control
-   scale to match Input exactly: height 32px, --hx-space-3 padding, --hx-radius-sm,
-   --hx-color-border-strong border, --hx-color-brand focus ring. */
+/* Select — Task 2 ground truth: "Input & Select" share one spec (radius 3, height 32,
+   fill #FFFFFF, stroke #EEEEEE -> hover #999999 -> focus #32B4EB); mirrors .hx-input. */
 .hx-select {
-  height: 32px; padding: 0 var(--hx-space-3);
+  height: 32px;
+  padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
-  background: var(--hx-color-surface);
-  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
   cursor: pointer;
 }
-.hx-select:focus { outline: none; border-color: var(--hx-color-brand); }
-.hx-select--invalid { border-color: var(--hx-color-danger); }
-.hx-select:disabled { opacity: .5; cursor: not-allowed; }
+.hx-select:hover { border-color: var(--hx-color-border-secondary); }
+.hx-select:focus { outline: none; border-color: var(--hx-color-border-accent); }
+.hx-select--invalid { border-color: var(--hx-color-border-error); }
+.hx-select:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
 
-/* Table — source: "TableHead_Contracts" / "TableRow_Contracts" frames dumped in
-   "Договоры.css" and "Логирование заявки.css" (Образцы). Outer border and all row
-   dividers = 1px solid #EEEEEE == --hx-color-border everywhere in the dumps (not
-   the stronger --hx-color-border-strong used by Input/Select). Outer radius dumped
-   as 5px, rounded onto the shared --hx-radius-sm (4px) scale token. Row height in
-   the dumps is 38-40px; reproduced here via --hx-space-2 (8px) vertical + --hx-space-3
-   (12px) horizontal cell padding, closest scale match to the dump's 0/10px padding.
-   Header text: font-caption-regular, 11px == --hx-font-size-sm, color #777777 ==
-   --hx-color-text-muted. Body text: 13px == --hx-font-size-base, color #1F1F1F ==
-   --hx-color-text. Header background is dumped as #FFFFFF in most frames, but is
-   mapped onto --hx-color-surface-sunken here (deliberate deviation) so the header
-   row reads as visually distinct from body rows, consistent with the header-surface
-   token called out for this task. */
+/* Table — Task 2 ground truth: TableRow height 40, hover #F8F8FA
+   (--hx-color-background-hoverlist); TableHead 11px text, color #777777
+   (--hx-color-text-secondary). Outer border/dividers stay 1px solid #EEEEEE
+   (--hx-color-border-primary, the 0.1.0 dumps' cited value). Header background:
+   0.1.0 deliberately deviated from the dumped #FFFFFF to a "sunken" tint for visual
+   contrast; corrected here back to the real dumped value now that a real geometry
+   pass is in effect. */
 .hx-table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid var(--hx-color-border);
-  border-radius: var(--hx-radius-sm);
+  border: 1px solid var(--hx-color-border-primary);
+  border-radius: var(--hx-radius-small);
   font-family: var(--hx-font-family);
-  color: var(--hx-color-text);
+  color: var(--hx-color-text-primary);
 }
-.hx-table__head { background: var(--hx-color-surface-sunken); }
-.hx-table__row { border-bottom: 1px solid var(--hx-color-border); }
+.hx-table__head { background: var(--hx-color-background-inverse); }
+.hx-table__row {
+  height: 40px; /* Task 2 ground truth: TableRow height 40 */
+  border-bottom: 1px solid var(--hx-color-border-primary);
+}
 .hx-table__row:last-child { border-bottom: none; }
-.hx-table__row:hover { background: var(--hx-color-surface-sunken); }
+.hx-table__row:hover { background: var(--hx-color-background-hoverlist); } /* Task 2: hover #F8F8FA */
 .hx-table__cell {
-  padding: var(--hx-space-2) var(--hx-space-3);
+  padding: var(--hx-spacing-x2) var(--hx-size-x3); /* 8px / 12px — see legend re: no --hx-spacing-x3 */
   font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
+  color: var(--hx-color-text-primary);
   text-align: left;
 }
 .hx-table__headcell {
-  padding: var(--hx-space-2) var(--hx-space-3);
-  font-size: var(--hx-font-size-sm);
+  padding: var(--hx-spacing-x2) var(--hx-size-x3);
+  font-size: var(--hx-font-size-sm); /* Task 2: TableHead 11px */
   font-weight: 500;
-  color: var(--hx-color-text-muted);
+  color: var(--hx-color-text-secondary); /* Task 2: TableHead #777777 */
   text-align: left;
 }
 
-/* Pagination — no explicit "Pagination" frame was found in the Образцы dumps;
-   nav buttons follow the established 32px control-height scale (matches
-   Button/Input/Select), with the chevron glyphs sized like the 18px icon frames
-   dumped for "keyboard_arrow_left" / "keyboard_arrow_down" elsewhere in
-   "Договоры.css". Border = --hx-color-border-strong (matches Button--secondary's
-   border), radius = --hx-radius-sm, active page = --hx-color-brand background on
-   --hx-color-on-accent text per the task's active-page spec. */
-.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-space-2); }
-.hx-pagination__pages { display: flex; align-items: center; gap: var(--hx-space-1); list-style: none; margin: 0; padding: 0; }
+/* Pagination — no ground truth in Task 2's list; only var() names fixed (same geometry
+   as 0.1.0), following the same 32px control-height scale as Button/Input/Select. */
+.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); }
+.hx-pagination__pages { display: flex; align-items: center; gap: var(--hx-spacing-x1); list-style: none; margin: 0; padding: 0; }
 .hx-pagination__btn, .hx-pagination__page {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 32px; height: 32px; padding: 0 var(--hx-space-2);
+  min-width: 32px; height: 32px; padding: 0 var(--hx-spacing-x2);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
-  background: var(--hx-color-surface);
-  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-small);
   cursor: pointer;
 }
-.hx-pagination__btn:hover, .hx-pagination__page:hover { background: var(--hx-color-surface-sunken); }
+.hx-pagination__btn:hover, .hx-pagination__page:hover { background: var(--hx-color-background-hoverlist); }
 .hx-pagination__btn:disabled, .hx-pagination__page:disabled { opacity: .5; cursor: not-allowed; }
-.hx-pagination__btn:focus-visible, .hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-pagination__btn:focus-visible, .hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-pagination__page--active {
-  background: var(--hx-color-brand); color: var(--hx-color-on-accent); border-color: var(--hx-color-brand);
+  background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); border-color: var(--hx-color-border-accent);
 }
 
-/* Modal — source: "Модалка переспрашивалка" / "Overlay" / "Modal" frames in
-   "Договоры модалка.css" (also duplicated in "Создание договора.css"). Overlay
-   background dumped as rgba(0, 0, 0, 0.5) — there is no color token for a
-   translucent scrim, so this is the ONE deliberate non-token value in this
-   file (every other declaration below uses var(--hx-*)). Modal frame: width
-   400px, padding 32px, gap 32px (both exact matches for --hx-space-6),
-   background #FFFFFF (--hx-color-surface), border-radius 5px — rounded up to
-   --hx-radius-md (8px) per this task's "radius-md for panels" convention
-   (Menu/Tooltip below use --hx-radius-sm as the "small" case). Title text:
-   head/font-H2, 18px/weight 500, color #1F1F1F — 18px has no scale token, so
-   it is mapped to the nearest, --hx-font-size-lg (16px); color maps exactly
-   to --hx-color-text. Other frames in the dumps show real box-shadows
-   (e.g. "Профиль.css" 0px 13px 33px rgba(0,0,0,.23), Tooltip's
-   filter: drop-shadow(...)), but since every color value here must come from
-   a token and no shadow-color token exists, no box-shadow is added — panel
-   separation comes from the backdrop dim + a solid border, consistent with
-   every other component in this file (none of which use box-shadow either).
-   z-index values are plain integers, same treatment as the unitless/px
-   layout constants already used elsewhere (e.g. Toggle's 24x14 track). */
+/* Modal — Task 2 ground truth: radius 5 (--hx-radius-medium), width 560. Scrim =
+   --hx-color-overlay (rgba(0,0,0,0.5)) — this is now a REAL token (0.1.0 had no overlay
+   token at all and hardcoded the rgba). Internal padding/gap (32px) has no ground truth
+   in Task 2 and no matching token (the spacing/size scales top out at 24px/12px); kept
+   as a literal, flagged CANT-TELL. Title font-size (18px in the original dump) still has
+   no scale token; kept mapped to the nearest, --hx-font-size-lg (16px), unchanged from
+   0.1.0's own rounding decision. */
 .hx-modal__backdrop {
   position: fixed; inset: 0; z-index: 1000;
   display: flex; align-items: center; justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--hx-color-overlay);
 }
 .hx-modal {
-  display: flex; flex-direction: column; gap: var(--hx-space-6);
-  width: 400px; max-width: calc(100vw - var(--hx-space-6) * 2);
-  padding: var(--hx-space-6);
-  background: var(--hx-color-surface);
-  border-radius: var(--hx-radius-md);
-  border: 1px solid var(--hx-color-border);
+  display: flex; flex-direction: column; gap: 32px; /* CANT-TELL: no token for 32px */
+  width: 560px; /* Task 2 ground truth: Modal width 560 */
+  max-width: calc(100vw - 64px);
+  padding: 32px; /* CANT-TELL: no token for 32px */
+  background: var(--hx-color-background-inverse);
+  border-radius: var(--hx-radius-medium);
+  border: 1px solid var(--hx-color-border-primary);
 }
 .hx-modal__title {
   margin: 0; font-family: var(--hx-font-family); font-size: var(--hx-font-size-lg);
-  font-weight: 500; color: var(--hx-color-text);
+  font-weight: 500; color: var(--hx-color-text-primary);
 }
-.hx-modal__body { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text); }
+.hx-modal__body { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary); }
 
-/* Drawer — source: "Drawer" / "Header" frames in "Форма заявки Drawer.css".
-   Panel: width 460px (exact, reproduced as a raw px value like the modal's
-   400px — there's no "panel width" scale token), background #FFFFFF
-   (--hx-color-surface), full viewport height, flush to the screen edge (the
-   dump shows no border-radius on the Drawer root, unlike Modal's 5px, so none
-   is applied here). Header padding "32px 24px 24px" maps to --hx-space-6
-   (32px, exact) / --hx-space-5 (24px, exact) — reused here as the panel's
-   general padding since the Drawer contract has no separate title slot.
-   Backdrop reuses the same rgba(0, 0, 0, 0.5) scrim as Modal (not a second
-   non-token value — it's the same literal, same justification). */
-.hx-drawer__backdrop { position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, 0.5); }
+/* Drawer — no ground truth in Task 2's list; only var() names fixed (same geometry as
+   0.1.0). Backdrop now uses the real --hx-color-overlay token instead of a hardcoded
+   rgba. Vertical padding (32px, old --hx-space-6) has no matching token; kept literal. */
+.hx-drawer__backdrop { position: fixed; inset: 0; z-index: 1000; background: var(--hx-color-overlay); }
 .hx-drawer {
   position: fixed; top: 0; bottom: 0;
-  width: 460px; max-width: calc(100vw - var(--hx-space-6));
-  padding: var(--hx-space-6) var(--hx-space-5);
-  background: var(--hx-color-surface);
-  border-left: 1px solid var(--hx-color-border);
-  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+  width: 460px; max-width: calc(100vw - 32px);
+  padding: 32px var(--hx-spacing-x6); /* 32px: CANT-TELL, no token; 24px -> --hx-spacing-x6 (exact) */
+  background: var(--hx-color-background-inverse);
+  border-left: 1px solid var(--hx-color-border-primary);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
   overflow-y: auto;
 }
 .hx-drawer--right { right: 0; }
-.hx-drawer--left { left: 0; border-left: none; border-right: 1px solid var(--hx-color-border); }
+.hx-drawer--left { left: 0; border-left: none; border-right: 1px solid var(--hx-color-border-primary); }
 
-/* Tooltip — source: "Tooltip" / "body" / "tooltip-arrow" frames in
-   "Договоры ишки.css". Dumped bubble: background #484856 (a one-off dark
-   slate not present anywhere else in the token set), radius 5px, padding
-   10px, text: font-tooltip-regular 12px, color #FEFEFE. Mapped onto existing
-   tokens: background -> --hx-color-text (#1F1F1F, the darkest neutral we
-   have — deliberate deviation from the dumped slate, documented here since
-   no dedicated "inverse surface" token exists), text -> --hx-color-on-accent
-   (white, matches #FEFEFE), radius -> --hx-radius-sm (4px, nearest scale
-   token to 5px), padding -> --hx-space-2 (8px, nearest scale token to 10px),
-   font-size -> --hx-font-size-sm (11px, nearest scale token to 12px). The
-   arrow is a small rotated square of the same background color, matching the
-   dump's "tooltip-arrow" element (8x16 rotated 90deg) in spirit. */
+/* Tooltip — Task 2 ground truth: radius 5 (--hx-radius-medium), fill #353535
+   (--hx-color-background-primary), text #FEFEFE (--hx-color-text-weak) 13px
+   (--hx-font-size-base) — all four now EXACT token matches (0.1.0 had to round every
+   one of these: fill onto #1F1F1F, radius onto 4px, text-size onto 11px). */
 .hx-tooltip-wrap { position: relative; display: inline-block; }
 .hx-tooltip {
-  position: absolute; bottom: calc(100% + var(--hx-space-2)); left: 50%; transform: translateX(-50%);
+  position: absolute; bottom: calc(100% + var(--hx-spacing-x2)); left: 50%; transform: translateX(-50%);
   z-index: 10;
-  max-width: 250px; padding: var(--hx-space-2);
-  background: var(--hx-color-text); color: var(--hx-color-on-accent);
-  border-radius: var(--hx-radius-sm);
-  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm); line-height: 1.3;
+  max-width: 250px; padding: var(--hx-spacing-x2);
+  background: var(--hx-color-background-primary); color: var(--hx-color-text-weak);
+  border-radius: var(--hx-radius-medium);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); line-height: 1.3;
   white-space: normal;
 }
 .hx-tooltip__arrow {
   position: absolute; top: 100%; left: 50%;
   width: 8px; height: 8px; margin-left: -4px; margin-top: -4px;
-  background: var(--hx-color-text); transform: rotate(45deg);
+  background: var(--hx-color-background-primary); transform: rotate(45deg);
 }
 
-/* Tabs — source: "Tabs" / "Tab" frames in "Логирование заявки.css". Each Tab
-   is 32px tall (matches the shared 32px control-height scale used by
-   Button/Input/Select), gap between tabs 12px (--hx-space-3, exact). Active
-   tab: border-bottom 2px solid #32B4EB — exact match for --hx-color-brand.
-   Inactive/active text colors have no explicit dump; mapped onto the
-   established muted/default text pair (--hx-color-text-muted for inactive,
-   --hx-color-text for active) used the same way by Table's header vs body
-   text. */
-.hx-tabs { display: flex; align-items: center; gap: var(--hx-space-3); border-bottom: 1px solid var(--hx-color-border); }
+/* Tabs — no ground truth in Task 2's list; only var() names fixed (same geometry as
+   0.1.0). Active-tab underline uses the accent border token (2px solid #32B4EB). */
+.hx-tabs { display: flex; align-items: center; gap: var(--hx-size-x3); border-bottom: 1px solid var(--hx-color-border-primary); }
 .hx-tabs__item {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 32px; padding: 0 var(--hx-space-1);
+  height: 32px; padding: 0 var(--hx-spacing-x1);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text-muted);
+  color: var(--hx-color-text-secondary);
   background: transparent; border: none; border-bottom: 2px solid transparent;
   margin-bottom: -1px;
   cursor: pointer;
 }
-.hx-tabs__item:hover { color: var(--hx-color-text); }
-.hx-tabs__item--active { color: var(--hx-color-text); border-bottom-color: var(--hx-color-brand); }
-.hx-tabs__item:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-tabs__item:hover { color: var(--hx-color-text-primary); }
+.hx-tabs__item--active { color: var(--hx-color-text-primary); border-bottom-color: var(--hx-color-border-accent); }
+.hx-tabs__item:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
-/* Menu (dropdown) — source: "SubMenu" / "_SubMenu-item" frames in "Договоры
-   модалка.css" (the accessible dropdown-list variant, as opposed to the
-   dark "Menu"/"_Menu-item" frames elsewhere which are the app's sidebar
-   nav). List: width 226px (exact, raw px like Modal/Drawer widths), border
-   1px solid #EEEEEE (--hx-color-border, exact), background #FFFFFF
-   (--hx-color-surface, exact), no explicit list radius in the dump —
-   mapped to --hx-radius-sm as the "small" panel case per this task's
-   radius convention. Item: height 40px (exact, raw px), border-bottom 1px
-   solid #EEEEEE (--hx-color-border, exact), padding "0 16px 0 20px" ->
-   0 var(--hx-space-4) (16px, exact on the trailing edge; 20px leading edge
-   rounds to the same --hx-space-4 token for a symmetric item), text
-   body/font-body-regular 13px color #1F1F1F -> --hx-font-size-base /
-   --hx-color-text (both exact). Hover state has no dump; reuses the
-   Table-row/Pagination-button hover convention (--hx-color-surface-sunken).
-   The trigger button follows the shared 32px control scale (Button/Select). */
+/* Menu (dropdown) — no ground truth in Task 2's list; only var() names fixed (same
+   geometry as 0.1.0). */
 .hx-menu__trigger {
   display: inline-flex; align-items: center; justify-content: center;
-  height: 32px; padding: 0 var(--hx-space-3);
+  height: 32px; padding: 0 var(--hx-size-x3); /* 12px — see legend re: no --hx-spacing-x3 */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
-  background: var(--hx-color-surface);
-  border: 1px solid var(--hx-color-border-strong); border-radius: var(--hx-radius-sm);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-small);
   cursor: pointer;
 }
-.hx-menu__trigger:hover { background: var(--hx-color-surface-sunken); }
+.hx-menu__trigger:hover { background: var(--hx-color-background-hoverlist); }
 .hx-menu {
   z-index: 1000;
   width: 226px;
-  margin: var(--hx-space-1) 0 0;
+  margin: var(--hx-spacing-x1) 0 0;
   padding: 0;
   list-style: none;
-  background: var(--hx-color-surface);
-  border: 1px solid var(--hx-color-border);
-  border-radius: var(--hx-radius-sm);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary);
+  border-radius: var(--hx-radius-small);
   overflow: hidden;
 }
-.hx-menu__item-wrap { border-bottom: 1px solid var(--hx-color-border); }
+.hx-menu__item-wrap { border-bottom: 1px solid var(--hx-color-border-primary); }
 .hx-menu__item-wrap:last-child { border-bottom: none; }
 .hx-menu__item {
   display: flex; align-items: center;
-  width: 100%; height: 40px; padding: 0 var(--hx-space-4);
+  width: 100%; height: 40px; padding: 0 var(--hx-spacing-x4);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
+  color: var(--hx-color-text-primary);
   background: transparent; border: none;
   text-align: left; cursor: pointer;
 }
-.hx-menu__item:hover { background: var(--hx-color-surface-sunken); }
+.hx-menu__item:hover { background: var(--hx-color-background-hoverlist); }
 
-/* Breadcrumbs — source: "Breadcrumbs" frame in "Договоры.css" (also
-   duplicated across most other dumps). All crumb text: body/font-body-regular
-   13px (--hx-font-size-base, exact). Item gap between crumbs 4px
-   (--hx-space-1, exact). Colors in the dump alternate #1F1F1F / #777777
-   across items; mapped here onto the accessible convention of "link (has
-   href) = muted, current page (no href) = emphasized dark text" — using
-   --hx-color-text-muted for the five #777777-colored path segments and
-   --hx-color-text for the current/no-href item, both exact token matches for
-   the two hex values actually present in the dump. */
+/* Breadcrumbs — no ground truth in Task 2's list; only var() names fixed (same
+   geometry as 0.1.0). */
 .hx-breadcrumbs { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
-.hx-breadcrumbs__list { display: flex; align-items: center; gap: var(--hx-space-1); list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
-.hx-breadcrumbs__item { display: flex; align-items: center; gap: var(--hx-space-1); }
-.hx-breadcrumbs__link { color: var(--hx-color-text-muted); text-decoration: none; }
-.hx-breadcrumbs__link:hover { color: var(--hx-color-text); text-decoration: underline; }
-.hx-breadcrumbs__current { color: var(--hx-color-text); }
-.hx-breadcrumbs__sep { color: var(--hx-color-text-muted); }
+.hx-breadcrumbs__list { display: flex; align-items: center; gap: var(--hx-spacing-x1); list-style: none; margin: 0; padding: 0; flex-wrap: wrap; }
+.hx-breadcrumbs__item { display: flex; align-items: center; gap: var(--hx-spacing-x1); }
+.hx-breadcrumbs__link { color: var(--hx-color-text-secondary); text-decoration: none; }
+.hx-breadcrumbs__link:hover { color: var(--hx-color-text-primary); text-decoration: underline; }
+.hx-breadcrumbs__current { color: var(--hx-color-text-primary); }
+.hx-breadcrumbs__sep { color: var(--hx-color-text-secondary); }
 
-/* Tag — source: "Tag" frames in "Договоры ишки.css" / "Создание компании.css" /
-   "Создание сотрудника.css" (Образцы). Reference box: padding 4px 10px, radius
-   3px (mapped to --hx-radius-sm, closest token), border 1px solid #EEEEEE
-   (--hx-color-border, exact), text body/font-caption-regular 13px
-   (--hx-font-size-sm used here since Tag is a compact inline label), color
-   #1F1F1F (--hx-color-text, exact). color variants are not distinguished in
-   the dump (only a single neutral Tag was found), so brand/danger follow the
-   Button/Select convention of border+text in the semantic color on a neutral
-   surface. */
+/* Tag — Task 2 ground truth: radius 3, height 32 (changed from 0.1.0's invented 20px —
+   this now aligns Tag to the same 32px control-height family as Button/Input/Select).
+   Border stays 1px solid #EEEEEE (the 0.1.0 dumps' cited exact value). No dedicated
+   "strong accent" token exists (see legend); --hx-tag--brand text reuses the single
+   accent value. */
 .hx-tag {
   display: inline-flex; align-items: center;
-  height: 20px; padding: 0 var(--hx-space-2);
+  height: 32px; /* Task 2 ground truth: Tag height 32 */
+  padding: 0 var(--hx-spacing-x2);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
-  border: 1px solid var(--hx-color-border); border-radius: var(--hx-radius-sm);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small); /* Task 2: Tag radius 3 */
   white-space: nowrap;
 }
-.hx-tag--neutral { background: var(--hx-color-surface); color: var(--hx-color-text); }
-.hx-tag--brand { background: var(--hx-color-brand-tint); color: var(--hx-color-brand-strong); border-color: var(--hx-color-brand); }
-.hx-tag--danger { background: var(--hx-color-surface); color: var(--hx-color-danger); border-color: var(--hx-color-danger); }
+.hx-tag--neutral { background: var(--hx-color-background-inverse); color: var(--hx-color-text-primary); }
+.hx-tag--brand { background: var(--hx-color-background-highlight); color: var(--hx-color-text-accent); border-color: var(--hx-color-border-accent); }
+.hx-tag--danger { background: var(--hx-color-background-inverse); color: var(--hx-color-text-error); border-color: var(--hx-color-border-error); }
 
-/* Chip — source: "chip" frame in "Рекомендуемые чек-листы.css" (Образцы).
-   Reference box: padding 4px 10px (mapped to --hx-space-1/--hx-space-3, close
-   token match), height 24px, border-radius 999px (pill), text
-   body/font-body-regular 13px (--hx-font-size-base, exact). The dump's fill
-   was a semantic (task-status) tinted orange specific to that one screen, not
-   a generic chip color, so the generic Chip here uses the neutral
-   surface-sunken fill shared with hover/selected states elsewhere (Table,
-   Pagination, Menu). */
+/* Chip — Task 2 ground truth: radius 999 -> --hx-radius-pill (0.1.0 already hardcoded
+   999px as a literal since no pill token existed yet; now replaced with the real token).
+   No height ground truth given; kept unchanged (24px) from 0.1.0. */
 .hx-chip {
-  display: inline-flex; align-items: center; gap: var(--hx-space-1);
-  height: 24px; padding: 4px var(--hx-space-3);
+  display: inline-flex; align-items: center; gap: var(--hx-spacing-x1);
+  height: 24px; padding: 4px var(--hx-size-x3); /* 12px — see legend re: no --hx-spacing-x3 */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
-  color: var(--hx-color-text);
-  background: var(--hx-color-surface-sunken); border-radius: 999px;
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-hoverlist); border-radius: var(--hx-radius-pill);
 }
 .hx-chip__remove {
   display: inline-flex; align-items: center; justify-content: center;
   width: 14px; height: 14px; padding: 0; margin: 0;
-  border: none; border-radius: 999px; background: transparent;
-  color: var(--hx-color-text-muted); font-size: var(--hx-font-size-sm); line-height: 1;
+  border: none; border-radius: var(--hx-radius-pill); background: transparent;
+  color: var(--hx-color-text-secondary); font-size: var(--hx-font-size-sm); line-height: 1;
   cursor: pointer;
 }
-.hx-chip__remove:hover { background: var(--hx-color-border); color: var(--hx-color-text); }
-.hx-chip__remove:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-chip__remove:hover { background: var(--hx-color-border-primary); color: var(--hx-color-text-primary); }
+.hx-chip__remove:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
-/* Badge — source: "Badge-Dot" / "Badge-Count" / "Badge-Tag" frames across the
-   Образцы dumps (e.g. "Выполнение.css", "Договоры ишки.css", "Форма заявка
-   Адрес объекта.css"). Badge-Dot: 6x6px circle. Badge-Count: 21x16px pill,
-   padding 0 4px, background #ED1940 (--hx-color-danger, exact), label
-   font-caption-regular 11px (--hx-font-size-sm, exact) white text
-   (--hx-color-on-accent). Badge-Tag: 35x20px pill, border 1px solid #ED1940
-   (--hx-color-danger, exact), caption 11px muted text. All three are
-   standalone indicators here (not pinned to a host element), so the dump's
-   `position: absolute` offsets are dropped in favor of normal inline flow. */
+/* Badge — Task 2 ground truth: Badge-Count radius 9999 (--hx-radius-pill), fill #ED1940
+   (--hx-color-backgroundg-error, upstream typo kept verbatim). Badge-Dot/Badge-Tag have
+   no explicit ground truth in Task 2; their prior hardcoded 999px literals are replaced
+   with the same --hx-radius-pill token (999 and 9999 collapse identically, see the
+   Radio/Toggle note above) and their var() names fixed. */
 .hx-badge {
   display: inline-flex; align-items: center; justify-content: center;
   font-family: var(--hx-font-family);
 }
 .hx-badge--dot {
-  width: 6px; height: 6px; padding: 0; border-radius: 999px;
-  background: var(--hx-color-danger);
+  width: 6px; height: 6px; padding: 0; border-radius: var(--hx-radius-pill);
+  background: var(--hx-color-backgroundg-error);
 }
 .hx-badge--count {
-  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
-  background: var(--hx-color-danger); color: var(--hx-color-on-accent);
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
+  background: var(--hx-color-backgroundg-error); color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 */
   font-size: var(--hx-font-size-sm); line-height: 14px;
 }
 .hx-badge--tag {
-  height: 20px; padding: 3px 6px; border-radius: 999px;
-  border: 1px solid var(--hx-color-danger); color: var(--hx-color-text-muted);
+  height: 20px; padding: 3px 6px; border-radius: var(--hx-radius-pill);
+  border: 1px solid var(--hx-color-border-error); color: var(--hx-color-text-secondary);
   font-size: var(--hx-font-size-sm); line-height: 14px;
 }
 
-/* Avatar — source: "Avatar" frames in "Выполнение.css" / "Договоры ишки.css" /
-   "Форма заявка Вид работ.css" (Образцы). Reference: 32x32px circle
-   (--size md, exact), border 1px solid #EEEEEE (--hx-color-border, exact),
-   border-radius 999px, background image (url(...)) when a photo is set. sm is
-   a proportionally smaller 24px variant for compact contexts (table rows,
-   chips) not explicitly dumped. Initials fallback uses the same
-   surface-sunken fill used elsewhere for "empty"/placeholder states. */
+/* Avatar (base) — no ground truth in Task 2's list (the 9-colour palette is Task 4's
+   job); only var() names fixed. Prior hardcoded 999px radius literal replaced with the
+   real --hx-radius-pill token (see Radio's note on the 999/9999 collapse). Fallback fill
+   uses --hx-color-background-subtle (a static/structural recessed surface) rather than
+   the hover-only --hx-color-background-hoverlist — this is a placeholder background, not
+   an interactive hover state. */
 .hx-avatar {
   display: inline-flex; align-items: center; justify-content: center;
-  overflow: hidden; border-radius: 999px; border: 1px solid var(--hx-color-border);
-  background: var(--hx-color-surface-sunken); color: var(--hx-color-text);
+  overflow: hidden; border-radius: var(--hx-radius-pill); border: 1px solid var(--hx-color-border-primary);
+  background: var(--hx-color-background-subtle); color: var(--hx-color-text-primary);
   font-family: var(--hx-font-family); font-weight: 500;
   flex: none;
 }
@@ -433,98 +467,75 @@
 .hx-avatar--sm { width: 24px; height: 24px; font-size: 10px; }
 .hx-avatar__img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Alert — source: "Alert" frame in "Удаление договора с алертом.css"
-   (Образцы). Reference box: padding 20px (--hx-space-5, exact), border-radius
-   5px (mapped to --hx-radius-sm, closest token), gap 8px (--hx-space-2,
-   exact). The dump filled the whole box with a solid severity color
-   (#8DC26F green); that reads well for a single toast-style alert but not for
-   an inline banner that must also host success/warning/danger/info variants
-   using only existing/new tokens, so this uses the left-accent-border-on-card
-   convention instead (accent color = severity token; info reuses --hx-color-
-   brand as specified in the brief). */
+/* Alert — no ground truth in Task 2's list; only var() names fixed (same geometry as
+   0.1.0). There is no --hx-color-border-success token in the re-based set (only
+   background/text/icon-success exist); --hx-alert--success reuses --hx-color-text-success
+   for its left border (same #8DC26F hex), flagged as a token gap. */
 .hx-alert {
-  display: flex; align-items: flex-start; gap: var(--hx-space-2);
-  padding: var(--hx-space-4); border-radius: var(--hx-radius-sm);
-  border: 1px solid var(--hx-color-border); border-left-width: 4px;
-  background: var(--hx-color-surface);
-  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+  display: flex; align-items: flex-start; gap: var(--hx-spacing-x2);
+  padding: var(--hx-spacing-x4); border-radius: var(--hx-radius-small);
+  border: 1px solid var(--hx-color-border-primary); border-left-width: 4px;
+  background: var(--hx-color-background-inverse);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
 }
-.hx-alert--info { border-left-color: var(--hx-color-brand); }
-.hx-alert--success { border-left-color: var(--hx-color-success); }
-.hx-alert--warning { border-left-color: var(--hx-color-warning); }
-.hx-alert--danger { border-left-color: var(--hx-color-danger); }
-.hx-alert__body { display: flex; flex-direction: column; gap: var(--hx-space-1); }
+.hx-alert--info { border-left-color: var(--hx-color-border-accent); }
+.hx-alert--success { border-left-color: var(--hx-color-text-success); } /* no --hx-color-border-success token; same hex reused */
+.hx-alert--warning { border-left-color: var(--hx-color-border-warning); }
+.hx-alert--danger { border-left-color: var(--hx-color-border-error); }
+.hx-alert__body { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); }
 .hx-alert__title { font-weight: 600; }
 
-/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont,
-   never SVG. A prior in-house package bundled 1579 SVG icons (~540KB) into a
-   single file and destroyed tree-shaking; this component must never regress
-   that. Source: "assignment - material" / "people - material" / "chevron_left
-   - material" layers across the Образцы dumps (e.g. "Профиль.css",
-   "Пользователь.css"), all set with `font-family: 'material'` at font-size
-   20px (exact). CONSUMER RESPONSIBILITY: the host application must load the
-   Material Icons font under the family name "material" (Google's Material
-   Icons webfont, self-hosted or via @font-face, aliased to this family name)
-   — this package ships no font files and no icon glyph data. */
+/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont, never
+   SVG (unchanged from 0.1.0; no token references here to fix — font-size 20px has no
+   scale token and was already a literal). */
 .hx-icon {
   font-family: 'material'; font-style: normal; font-weight: normal;
   font-size: 20px; line-height: 1; display: inline-flex;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Calendar / DatePicker — source: "Date-Picker" frame in "Создание
-   договора.css" (Образцы): trigger box padding 7px 10px (rounds to
-   --hx-space-2 vertical / --hx-space-3 horizontal), background #FFFFFF
-   (--hx-color-surface), border 1px solid #EEEEEE (--hx-color-border,
-   exact), border-radius 3px (--hx-radius-sm, closest token), value text
-   body/font-body-regular 13px #1F1F1F (--hx-font-size-base /
-   --hx-color-text), formatted as DD.MM.YYYY per the "01.09.2024" sample
-   text in that frame. No distinct "Calendar"/"CalendarDay"/"CalendarHead"
-   frames were present in the Образцы dumps, so the grid below follows the
-   shared control-scale conventions used elsewhere (32px-ish square day
-   cells, --hx-space-* gaps, --hx-radius-sm cells) with the accent color
-   #32B4EB == --hx-color-brand used for the popover's calendar-icon Union
-   layer reused here as the selected-day fill. */
+/* Calendar / DatePicker — no ground truth in Task 2's list; only var() names fixed
+   (same geometry as 0.1.0). */
 .hx-datepicker { width: 198px; cursor: pointer; }
 .hx-datepicker__popover {
   z-index: 1000;
-  margin: var(--hx-space-1) 0 0;
-  padding: var(--hx-space-3);
-  background: var(--hx-color-surface);
-  border: 1px solid var(--hx-color-border);
-  border-radius: var(--hx-radius-sm);
+  margin: var(--hx-spacing-x1) 0 0;
+  padding: var(--hx-size-x3); /* 12px — see legend re: no --hx-spacing-x3 */
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary);
+  border-radius: var(--hx-radius-small);
 }
 .hx-calendar {
-  display: flex; flex-direction: column; gap: var(--hx-space-2);
+  display: flex; flex-direction: column; gap: var(--hx-spacing-x2);
   width: 252px;
-  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
 }
 .hx-calendar__nav { display: flex; align-items: center; justify-content: space-between; }
 .hx-calendar__nav-btn {
   display: inline-flex; align-items: center; justify-content: center;
   width: 24px; height: 24px;
-  background: transparent; border: none; border-radius: var(--hx-radius-sm);
-  color: var(--hx-color-text); cursor: pointer;
+  background: transparent; border: none; border-radius: var(--hx-radius-small);
+  color: var(--hx-color-text-primary); cursor: pointer;
 }
-.hx-calendar__nav-btn:hover { background: var(--hx-color-surface-sunken); }
-.hx-calendar__nav-btn:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
+.hx-calendar__nav-btn:hover { background: var(--hx-color-background-hoverlist); }
+.hx-calendar__nav-btn:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-calendar__month-label { font-weight: 500; }
-.hx-calendar__head, .hx-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--hx-space-1); }
+.hx-calendar__head, .hx-calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: var(--hx-spacing-x1); }
 .hx-calendar__week { display: contents; }
 .hx-calendar__weekday {
   display: flex; align-items: center; justify-content: center;
-  height: 24px; font-size: var(--hx-font-size-sm); color: var(--hx-color-text-muted);
+  height: 24px; font-size: var(--hx-font-size-sm); color: var(--hx-color-text-secondary);
 }
 .hx-calendar__day {
   display: flex; align-items: center; justify-content: center;
   aspect-ratio: 1; padding: 0;
-  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text);
-  background: transparent; border: none; border-radius: var(--hx-radius-sm);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
+  background: transparent; border: none; border-radius: var(--hx-radius-small);
   cursor: pointer;
 }
-.hx-calendar__day:hover { background: var(--hx-color-surface-sunken); }
-.hx-calendar__day:focus-visible { outline: 2px solid var(--hx-color-brand); outline-offset: 1px; }
-.hx-calendar__day--muted { color: var(--hx-color-text-muted); }
+.hx-calendar__day:hover { background: var(--hx-color-background-hoverlist); }
+.hx-calendar__day:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
+.hx-calendar__day--muted { color: var(--hx-color-text-secondary); }
 .hx-calendar__day--selected, .hx-calendar__day--selected:hover {
-  background: var(--hx-color-brand); color: var(--hx-color-on-accent);
+  background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse);
 }
