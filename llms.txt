@@ -42,40 +42,225 @@ a self-hosted `@font-face` under that family name). If the font isn't loaded,
 
 ## Design tokens
 
-Every token below is a real CSS custom property defined in
-`@cvetkov_es/tokens` and loaded globally once you `import "@cvetkov_es/css"`. **For any
-custom UI, use these variables (or the `.hx-*` classes below) — never
-hardcode a hex value, a font stack, a radius, or a spacing number.**
+Every token below is a real CSS custom property, built by `@cvetkov_es/tokens` into
+`packages/tokens/dist/variables.css` and loaded globally once you `import "@cvetkov_es/css"`.
+**For any custom UI, use these variables (or the `.hx-*` classes below) — never
+hardcode a hex value, a font stack, a radius, or a spacing number.** See
+"Anti-invention rules" right after this section for the specific mistakes this
+release fixes.
 
-| Variable | Value | Purpose |
+There are **104 tokens total**: **100 map 1:1 to real, named Figma variables**
+(copied verbatim — same name, same value, zero invention) and **4 are
+`font/*` tokens with no Figma variable at all** (census-derived from a
+frequency analysis of the old CSS; kept only because the design has no
+type-scale variables yet — each is called out below). Grouped by the
+token's own Figma namespace, in the order Figma defines them:
+
+#### `color/text`
+
+| Variable | Value | Description |
 |---|---|---|
-| `--hx-color-text` | `#1F1F1F` | primary text |
-| `--hx-color-text-muted` | `#777777` | secondary/help text |
-| `--hx-color-text-disabled` | `#999999` | disabled text |
-| `--hx-color-brand` | `#32B4EB` | brand accent (primary buttons, focus, active states) |
-| `--hx-color-brand-strong` | `#348AEE` | brand accent, stronger (tag text on brand-tint) |
-| `--hx-color-brand-tint` | `#E8F7FD` | brand accent, tinted background |
-| `--hx-color-danger` | `#ED1940` | destructive/error |
-| `--hx-color-success` | `#3BA55D` | success |
-| `--hx-color-warning` | `#F9C901` | warning |
-| `--hx-color-border` | `#EEEEEE` | hairline borders |
-| `--hx-color-border-strong` | `#DADADA` | input/control borders |
-| `--hx-color-surface` | `#FFFFFF` | base surface (cards, inputs, popovers) |
-| `--hx-color-surface-alt` | `#FEFEFE` | alternate surface |
-| `--hx-color-surface-sunken` | `#F8F8F8` | sunken surface (table head/row hover) |
-| `--hx-color-on-accent` | `#FFFFFF` | text/icon color on top of a colored surface |
-| `--hx-font-family` | `Roboto, -apple-system, "Segoe UI", sans-serif` | the only font stack to use |
-| `--hx-font-size-sm` | `11px` | small text (labels, hints) |
-| `--hx-font-size-base` | `13px` | body text (default) |
-| `--hx-font-size-lg` | `16px` | large text |
-| `--hx-radius-sm` | `4px` | small radius (buttons, inputs, tags) |
-| `--hx-radius-md` | `8px` | large radius (cards, modals) |
-| `--hx-space-1` | `4px` | spacing scale |
-| `--hx-space-2` | `8px` | spacing scale |
-| `--hx-space-3` | `12px` | spacing scale |
-| `--hx-space-4` | `16px` | spacing scale |
-| `--hx-space-5` | `24px` | spacing scale |
-| `--hx-space-6` | `32px` | spacing scale |
+| `--hx-color-text-accent` | `#32B4EB` | text — accent |
+| `--hx-color-text-accent-hover` | `#70CBF1` | text — accent hover |
+| `--hx-color-text-error` | `#ED1940` | text — error |
+| `--hx-color-text-inverse` | `#FFFFFF` | text — inverse |
+| `--hx-color-text-neutral` | `#CCCCCC` | text — neutral |
+| `--hx-color-text-primary` | `#1F1F1F` | text — primary |
+| `--hx-color-text-secondary` | `#777777` | text — secondary |
+| `--hx-color-text-subtle` | `#EEEEEE` | text — subtle |
+| `--hx-color-text-success` | `#8DC26F` | text — success |
+| `--hx-color-text-tertiary` | `#999999` | text — tertiary |
+| `--hx-color-text-warning` | `#FF991F` | text — warning |
+| `--hx-color-text-weak` | `#FEFEFE` | text — weak |
+
+#### `color/background`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-background-accent` | `#32B4EB` | background — accent |
+| `--hx-color-background-accent-hover` | `#70CBF1` | background — accent hover |
+| `--hx-color-background-highlight` | `#E8F7FD` | background — highlight |
+| `--hx-color-background-hoverlist` | `#F8F8FA` | background — hoverlist |
+| `--hx-color-background-inverse` | `#FFFFFF` | background — inverse |
+| `--hx-color-background-neutral` | `#CCCCCC` | background — neutral |
+| `--hx-color-background-page` | `#F8F8F8` | background — page |
+| `--hx-color-background-primary` | `#353535` | background — primary |
+| `--hx-color-background-secondary` | `#777777` | background — secondary |
+| `--hx-color-background-strong` | `#484856` | background — strong |
+| `--hx-color-background-subtle` | `#EEEEEE` | background — subtle |
+| `--hx-color-background-success` | `#8DC26F` | background — success |
+| `--hx-color-background-tertiary` | `#999999` | background — tertiary |
+| `--hx-color-background-weak` | `#F8F8F8` | background — weak |
+
+#### `color/backgroundg`
+
+*This namespace's own name is a verbatim upstream Figma typo
+(`colors/background/color-backgroundg-error`/`-warning`, with an extra "g") —
+not a bug in this package. Kept exactly as Figma names it; do not "fix" it to
+`background`.*
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-backgroundg-error` | `#ED1940` | backgroundg — error |
+| `--hx-color-backgroundg-warning` | `#FF991F` | backgroundg — warning |
+
+#### `color/border`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-border-accent` | `#32B4EB` | border — accent |
+| `--hx-color-border-accent-hover` | `#70CBF1` | border — accent hover |
+| `--hx-color-border-error` | `#ED1940` | border — error |
+| `--hx-color-border-inverse` | `#FFFFFF` | border — inverse |
+| `--hx-color-border-neutral` | `#CCCCCC` | border — neutral |
+| `--hx-color-border-primary` | `#EEEEEE` | border — primary |
+| `--hx-color-border-secondary` | `#999999` | border — secondary |
+| `--hx-color-border-tertiary` | `#777777` | border — tertiary |
+| `--hx-color-border-warning` | `#FF991F` | border — warning |
+
+#### `color/icon`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-icon-accent` | `#32B4EB` | icon — accent |
+| `--hx-color-icon-accent-hover` | `#70CBF1` | icon — accent hover |
+| `--hx-color-icon-error` | `#ED1940` | icon — error |
+| `--hx-color-icon-inverse` | `#FFFFFF` | icon — inverse |
+| `--hx-color-icon-neutral` | `#CCCCCC` | icon — neutral |
+| `--hx-color-icon-primary` | `#1F1F1F` | icon — primary |
+| `--hx-color-icon-rating` | `#F9C901` | icon — rating |
+| `--hx-color-icon-secondary` | `#777777` | icon — secondary |
+| `--hx-color-icon-subtle` | `#EEEEEE` | icon — subtle |
+| `--hx-color-icon-success` | `#8DC26F` | icon — success |
+| `--hx-color-icon-tertiary` | `#999999` | icon — tertiary |
+| `--hx-color-icon-warning` | `#FF991F` | icon — warning |
+| `--hx-color-icon-weak` | `#FEFEFE` | icon — weak |
+
+#### `color/menu`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-menu-background-accent` | `#ED1940` | menu background — accent |
+| `--hx-color-menu-background-active` | `#242324` | menu background — active |
+| `--hx-color-menu-background-default` | `#353535` | menu background — default |
+| `--hx-color-menu-background-focus` | `#ED1940` | menu background — focus |
+| `--hx-color-menu-background-hover` | `#39393E` | menu background — hover |
+
+#### `color/overlay`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-overlay` | `rgba(0, 0, 0, 0.5)` | overlay (Figma: colors/overlay/color-overlay = #000000 @ alpha 0.50) |
+
+#### `color/avatar`
+
+Backs the `Avatar` component's 9 auto-selected colour sets (see the `Avatar`
+entry below) — not meant to be reached for directly in custom UI, but listed
+here because they're real tokens like any other.
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-color-avatar-one-background` | `#FDE8EC` | avatar set one — background |
+| `--hx-color-avatar-one-border` | `#ED1940` | avatar set one — border |
+| `--hx-color-avatar-one-text` | `#ED1940` | avatar set one — text |
+| `--hx-color-avatar-two-background` | `#FFF5E8` | avatar set two — background |
+| `--hx-color-avatar-two-border` | `#FF991F` | avatar set two — border |
+| `--hx-color-avatar-two-text` | `#FF991F` | avatar set two — text |
+| `--hx-color-avatar-three-background` | `#FEF9E5` | avatar set three — background |
+| `--hx-color-avatar-three-border` | `#F9C901` | avatar set three — border |
+| `--hx-color-avatar-three-text` | `#F9C901` | avatar set three — text |
+| `--hx-color-avatar-four-background` | `#E5F6EF` | avatar set four — background |
+| `--hx-color-avatar-four-border` | `#00A861` | avatar set four — border |
+| `--hx-color-avatar-four-text` | `#00A861` | avatar set four — text |
+| `--hx-color-avatar-five-background` | `#EBFAE8` | avatar set five — background |
+| `--hx-color-avatar-five-border` | `#3FCE1B` | avatar set five — border |
+| `--hx-color-avatar-five-text` | `#3FCE1B` | avatar set five — text |
+| `--hx-color-avatar-six-background` | `#E7ECF8` | avatar set six — background |
+| `--hx-color-avatar-six-border` | `#1243BF` | avatar set six — border |
+| `--hx-color-avatar-six-text` | `#1243BF` | avatar set six — text |
+| `--hx-color-avatar-seven-background` | `#ECF3FF` | avatar set seven — background |
+| `--hx-color-avatar-seven-border` | `#4688FF` | avatar set seven — border |
+| `--hx-color-avatar-seven-text` | `#4688FF` | avatar set seven — text |
+| `--hx-color-avatar-eight-background` | `#F6E5FB` | avatar set eight — background |
+| `--hx-color-avatar-eight-border` | `#A200DB` | avatar set eight — border |
+| `--hx-color-avatar-eight-text` | `#A200DB` | avatar set eight — text |
+| `--hx-color-avatar-nine-background` | `#F9E5F7` | avatar set nine — background |
+| `--hx-color-avatar-nine-border` | `#C500B1` | avatar set nine — border |
+| `--hx-color-avatar-nine-text` | `#C500B1` | avatar set nine — text |
+
+#### `radius`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-radius-small` | `3px` | radius — small (3) |
+| `--hx-radius-medium` | `5px` | radius — medium (5) |
+| `--hx-radius-pill` | `9999px` | radius — pill (9999) |
+
+#### `size`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-size-x05` | `2px` | size — x05 |
+| `--hx-size-x1` | `4px` | size — x1 |
+| `--hx-size-x150percent` | `6px` | size — x150percent |
+| `--hx-size-x2` | `8px` | size — x2 |
+| `--hx-size-x250percent` | `10px` | size — x250percent |
+| `--hx-size-x3` | `12px` | size — x3 |
+
+#### `spacing`
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-spacing-x0` | `0px` | spacing — x0 |
+| `--hx-spacing-x05` | `2px` | spacing — x05 |
+| `--hx-spacing-x1` | `4px` | spacing — x1 |
+| `--hx-spacing-x2` | `8px` | spacing — x2 |
+| `--hx-spacing-x250percent` | `10px` | spacing — x250percent |
+| `--hx-spacing-x4` | `16px` | spacing — x4 |
+| `--hx-spacing-x5` | `20px` | spacing — x5 |
+| `--hx-spacing-x6` | `24px` | spacing — x6 |
+
+#### `font`
+
+*All 4 below are census-derived, not real Figma variables (see note above) —
+the only exception to "100 tokens map 1:1 to Figma" in this file.*
+
+| Variable | Value | Description |
+|---|---|---|
+| `--hx-font-family` | `Roboto, -apple-system, "Segoe UI", sans-serif` | font — family |
+| `--hx-font-size-sm` | `11px` | font — size sm |
+| `--hx-font-size-base` | `13px` | font — size base |
+| `--hx-font-size-lg` | `16px` | font — size lg |
+
+## Anti-invention rules (read before writing ANY UI)
+
+This design system was re-based in 0.2.0 on the *real* Figma variables above,
+replacing an earlier 0.1.0 set that had invented plausible-looking tokens and
+values that did not exist in the actual design (wrong radii, an invented
+`success` hex, an invented extra "stronger brand accent" shade with no
+matching Figma variable, etc.). The rules below are the specific, recurring
+mistakes that caused that — follow them to avoid repeating the same defect
+class:
+
+- **`#ED1940` (the `*-error` tokens: `--hx-color-text-error`,
+  `--hx-color-icon-error`, `--hx-color-border-error`,
+  `--hx-color-backgroundg-error`) is for the text, icons, and borders of an
+  error state — NEVER a button fill.** There is no red/"danger" button
+  anywhere in HubEx. `ButtonProps["variant"]` has no `"danger"` option (see
+  `Button` below) — destructive actions (delete, revoke, etc.) use a normal
+  `primary` button, exactly like any other action.
+- **Buttons are pill-shaped: the base `.hx-btn` uses `--hx-radius-pill`
+  (`9999px`) for `primary`/`secondary`/`ghost`.** Never invent a button
+  radius. The one real exception, also from ground truth (not invented): the
+  `dashed` variant uses `--hx-radius-small` (`3px`), measured from the actual
+  Figma `Dashed` variant masters — if you need a pill-shaped custom control,
+  reach for `--hx-radius-pill`; don't assume every button-like shape is
+  identical.
+- **Never hardcode a hex value or a raw px number that isn't one of the 104
+  tokens above.** If a value you need doesn't map to an existing token,
+  that's a signal to double check `packages/tokens/dist/variables.css` (or
+  ask) before inventing a one-off number — do not guess a "close enough"
+  value the way 0.1.0 did.
 
 ## Component index
 
@@ -87,10 +272,19 @@ ones on top of that.
 
 ### Button
 `ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>`
-- `variant?: "primary" | "secondary" | "danger"` (default `"primary"`)
+- `variant?: "primary" | "secondary" | "ghost" | "dashed"` (default `"primary"`)
 - `size?: "md" | "sm"` (default `"md"`)
+
+No `"danger"` variant exists — it was removed in 0.2.0 because there is no
+red/filled destructive button in the real design (the type checker rejects
+that value for `variant` at compile time). Use `primary` for destructive
+actions too. All variants are pill-shaped (`--hx-radius-pill`) except
+`dashed`, which uses `--hx-radius-small` per the real Figma geometry — see
+"Anti-invention rules" above.
 ```tsx
-<Button variant="danger" onClick={handleDelete}>Delete</Button>
+<Button onClick={handleDelete}>Delete</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="dashed">Dashed</Button>
 ```
 
 ### Input
@@ -194,7 +388,7 @@ ones on top of that.
 `TooltipProps`: `{ content: React.ReactNode; children: React.ReactElement }`
 ```tsx
 <Tooltip content="Delete this item">
-  <Button variant="danger">Delete</Button>
+  <Button onClick={handleDelete}>Delete</Button>
 </Tooltip>
 ```
 
@@ -249,8 +443,17 @@ ones on top of that.
 ### Avatar
 `AvatarProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
 - `src?: string`
-- `name: string` (required — used for alt text and initials fallback)
+- `name: string` (required — used for alt text, the initials fallback, AND to
+  pick a colour — see below)
 - `size?: "sm" | "md"` (default `"md"`)
+
+There is no `color`/`variant` prop. Instead, `Avatar` deterministically
+auto-picks one of the **9 real Figma avatar colour sets**
+(`--hx-color-avatar-{one..nine}-{background,border,text}`, see `color/avatar`
+above) from `name`: it sums `name`'s UTF-16 char codes and takes the result
+modulo 9 to index the set. Same `name` always renders the same set; you
+cannot request a specific set directly, and there is no 10th/custom set —
+don't invent one.
 ```tsx
 <Avatar name="Ada Lovelace" size="sm" />
 ```
@@ -303,9 +506,10 @@ DO:
 - `import "@cvetkov_es/css"` exactly once, at your app's entry point.
 - Use `--hx-*` CSS variables (or the existing `.hx-*` classes) for any custom
   element that isn't covered by a component.
-- Use the Roboto font stack, 13px base size, and brand color `#32B4EB` —
+- Use the Roboto font stack, 13px base size, and accent color `#32B4EB` —
   i.e. `var(--hx-font-family)`, `var(--hx-font-size-base)`,
-  `var(--hx-color-brand)` — rather than restating these literals.
+  `var(--hx-color-text-accent)` (or `-background-accent` / `-border-accent` /
+  `-icon-accent`, depending on role) — rather than restating these literals.
 - Load the Material Icons font yourself (aliased to family `"material"`) if
   you use `Icon`.
 
@@ -320,11 +524,13 @@ DON'T:
 
 ### Good vs bad
 
-Good — uses the component and its variant prop:
+Good — destructive actions use a normal `primary` button, no variant needed:
 ```tsx
-<Button variant="danger" onClick={onDelete}>Delete</Button>
+<Button onClick={onDelete}>Delete</Button>
 ```
-Bad — hand-rolled button with inline hex, ignoring the design system:
+Bad — hand-rolled red button with inline hex: there is no `"danger"` variant
+and no red button anywhere in HubEx, so this both ignores the design system
+AND invents a control that doesn't exist in the real design:
 ```tsx
 <button style={{ background: "#ED1940", color: "#fff", borderRadius: 4 }} onClick={onDelete}>
   Delete
@@ -334,10 +540,10 @@ Bad — hand-rolled button with inline hex, ignoring the design system:
 Good — a one-off custom element still styled from tokens:
 ```tsx
 <div style={{
-  padding: "var(--hx-space-3)",
-  borderRadius: "var(--hx-radius-sm)",
-  background: "var(--hx-color-surface-sunken)",
-  color: "var(--hx-color-text-muted)",
+  padding: "var(--hx-spacing-x4)",
+  borderRadius: "var(--hx-radius-medium)",
+  background: "var(--hx-color-background-subtle)",
+  color: "var(--hx-color-text-secondary)",
   fontFamily: "var(--hx-font-family)",
   fontSize: "var(--hx-font-size-sm)"
 }}>
@@ -346,7 +552,7 @@ Good — a one-off custom element still styled from tokens:
 ```
 Bad — same element with hardcoded values that will drift from the design system:
 ```tsx
-<div style={{ padding: 12, borderRadius: 4, background: "#F8F8F8", color: "#777", fontFamily: "Arial", fontSize: 11 }}>
+<div style={{ padding: 16, borderRadius: 5, background: "#EEEEEE", color: "#777777", fontFamily: "Arial", fontSize: 11 }}>
   Empty state
 </div>
 ```

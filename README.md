@@ -34,6 +34,59 @@ dependency chain:
   `@cvetkov_es/tokens` only as `dependencies` for typing/tooling purposes — at
   runtime the consumer app is the one that loads the stylesheet (see below).
 
+## 0.2.0: re-based on real Figma variables
+
+0.1.0's design tokens and part of its component API were **invented** —
+plausible-looking values that didn't actually match the design. 0.2.0
+re-bases everything on the real, named Figma variables. If anything you
+wrote (or any AI-generated code) targets 0.1.0, read this before upgrading.
+
+### Breaking changes
+
+- **Every token name changed, and most values did too.** 0.1.0 had ~27
+  invented tokens — plausible-looking names and values with no real Figma
+  variable behind them. They're gone. In their place: **104 tokens** in
+  `packages/tokens/dist/variables.css` — **100 map 1:1 to real Figma
+  variables**, plus 4 `font/*` tokens that still have no Figma equivalent
+  (census-derived, unchanged carry-over from 0.1.0). See
+  [`llms.txt`](./llms.txt)'s "Design tokens" section for the complete,
+  current table, grouped by namespace. For the exact old-name → new-name
+  mapping used during the re-base — including the handful of old values
+  that turned out to be simply wrong rather than just renamed (an invented
+  success color, an invented stronger-brand shade with no real counterpart,
+  an invented border color, invented radii) — see the token-name legend
+  comment at the top of `packages/css/src/index.css`. Do not reuse an old
+  token name from memory or from anything written against 0.1.0, and don't
+  assume old → new is a 1:1 renaming: re-check each call site rather than
+  search/replace (the radius and spacing scales were renumbered too).
+- **`Button`'s `variant` prop dropped its one destructive option and gained
+  two new ones:** now `variant?: "primary" | "secondary" | "ghost" |
+  "dashed"`. There is no red/filled destructive button anywhere in the real
+  design — code passing the old destructive value to `variant` no longer
+  compiles. Use a plain `primary` button for destructive actions instead.
+- **Buttons are pill-shaped**: `border-radius: var(--hx-radius-pill)`
+  (`9999px`) for `primary`/`secondary`/`ghost`, replacing 0.1.0's invented
+  fixed radius. The `dashed` variant is a real, measured exception —
+  `--hx-radius-small` (`3px`) — not a fallback or an oversight.
+- **`Avatar` now auto-colors itself from `name`.** There is no `color` prop
+  and never was one, but 0.1.0's single flat placeholder fill is gone: each
+  `name` now deterministically resolves (a simple hash, not user-chosen) to
+  one of **9 real Figma colour sets**. `AvatarProps` itself is unchanged
+  (`src?`, `name` required, `size?`) — this is a visual-only change.
+
+### Figma-variable naming convention
+
+Every `--hx-*` token name (barring the 4 `font/*` exceptions above) is
+`--hx-` plus the real Figma variable's own path, flattened with hyphens —
+e.g. Figma variable `colors/text/color-text-primary` became
+`--hx-color-text-primary`. Names are copied **verbatim, including Figma's
+own typo**: the `backgroundg` namespace (`--hx-color-backgroundg-error`,
+`--hx-color-backgroundg-warning`) really is spelled that way upstream
+(`colors/background/color-backgroundg-error`) — it is **not** a typo in
+this repo and must not be "corrected" to `background`. When Figma adds or
+renames a variable, mirror it exactly rather than choosing a name that
+merely reads better.
+
 ## Install (plugin authors)
 
 The packages publish to the public npm registry — install them like any
