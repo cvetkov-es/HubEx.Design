@@ -467,6 +467,21 @@
 .hx-avatar--sm { width: 24px; height: 24px; font-size: 10px; }
 .hx-avatar__img { width: 100%; height: 100%; object-fit: cover; }
 
+/* Avatar colour sets — Task 4 ground truth: Figma colors/avatar, 9 sets, text
+   colour == border colour in every set. Declared after the base block above
+   so these override its background/border/color on equal specificity. Word
+   names (not digits) match both the token names (--hx-color-avatar-<word>-*)
+   and the component's hash-picked class (hx-avatar--<word>). */
+.hx-avatar--one { background: var(--hx-color-avatar-one-background); border-color: var(--hx-color-avatar-one-border); color: var(--hx-color-avatar-one-text); }
+.hx-avatar--two { background: var(--hx-color-avatar-two-background); border-color: var(--hx-color-avatar-two-border); color: var(--hx-color-avatar-two-text); }
+.hx-avatar--three { background: var(--hx-color-avatar-three-background); border-color: var(--hx-color-avatar-three-border); color: var(--hx-color-avatar-three-text); }
+.hx-avatar--four { background: var(--hx-color-avatar-four-background); border-color: var(--hx-color-avatar-four-border); color: var(--hx-color-avatar-four-text); }
+.hx-avatar--five { background: var(--hx-color-avatar-five-background); border-color: var(--hx-color-avatar-five-border); color: var(--hx-color-avatar-five-text); }
+.hx-avatar--six { background: var(--hx-color-avatar-six-background); border-color: var(--hx-color-avatar-six-border); color: var(--hx-color-avatar-six-text); }
+.hx-avatar--seven { background: var(--hx-color-avatar-seven-background); border-color: var(--hx-color-avatar-seven-border); color: var(--hx-color-avatar-seven-text); }
+.hx-avatar--eight { background: var(--hx-color-avatar-eight-background); border-color: var(--hx-color-avatar-eight-border); color: var(--hx-color-avatar-eight-text); }
+.hx-avatar--nine { background: var(--hx-color-avatar-nine-background); border-color: var(--hx-color-avatar-nine-border); color: var(--hx-color-avatar-nine-text); }
+
 /* Alert — no ground truth in Task 2's list; only var() names fixed (same geometry as
    0.1.0). There is no --hx-color-border-success token in the re-based set (only
    background/text/icon-success exist); --hx-alert--success reuses --hx-color-text-success
