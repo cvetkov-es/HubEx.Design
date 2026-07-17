@@ -1,5 +1,11 @@
 packages:
   - "packages/*"
   - "playground"
+# pnpm 10+ blocks dependency build/postinstall scripts unless explicitly
+# approved here. Every dependency that ships one must be listed and set to
+# true, or a fresh `pnpm install` (e.g. in CI) fails with
+# ERR_PNPM_IGNORED_BUILDS. esbuild MUST build (it fetches its platform binary).
 allowBuilds:
   esbuild: true
+  style-dictionary: true
+  "@bundled-es-modules/glob": true
