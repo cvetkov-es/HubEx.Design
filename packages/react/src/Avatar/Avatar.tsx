@@ -16,12 +16,48 @@ function initialsFrom(name: string): string {
     .toUpperCase();
 }
 
+// The 9 real Figma avatar colour sets (Figma: colors/avatar). Word names
+// (not digits) match both the token names (--hx-color-avatar-<word>-*) and
+// the CSS classes (.hx-avatar--<word>) defined in index.css.
+const AVATAR_COLOR_SETS = [
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine",
+] as const;
+
+// Deterministically picks one of the 9 colour sets from `name`: sum `name`'s
+// UTF-16 char codes and take the result modulo 9 to index AVATAR_COLOR_SETS.
+// This is intentionally a simple, non-cryptographic hash — its only job is
+// "same name always renders the same set" and "different names spread
+// across sets", not collision-resistance. See Avatar.test.tsx for
+// hand-verified examples.
+function colorSetFor(name: string): (typeof AVATAR_COLOR_SETS)[number] {
+  let sum = 0;
+  for (let i = 0; i < name.length; i++) {
+    sum += name.charCodeAt(i);
+  }
+  return AVATAR_COLOR_SETS[sum % 9];
+}
+
 // See Button.tsx for why displayName is set via Object.assign instead of a
 // separate assignment statement (it's required for cross-component tree-shaking).
 export const Avatar = /* @__PURE__ */ Object.assign(
   /* @__PURE__ */ React.forwardRef<HTMLSpanElement, AvatarProps>(
     ({ src, name, size = "md", className, ...rest }, ref) => {
-      const cls = ["hx-avatar", `hx-avatar--${size}`, className].filter(Boolean).join(" ");
+      const cls = [
+        "hx-avatar",
+        `hx-avatar--${size}`,
+        `hx-avatar--${colorSetFor(name)}`,
+        className,
+      ]
+        .filter(Boolean)
+        .join(" ");
       return (
         <span {...rest} ref={ref} className={cls}>
           {src ? (

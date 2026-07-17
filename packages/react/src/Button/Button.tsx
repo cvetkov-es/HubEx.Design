@@ -1,7 +1,11 @@
 import * as React from "react";
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "danger";
+  // `danger` is intentionally absent: the re-based Figma design has no red
+  // filled button. This union is the compile-time enforcement of that — the
+  // type checker rejects `variant="danger"` outright, matching the CSS
+  // package, which has already dropped its `.hx-btn--danger` rule.
+  variant?: "primary" | "secondary" | "ghost" | "dashed";
   size?: "md" | "sm";
 }
 

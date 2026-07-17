@@ -46,7 +46,8 @@ function ButtonSection() {
     <Section title="Button">
       <Button>Primary</Button>
       <Button variant="secondary">Secondary</Button>
-      <Button variant="danger">Danger</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="dashed">Dashed</Button>
       <Button size="sm">Small</Button>
       <Button disabled>Disabled</Button>
     </Section>
@@ -259,8 +260,22 @@ function TagChipBadgeSection() {
 function AvatarLabelSection() {
   return (
     <Section title="Avatar / Label">
-      <Avatar name="Иван Петров" size="md" />
-      <Avatar name="Анна Смирнова" size="sm" />
+      {/* Avatar has no color/variant prop — it auto-picks one of the 9 real
+          Figma colour sets from `name` (sum of UTF-16 char codes, mod 9; see
+          colorSetFor in Avatar.tsx). These 9 names were verified by that same
+          formula to land on a different set each, in order one..nine, so this
+          row shows every set exactly once: Eve->one, Kim->two, Xia->three,
+          Dana->four, Quy->five, Bob->six, Ann->seven, Hana->eight, Cy->nine. */}
+      <Avatar name="Eve" />
+      <Avatar name="Kim" />
+      <Avatar name="Xia" />
+      <Avatar name="Dana" />
+      <Avatar name="Quy" />
+      <Avatar name="Bob" />
+      <Avatar name="Ann" />
+      <Avatar name="Hana" />
+      <Avatar name="Cy" />
+      <Avatar name="Eve" size="sm" />
       <Label>Standalone label</Label>
     </Section>
   );
