@@ -30,9 +30,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # No `version:` here — pnpm/action-setup reads the pnpm version from the
+      # root package.json "packageManager" field (pnpm@11.13.1). Specifying both
+      # conflicts (ERR_PNPM_BAD_PM_VERSION) and fails the run at setup.
       - uses: pnpm/action-setup@v4
-        with:
-          version: 9
 
       - uses: actions/setup-node@v4
         with:
