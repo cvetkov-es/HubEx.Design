@@ -15,12 +15,12 @@
    --hx-color-brand-strong      -> --hx-color-text-accent (no distinct "strong accent" token exists in the
                                     re-based set; CANT-TELL, see report — collapsed onto the single accent value)
    --hx-color-on-accent         -> --hx-color-text-inverse / --hx-color-icon-inverse (#FFFFFF, role-dependent)
-   --hx-color-danger            -> --hx-color-{backgroundg,border,text,icon}-error (#ED1940 — note the upstream
-                                    "backgroundg" typo is Figma's real variable name, kept verbatim)
+   --hx-color-danger            -> --hx-color-{background,border,text,icon}-error (#ED1940 — the upstream Figma
+                                    "backgroundg" typo was corrected to "background" in 0.2.x, see tokens.json)
    --hx-color-success           -> --hx-color-{background,text,icon}-success (#8DC26F) — NO --border-success
                                     token exists; where a left-border needs the success hue, --hx-color-text-success
                                     is reused (same #8DC26F hex), flagged inline.
-   --hx-color-warning           -> --hx-color-{backgroundg,border,text,icon}-warning (#FF991F)
+   --hx-color-warning           -> --hx-color-{background,border,text,icon}-warning (#FF991F)
    --hx-radius-sm                -> --hx-radius-small  (3px)   [Tooltip/Modal explicitly move to -medium, see below]
    --hx-radius-md                -> --hx-radius-medium (5px)
    --hx-space-1/2/4              -> --hx-spacing-x1/x2/x4 (4/8/16px, exact matches)
@@ -66,32 +66,27 @@
   background: var(--hx-color-background-neutral);
 }
 
-.hx-btn--secondary {
-  /* report §5: Secondary/Normal fill #FFFFFF, stroke #32B4EB 1px. Text color has no
-     ground truth in the report (fill/stroke only); kept as dark body text (0.1.0's own
-     choice), now on the correctly-named token. */
-  background: var(--hx-color-background-inverse); color: var(--hx-color-text-primary);
-  border-color: var(--hx-color-border-accent);
-}
-.hx-btn--secondary:hover, .hx-btn--secondary:active {
-  /* report §5: Secondary/Hover and /Active fill #E8F7FD */
-  background: var(--hx-color-background-highlight);
-}
-.hx-btn--secondary:disabled, .hx-btn--secondary[disabled] {
-  /* report §5: Secondary/Disabled — no fill, stroke #CCCCCC */
-  background: transparent; border-color: var(--hx-color-border-neutral);
-}
-
-.hx-btn--ghost {
-  /* Task 2 mandatory ground truth: Ghost fill #FFFFFF normal -> #EEEEEE hover/active;
-     NO stroke in ANY state (do not invent a hover border). */
-  background: var(--hx-color-background-inverse); color: var(--hx-color-text-primary);
+/* Secondary & Ghost share ONE target look, corrected against the live HubEx product
+   (2026-07-20 user feedback): borderless, TRANSPARENT at rest (only text/icon), light-grey
+   fill #EEEEEE (--hx-color-background-subtle) on :hover/:active. This overrides the earlier
+   .fig-master decode (Secondary: white fill + blue stroke; Ghost: white fill) — those
+   variant masters do not match how the buttons actually render in HubEx, where every
+   secondary action (Отменить/Назад/Отключить/«?») is a frameless grey-hover control and
+   there is no white "pill" sitting on the #F8F8F8 page. The two class names are kept as
+   visual aliases so both published `variant="secondary"` and `variant="ghost"` render the
+   single intended look (neither can be dropped without a breaking API change). */
+.hx-btn--secondary, .hx-btn--ghost {
+  background: transparent; color: var(--hx-color-text-primary);
   border-color: transparent;
 }
-.hx-btn--ghost:hover, .hx-btn--ghost:active { background: var(--hx-color-background-subtle); }
+.hx-btn--secondary:hover, .hx-btn--secondary:active,
+.hx-btn--ghost:hover, .hx-btn--ghost:active {
+  background: var(--hx-color-background-subtle);
+}
+.hx-btn--secondary:disabled, .hx-btn--secondary[disabled],
 .hx-btn--ghost:disabled, .hx-btn--ghost[disabled] {
-  /* report §5: Ghost/Disabled — no fill and no stroke at all (fully transparent) */
-  background: transparent;
+  /* frameless in every state: no fill, no stroke (opacity dim comes from .hx-btn[disabled]) */
+  background: transparent; border-color: transparent;
 }
 
 .hx-btn--dashed {
@@ -427,7 +422,8 @@
 .hx-chip__remove:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
 /* Badge — Task 2 ground truth: Badge-Count radius 9999 (--hx-radius-pill), fill #ED1940
-   (--hx-color-backgroundg-error, upstream typo kept verbatim). Badge-Dot/Badge-Tag have
+   (--hx-color-background-error; the upstream Figma "backgroundg" typo is corrected to
+   "background" here as of 0.2.x — see tokens.json). Badge-Dot/Badge-Tag have
    no explicit ground truth in Task 2; their prior hardcoded 999px literals are replaced
    with the same --hx-radius-pill token (999 and 9999 collapse identically, see the
    Radio/Toggle note above) and their var() names fixed. */
@@ -437,11 +433,11 @@
 }
 .hx-badge--dot {
   width: 6px; height: 6px; padding: 0; border-radius: var(--hx-radius-pill);
-  background: var(--hx-color-backgroundg-error);
+  background: var(--hx-color-background-error);
 }
 .hx-badge--count {
   min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
-  background: var(--hx-color-backgroundg-error); color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 */
+  background: var(--hx-color-background-error); color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 */
   font-size: var(--hx-font-size-sm); line-height: 14px;
 }
 .hx-badge--tag {
