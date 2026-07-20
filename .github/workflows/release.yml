@@ -28,14 +28,14 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       # No `version:` here — pnpm/action-setup reads the pnpm version from the
       # root package.json "packageManager" field (pnpm@11.13.1). Specifying both
       # conflicts (ERR_PNPM_BAD_PM_VERSION) and fails the run at setup.
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           # pnpm 11.13.1 (from package.json packageManager) requires Node >= 22.13.
           node-version: 22
