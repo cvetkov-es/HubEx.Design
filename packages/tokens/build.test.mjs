@@ -12,9 +12,13 @@ test("generated variables.css contains real Figma variable values (docs/design-s
   assert.match(css, /--hx-color-background-accent:\s*#32B4EB/);
 });
 
-test("keeps the upstream Figma 'backgroundg' typo verbatim", () => {
-  assert.match(css, /--hx-color-backgroundg-error:\s*#ED1940/);
-  assert.match(css, /--hx-color-backgroundg-warning:\s*#FF991F/);
+test("corrects the upstream Figma 'backgroundg' typo to 'background'", () => {
+  // The Figma source misspells these as color-backgroundg-error/-warning (extra "g");
+  // they are folded into the `background` group so consumers can reach them by the
+  // expected name. The typo'd spelling must NOT ship.
+  assert.match(css, /--hx-color-background-error:\s*#ED1940/);
+  assert.match(css, /--hx-color-background-warning:\s*#FF991F/);
+  assert.doesNotMatch(css, /--hx-color-backgroundg-/);
 });
 
 test("overlay color is emitted as rgba per the plan (color-overlay = #000000 @ alpha 0.50)", () => {

@@ -63,7 +63,11 @@ wrote (or any AI-generated code) targets 0.1.0, read this before upgrading.
   two new ones:** now `variant?: "primary" | "secondary" | "ghost" |
   "dashed"`. There is no red/filled destructive button anywhere in the real
   design — code passing the old destructive value to `variant` no longer
-  compiles. Use a plain `primary` button for destructive actions instead.
+  compiles. Destructive actions (Disable, Revoke, Delete) use a neutral
+  `secondary` button. `secondary` and `ghost` share one look: frameless,
+  transparent at rest, light-grey (`--hx-color-background-subtle`) fill on
+  hover — no border in any state. They are kept as aliases; use whichever name
+  reads better.
 - **Buttons are pill-shaped**: `border-radius: var(--hx-radius-pill)`
   (`9999px`) for `primary`/`secondary`/`ghost`, replacing 0.1.0's invented
   fixed radius. The `dashed` variant is a real, measured exception —
@@ -79,11 +83,12 @@ wrote (or any AI-generated code) targets 0.1.0, read this before upgrading.
 Every `--hx-*` token name (barring the 4 `font/*` exceptions above) is
 `--hx-` plus the real Figma variable's own path, flattened with hyphens —
 e.g. Figma variable `colors/text/color-text-primary` became
-`--hx-color-text-primary`. Names are copied **verbatim, including Figma's
-own typo**: the `backgroundg` namespace (`--hx-color-backgroundg-error`,
-`--hx-color-backgroundg-warning`) really is spelled that way upstream
-(`colors/background/color-backgroundg-error`) — it is **not** a typo in
-this repo and must not be "corrected" to `background`. When Figma adds or
+`--hx-color-text-primary`. Names mirror the real Figma variable paths. The
+one deliberate correction: Figma misspells its error/warning background
+variables as `colors/background/color-backgroundg-error`/`-warning` (an extra
+"g"); these ship here as `--hx-color-background-error` /
+`--hx-color-background-warning` so they are reachable by the expected name
+(the fix belongs in the Figma macro too). Otherwise, when Figma adds or
 renames a variable, mirror it exactly rather than choosing a name that
 merely reads better.
 

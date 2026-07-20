@@ -79,6 +79,7 @@ token's own Figma namespace, in the order Figma defines them:
 |---|---|---|
 | `--hx-color-background-accent` | `#32B4EB` | background — accent |
 | `--hx-color-background-accent-hover` | `#70CBF1` | background — accent hover |
+| `--hx-color-background-error` | `#ED1940` | background — error (see note below) |
 | `--hx-color-background-highlight` | `#E8F7FD` | background — highlight |
 | `--hx-color-background-hoverlist` | `#F8F8FA` | background — hoverlist |
 | `--hx-color-background-inverse` | `#FFFFFF` | background — inverse |
@@ -90,19 +91,14 @@ token's own Figma namespace, in the order Figma defines them:
 | `--hx-color-background-subtle` | `#EEEEEE` | background — subtle |
 | `--hx-color-background-success` | `#8DC26F` | background — success |
 | `--hx-color-background-tertiary` | `#999999` | background — tertiary |
+| `--hx-color-background-warning` | `#FF991F` | background — warning (see note below) |
 | `--hx-color-background-weak` | `#F8F8F8` | background — weak |
 
-#### `color/backgroundg`
-
-*This namespace's own name is a verbatim upstream Figma typo
-(`colors/background/color-backgroundg-error`/`-warning`, with an extra "g") —
-not a bug in this package. Kept exactly as Figma names it; do not "fix" it to
-`background`.*
-
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-backgroundg-error` | `#ED1940` | backgroundg — error |
-| `--hx-color-backgroundg-warning` | `#FF991F` | backgroundg — warning |
+*Note: `--hx-color-background-error` and `--hx-color-background-warning` are
+misspelled in the Figma source as `color-backgroundg-error`/`-warning` (an
+extra "g"). That typo is corrected here so the tokens are reachable by their
+expected name. As with every error hue, these are for error/warning surfaces
+(e.g. the count badge), **never** a button fill — there is no red button.*
 
 #### `color/border`
 
@@ -244,11 +240,12 @@ class:
 
 - **`#ED1940` (the `*-error` tokens: `--hx-color-text-error`,
   `--hx-color-icon-error`, `--hx-color-border-error`,
-  `--hx-color-backgroundg-error`) is for the text, icons, and borders of an
+  `--hx-color-background-error`) is for the text, icons, and borders of an
   error state — NEVER a button fill.** There is no red/"danger" button
   anywhere in HubEx. `ButtonProps["variant"]` has no `"danger"` option (see
-  `Button` below) — destructive actions (delete, revoke, etc.) use a normal
-  `primary` button, exactly like any other action.
+  `Button` below) — destructive actions (disable, revoke, delete, etc.) use a
+  neutral **secondary** (frameless, grey-on-hover) button, exactly like any
+  other secondary action. Do not reach for a red button "just in case".
 - **Buttons are pill-shaped: the base `.hx-btn` uses `--hx-radius-pill`
   (`9999px`) for `primary`/`secondary`/`ghost`.** Never invent a button
   radius. The one real exception, also from ground truth (not invented): the
@@ -275,16 +272,24 @@ ones on top of that.
 - `variant?: "primary" | "secondary" | "ghost" | "dashed"` (default `"primary"`)
 - `size?: "md" | "sm"` (default `"md"`)
 
+`secondary` and `ghost` render the SAME look: frameless, transparent at rest
+(text/icon only), with a light-grey fill (`--hx-color-background-subtle`,
+`#EEEEEE`) on hover — no border in any state. This is how every secondary
+action reads in HubEx (Cancel, Back, Disable, "?"). The two names are kept as
+aliases; pick whichever reads better at the call site. `primary` is the filled
+accent button; `dashed` is the add/placeholder outline.
+
 No `"danger"` variant exists — it was removed in 0.2.0 because there is no
 red/filled destructive button in the real design (the type checker rejects
-that value for `variant` at compile time). Use `primary` for destructive
-actions too. All variants are pill-shaped (`--hx-radius-pill`) except
-`dashed`, which uses `--hx-radius-small` per the real Figma geometry — see
-"Anti-invention rules" above.
+that value for `variant` at compile time). Destructive actions (Disable,
+Revoke, Delete) use a neutral `secondary` button, not a red one. All variants
+are pill-shaped (`--hx-radius-pill`) except `dashed`, which uses
+`--hx-radius-small` per the real Figma geometry — see "Anti-invention rules"
+above.
 ```tsx
-<Button onClick={handleDelete}>Delete</Button>
-<Button variant="ghost">Ghost</Button>
-<Button variant="dashed">Dashed</Button>
+<Button variant="secondary" onClick={handleDisable}>Disable</Button>
+<Button variant="ghost">Cancel</Button>
+<Button variant="dashed">Add</Button>
 ```
 
 ### Input

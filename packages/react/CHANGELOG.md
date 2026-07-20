@@ -1,5 +1,12 @@
 # @cvetkov_es/react
 
+## 0.2.1
+
+### Patch Changes
+
+- Updated dependencies
+  - @cvetkov_es/css@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes

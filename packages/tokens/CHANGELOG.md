@@ -1,5 +1,25 @@
 # @cvetkov_es/tokens
 
+## 0.3.0
+
+### Minor Changes
+
+- Align buttons with the live HubEx product and fix a token typo.
+
+  - **`secondary` / `ghost` buttons are now frameless.** Both variants render the
+    one look HubEx actually uses: transparent at rest (text/icon only), light-grey
+    fill (`--hx-color-background-subtle`, `#EEEEEE`) on hover, no border in any
+    state. The previous `secondary` (white fill + blue border) and `ghost` (white
+    fill) no longer match the real UI and are gone. The two variant names are kept
+    as aliases so no API changes.
+  - **No red/destructive button** — reaffirmed. Destructive actions (Disable,
+    Revoke, Delete) use a neutral `secondary` button; `danger` stays removed.
+  - **Token typo corrected (breaking rename):** the Figma-misspelled
+    `--hx-color-backgroundg-error` / `--hx-color-backgroundg-warning` (extra "g")
+    are renamed to `--hx-color-background-error` / `--hx-color-background-warning`,
+    reachable by their expected name. The typo'd names are removed; the fix also
+    belongs in the Figma source.
+
 ## 0.2.0
 
 ### Minor Changes
