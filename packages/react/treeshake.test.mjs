@@ -201,3 +201,38 @@ test("importing only Link yields a bundle free of unrelated components' classes"
     "Link-only bundle must include its own hx-link literal class"
   );
 });
+
+test("importing only Loader yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Loader } from "./dist/index.js"; console.log(Loader);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Loader-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Loader-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Loader-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Loader-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Loader-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-text"),
+    "Loader-only bundle must not pull in other components (Text's hx-text class found)"
+  );
+  assert.ok(
+    !out.includes("hx-link"),
+    "Loader-only bundle must not pull in other components (Link's hx-link class found)"
+  );
+  assert.ok(
+    out.includes("hx-loader"),
+    "Loader-only bundle must include its own hx-loader literal class"
+  );
+});

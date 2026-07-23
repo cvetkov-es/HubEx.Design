@@ -76,3 +76,5 @@ export { Text } from "./Text/Text";
 export type { TextProps, TextVariant, TextColor } from "./Text/Text";
 export { Link } from "./Link/Link";
 export type { LinkProps } from "./Link/Link";
+export { Loader } from "./Loader/Loader";
+export type { LoaderProps, LoaderSize, LoaderColor } from "./Loader/Loader";

@@ -1030,3 +1030,30 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+/* Loader (Task 8) — new component. The official bundle animates an inline
+   SVG glyph; this package bans inline SVG (see Icon.tsx), so the spinner is
+   reimplemented as a CSS bordered-ring, same convention already established
+   by the Button's own `.hx-btn--loading::after` spinner above (border color
+   trick: solid currentColor with the right edge transparent, rotated via
+   @keyframes). Ring thickness reuses the same --hx-spacing-x05 (2px) token
+   Button's spinner uses. Timing (1.1s ease infinite) is ported verbatim from
+   the vendored bundle's `animation: rotate 1.1s infinite ease` — no token
+   exists for an animation-duration, kept as the extracted literal. size/color
+   map onto --hx-size-loader-{s,m,l} / --hx-color-icon-{primary,secondary,
+   error}, both exact matches to the official LoaderSizeTokens/
+   LoaderColorTokens enum members (small/medium/large,
+   color-icon-primary/secondary/error). */
+.hx-loader {
+  display: inline-block; flex: none;
+  border: var(--hx-spacing-x05) solid currentColor; border-right-color: transparent;
+  border-radius: var(--hx-border-radius-circle);
+  animation: hx-loader-spin 1.1s ease infinite;
+}
+@keyframes hx-loader-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.hx-loader--small { width: var(--hx-size-loader-s); height: var(--hx-size-loader-s); }
+.hx-loader--medium { width: var(--hx-size-loader-m); height: var(--hx-size-loader-m); }
+.hx-loader--large { width: var(--hx-size-loader-l); height: var(--hx-size-loader-l); }
+.hx-loader--color-icon-primary { color: var(--hx-color-icon-primary); }
+.hx-loader--color-icon-secondary { color: var(--hx-color-icon-secondary); }
+.hx-loader--color-icon-error { color: var(--hx-color-icon-error); }
