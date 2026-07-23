@@ -274,6 +274,15 @@
 .hx-radio:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-radio:disabled { opacity: .5; cursor: not-allowed; }
 
+/* Radio label + RadioGroup — Task 6: align to the official API's RadioGroup
+   (options/name/value/direction). Geometry-free layout chrome only: gap
+   between the control and its text, gap between stacked/inline options. */
+.hx-radio-label { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); cursor: pointer; }
+.hx-radio-label--disabled { cursor: not-allowed; color: var(--hx-color-text-tertiary); }
+.hx-radio-group { display: inline-flex; gap: var(--hx-spacing-x3); }
+.hx-radio-group--column { flex-direction: column; }
+.hx-radio-group--row { flex-direction: row; }
+
 /* Toggle — Task 2 ground truth: track 24x14, radius 999 -> --hx-radius-pill (see Radio's
    note on the 999/9999 collapse). Checked bg = accent #32B4EB; thumb white. Unchecked
    track: 0.1.0 misused the BORDER-role token --hx-color-border-strong as a background

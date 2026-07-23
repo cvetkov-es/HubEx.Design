@@ -11,6 +11,8 @@ export { Checkbox } from "./Checkbox/Checkbox";
 export type { CheckboxProps } from "./Checkbox/Checkbox";
 export { Radio } from "./Radio/Radio";
 export type { RadioProps } from "./Radio/Radio";
+export { RadioGroup } from "./Radio/RadioGroup";
+export type { RadioGroupProps, RadioGroupOption } from "./Radio/RadioGroup";
 export { Toggle } from "./Toggle/Toggle";
 export type { ToggleProps } from "./Toggle/Toggle";
 export { Select } from "./Select/Select";
