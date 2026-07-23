@@ -238,3 +238,43 @@ test("importing only Loader yields a bundle free of unrelated components' classe
     "Loader-only bundle must include its own hx-loader literal class"
   );
 });
+
+// Task 9: Search is built on InputBase and imports it at RUNTIME (a real
+// component reference, not just a type), so a Search-only bundle legitimately
+// contains `hx-inputbase` -- unlike every other guard above, this one does
+// NOT assert against that. It still proves Search doesn't drag in unrelated,
+// unrunning components (Avatar/Pagination/Badge).
+test("importing only Search yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Search } from "./dist/index.js"; console.log(Search);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Search-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Search-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Search-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "Search-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Search-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Search-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    out.includes("hx-search"),
+    "Search-only bundle must include its own hx-search literal class"
+  );
+  assert.ok(
+    out.includes("hx-inputbase"),
+    "Search legitimately runtime-imports InputBase, so its bundle should include hx-inputbase"
+  );
+});

@@ -7,6 +7,8 @@ export { Input } from "./Input/Input";
 export type { InputProps } from "./Input/Input";
 export { InputBase } from "./InputBase/InputBase";
 export type { InputBaseProps } from "./InputBase/InputBase";
+export { Search } from "./Search/Search";
+export type { SearchProps } from "./Search/Search";
 export { Field } from "./Field/Field";
 export type { FieldProps } from "./Field/Field";
 export { Checkbox } from "./Checkbox/Checkbox";

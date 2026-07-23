@@ -1112,3 +1112,18 @@
 .hx-inputbase__right { right: var(--hx-spacing-x250percent); }
 .hx-inputbase__right > * { pointer-events: auto; }
 .hx-inputbase__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
+
+/* Search (Task 9) — built on InputBase (see Search.tsx); `.hx-search` carries
+   no geometry of its own (InputBase's own rules already supply the box,
+   left-icon slot, right-slot padding), it exists only as a stable hook class.
+   `.hx-search__clear` mirrors `.hx-input__clear`/`.hx-select__clear`'s same
+   icon-button convention (icon-tertiary at rest, icon-secondary on hover). */
+.hx-search { }
+.hx-search__clear {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x450percent); height: var(--hx-size-icon-x450percent);
+  padding: 0; border: none; background: transparent;
+  font-size: var(--hx-size-icon-x450percent);
+  color: var(--hx-color-icon-tertiary); cursor: pointer;
+}
+.hx-search__clear:hover { color: var(--hx-color-icon-secondary); }
