@@ -92,6 +92,17 @@ test("autoSize caps growth at maxRows", () => {
   expect(el.style.height).toBe("40px");
 });
 
+test("autoSize recomputes when a controlled `value` changes externally (not via this textarea's onChange)", () => {
+  const { rerender } = render(<TextArea autoSize placeholder="Bio" value="line1" onChange={() => {}} />);
+  const el = screen.getByPlaceholderText("Bio") as HTMLTextAreaElement;
+  Object.defineProperty(el, "scrollHeight", { configurable: true, value: 150 });
+  // Re-render with a longer controlled value via `rerender`, simulating a
+  // consumer loading a draft / resetting the form -- NOT a `fireEvent.change`
+  // on the textarea itself, so `handleChange` never runs.
+  rerender(<TextArea autoSize placeholder="Bio" value={"line1\nline2\nline3"} onChange={() => {}} />);
+  expect(el.style.height).toBe("150px");
+});
+
 test("without autoSize, no inline height is ever set", () => {
   render(<TextArea placeholder="Bio" value="" onChange={() => {}} />);
   const el = screen.getByPlaceholderText("Bio") as HTMLTextAreaElement;

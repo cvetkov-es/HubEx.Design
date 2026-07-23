@@ -81,13 +81,19 @@ export const TextArea = /* @__PURE__ */ Object.assign(
 
     // Sizes once on mount (and whenever autoSize/maxRows toggle) so an
     // initial multi-line defaultValue/value isn't left clipped until the
-    // first keystroke.
+    // first keystroke. `value` is also a dep so a controlled consumer that
+    // changes the text programmatically (loading a draft, a form reset --
+    // i.e. NOT via this textarea's own onChange) still gets a resize; the
+    // on-keystroke (handleChange) and handleClear paths already resize
+    // synchronously, so for controlled fields this effect just re-confirms
+    // the same height post-render, which is redundant but not looping
+    // (autoSizeNode never triggers a state update).
     React.useLayoutEffect(() => {
       if (!autoSize) return;
       const node = textareaRef.current;
       if (node) autoSizeNode(node, maxRows);
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [autoSize, maxRows]);
+    }, [autoSize, maxRows, value]);
 
     const generatedLabelId = React.useId();
     const textareaId = id ?? (label ? generatedLabelId : undefined);

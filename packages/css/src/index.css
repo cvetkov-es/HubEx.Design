@@ -1080,7 +1080,7 @@
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
   background: var(--hx-color-background-inverse);
-  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-border-radius-small);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
   outline: none;
   transition: border-color .1s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -1143,7 +1143,7 @@
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
   background: var(--hx-color-background-inverse);
-  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-border-radius-small);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
   outline: none;
   resize: vertical;
   transition: border-color .1s cubic-bezier(0.4, 0, 0.2, 1);
