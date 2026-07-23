@@ -20,7 +20,11 @@ export type { SelectProps } from "./Select/Select";
 export { Table } from "./Table/Table";
 export type { TableProps, TableHeadProps, TableRowProps, TableCellProps, TableHeadCellProps } from "./Table/Table";
 export { Pagination } from "./Pagination/Pagination";
-export type { PaginationProps } from "./Pagination/Pagination";
+export type {
+  PaginationProps,
+  PaginationChangePayload,
+  BuildPaginationItemsOptions,
+} from "./Pagination/Pagination";
 export { Modal } from "./Modal/Modal";
 export type { ModalProps } from "./Modal/Modal";
 export { Drawer } from "./Drawer/Drawer";

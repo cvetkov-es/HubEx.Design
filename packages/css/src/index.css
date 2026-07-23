@@ -433,25 +433,48 @@
   text-align: left;
 }
 
-/* Pagination — no ground truth in Task 2's list; only var() names fixed (same geometry
-   as 0.1.0), following the same 32px control-height scale as Button/Input/Select. */
-.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); }
+/* Pagination (Task 7 rewrite) — no ground truth in Task 2's list; only var()
+   names fixed (same 32px control-height scale as Button/Input/Select — now an
+   exact --hx-spacing-x8 token match, fixing the prior literal). The official
+   API has no prev/next arrow buttons (only page buttons, ellipsis, and a
+   page-size select appear in the vendored Pagination.styles.d.ts), so the old
+   `.hx-pagination__btn` prev/next rule is dropped; `.hx-pagination__ellipsis`
+   and `.hx-pagination__size*` are new. */
+.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-spacing-x4); flex-wrap: wrap; }
 .hx-pagination__pages { display: flex; align-items: center; gap: var(--hx-spacing-x1); list-style: none; margin: 0; padding: 0; }
-.hx-pagination__btn, .hx-pagination__page {
+.hx-pagination__page {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 32px; height: 32px; padding: 0 var(--hx-spacing-x2);
+  min-width: var(--hx-spacing-x8); height: var(--hx-spacing-x8); padding: 0 var(--hx-spacing-x2);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
   background: var(--hx-color-background-inverse);
   border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-small);
   cursor: pointer;
 }
-.hx-pagination__btn:hover, .hx-pagination__page:hover { background: var(--hx-color-background-hoverlist); }
-.hx-pagination__btn:disabled, .hx-pagination__page:disabled { opacity: .5; cursor: not-allowed; }
-.hx-pagination__btn:focus-visible, .hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
+.hx-pagination__page:hover { background: var(--hx-color-background-hoverlist); }
+.hx-pagination__page:disabled { opacity: .5; cursor: not-allowed; }
+.hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-pagination__page--active {
   background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); border-color: var(--hx-color-border-accent);
 }
+.hx-pagination__ellipsis {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--hx-spacing-x8); height: var(--hx-spacing-x8);
+  color: var(--hx-color-text-secondary); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+}
+.hx-pagination__size { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); }
+.hx-pagination__size-label {
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-secondary);
+}
+.hx-pagination__size-select {
+  height: var(--hx-spacing-x8); padding: 0 var(--hx-spacing-x2);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-small);
+  cursor: pointer;
+}
+.hx-pagination__size-select:disabled { opacity: .5; cursor: not-allowed; }
+.hx-pagination__size-select:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
 /* Modal — Task 2 ground truth: radius 5 (--hx-radius-medium), width 560. Scrim =
    --hx-color-overlay (rgba(0,0,0,0.5)) — this is now a REAL token (0.1.0 had no overlay
