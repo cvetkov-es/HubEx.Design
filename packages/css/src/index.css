@@ -797,14 +797,46 @@
 .hx-alert__body { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); }
 .hx-alert__title { font-weight: 600; }
 
-/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont, never
-   SVG (unchanged from 0.1.0; no token references here to fix — font-size 20px has no
-   scale token and was already a literal). */
+/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont,
+   never SVG. Task 7: the tokens package now HAS a full --hx-size-icon-* scale
+   (0.1.0/0.2.0 predate it, hence the old "font-size 20px has no scale token"
+   note — no longer true), so the previous literal `font-size: 20px` on the
+   base rule is replaced by a required `.hx-icon--<step>` modifier class (the
+   component always adds one; `size` unset resolves to x5/20px, its old
+   default value unchanged) instead of an inline style. `color` similarly maps
+   onto one `.hx-icon--color-<token>` modifier class per --hx-color-icon-*
+   token, added only when a color prop is given (no default recolor). */
 .hx-icon {
   font-family: 'material'; font-style: normal; font-weight: normal;
-  font-size: 20px; line-height: 1; display: inline-flex;
+  line-height: 1; display: inline-flex;
   -webkit-font-smoothing: antialiased;
 }
+.hx-icon--x3 { font-size: var(--hx-size-icon-x3); }
+.hx-icon--x350percent { font-size: var(--hx-size-icon-x350percent); }
+.hx-icon--x4 { font-size: var(--hx-size-icon-x4); }
+.hx-icon--x450percent { font-size: var(--hx-size-icon-x450percent); }
+.hx-icon--x5 { font-size: var(--hx-size-icon-x5); }
+.hx-icon--x6 { font-size: var(--hx-size-icon-x6); }
+.hx-icon--x7 { font-size: var(--hx-size-icon-x7); }
+.hx-icon--x8 { font-size: var(--hx-size-icon-x8); }
+.hx-icon--x10 { font-size: var(--hx-size-icon-x10); }
+.hx-icon--x12 { font-size: var(--hx-size-icon-x12); }
+.hx-icon--x14 { font-size: var(--hx-size-icon-x14); }
+.hx-icon--x15 { font-size: var(--hx-size-icon-x15); }
+.hx-icon--x16 { font-size: var(--hx-size-icon-x16); }
+.hx-icon--color-primary { color: var(--hx-color-icon-primary); }
+.hx-icon--color-secondary { color: var(--hx-color-icon-secondary); }
+.hx-icon--color-tertiary { color: var(--hx-color-icon-tertiary); }
+.hx-icon--color-neutral { color: var(--hx-color-icon-neutral); }
+.hx-icon--color-subtle { color: var(--hx-color-icon-subtle); }
+.hx-icon--color-inverse { color: var(--hx-color-icon-inverse); }
+.hx-icon--color-weak { color: var(--hx-color-icon-weak); }
+.hx-icon--color-accent { color: var(--hx-color-icon-accent); }
+.hx-icon--color-accent-hover { color: var(--hx-color-icon-accent-hover); }
+.hx-icon--color-success { color: var(--hx-color-icon-success); }
+.hx-icon--color-warning { color: var(--hx-color-icon-warning); }
+.hx-icon--color-error { color: var(--hx-color-icon-error); }
+.hx-icon--color-rating { color: var(--hx-color-icon-rating); }
 
 /* Calendar / DatePicker — no ground truth in Task 2's list; only var() names fixed
    (same geometry as 0.1.0). */
