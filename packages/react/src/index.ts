@@ -5,6 +5,8 @@ export { Button } from "./Button/Button";
 export type { ButtonProps } from "./Button/Button";
 export { Input } from "./Input/Input";
 export type { InputProps } from "./Input/Input";
+export { InputBase } from "./InputBase/InputBase";
+export type { InputBaseProps } from "./InputBase/InputBase";
 export { Field } from "./Field/Field";
 export type { FieldProps } from "./Field/Field";
 export { Checkbox } from "./Checkbox/Checkbox";

@@ -1057,3 +1057,58 @@
 .hx-loader--color-icon-primary { color: var(--hx-color-icon-primary); }
 .hx-loader--color-icon-secondary { color: var(--hx-color-icon-secondary); }
 .hx-loader--color-icon-error { color: var(--hx-color-icon-error); }
+
+/* InputBase (Task 9) — new primitive component; Search and (a future
+   refactor of) Select build on it. Geometry ported from the vendored
+   bundle's own InputBase styled-input function (grep "rightSlotWidthPx" in
+   tools/.official-ds-ref/.../index.js): padding "7px <right> 7px <left>",
+   border 1px solid (primary at rest / secondary on hover / accent on focus /
+   error on invalid), border-radius small, background inverse (weak when
+   disabled). Height uses --hx-size-input-m (32px) instead of the official's
+   implicit padding+line-height-derived height, matching every other control
+   in this file (.hx-input/.hx-select) for a consistent control row height.
+   Left/right absolute-positioned icon slots at a 10px (--hx-spacing-x250percent)
+   inset, matching the bundle's `top:7px;left:10px`/`top:7px;right:10px`
+   (this file uses flex + translateY centering instead of a fixed 7px, since
+   .hx-inputbase-control is a flex row of variable height content, not a
+   fixed-height box like the official's). */
+.hx-inputbase {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--hx-size-input-m);
+  padding: 0 var(--hx-spacing-x250percent);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-border-radius-small);
+  outline: none;
+  transition: border-color .1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hx-inputbase::placeholder { color: var(--hx-color-text-secondary); }
+.hx-inputbase:hover { border-color: var(--hx-color-border-secondary); }
+.hx-inputbase:focus { border-color: var(--hx-color-border-accent); }
+.hx-inputbase--invalid { border-color: var(--hx-color-border-error); }
+.hx-inputbase:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+/* 36px = left inset 10 (--hx-spacing-x250percent) + icon 18 (--hx-size-icon-x450percent)
+   + gap 8 (--hx-spacing-x2) — composed from tokens to match the official
+   bundle's fixed 36px left-icon padding (no single 36px spacing token exists). */
+.hx-inputbase--has-left {
+  padding-left: calc(var(--hx-spacing-x250percent) + var(--hx-size-icon-x450percent) + var(--hx-spacing-x2));
+}
+/* Right padding for `rightSlot` is dynamic (`rightSlotWidthPx`) and reserved
+   via inline style on the element itself (see InputBase.tsx) — no fixed
+   class needed here, unlike the left column above. */
+
+.hx-inputbase-wrap { display: inline-flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-inputbase-wrap.hx-inputbase--full { display: flex; width: 100%; }
+.hx-inputbase-control { position: relative; display: inline-flex; align-items: center; }
+.hx-inputbase-wrap.hx-inputbase--full .hx-inputbase-control { display: flex; width: 100%; }
+.hx-inputbase__left, .hx-inputbase__right {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  pointer-events: none; /* interactive children (e.g. a clear button) opt back in below */
+}
+.hx-inputbase__left { left: var(--hx-spacing-x250percent); font-size: var(--hx-size-icon-x450percent); color: var(--hx-color-icon-secondary); }
+.hx-inputbase__right { right: var(--hx-spacing-x250percent); }
+.hx-inputbase__right > * { pointer-events: auto; }
+.hx-inputbase__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
