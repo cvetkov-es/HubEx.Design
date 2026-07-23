@@ -179,9 +179,12 @@
    stroke #EEEEEE -> hover #999999 -> focus #32B4EB; disabled fill #F8F8F8.
    #F8F8F8 exists as both --hx-color-background-page and --hx-color-background-weak
    (same hex); "weak" is used here as the better semantic fit for a muted/disabled
-   form-control surface (vs. "page", the whole-canvas background). */
+   form-control surface (vs. "page", the whole-canvas background). Height: now that
+   a real control-height token exists (`--hx-size-input-m`, added by the tokens
+   re-base after this comment was first written), it replaces the literal `32px`
+   this rule used to carry. */
 .hx-input {
-  height: 32px;
+  height: var(--hx-size-input-m);
   padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
@@ -192,6 +195,30 @@
 .hx-input:focus { outline: none; border-color: var(--hx-color-border-accent); }
 .hx-input--invalid { border-color: var(--hx-color-border-error); }
 .hx-input:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+
+/* Input chrome — Task 5: align the React Input to the official API (label,
+   errorText, allowClear, fullWidth). The bare .hx-input rule above is left
+   untouched as the control's own box style; these rules only style the
+   wrapper/label/clear/error chrome the component now optionally renders
+   around it. A plain `<Input placeholder="..." />` with no label/errorText/
+   allowClear renders none of the modifier classes below, so it stays
+   visually identical to the pre-Task-5 bare control. */
+.hx-input-wrap { display: inline-flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-input-wrap.hx-input--full { display: flex; width: 100%; }
+.hx-input-control { position: relative; display: inline-flex; align-items: center; }
+.hx-input-wrap.hx-input--full .hx-input-control { display: flex; width: 100%; }
+.hx-input-wrap.hx-input--full .hx-input-control > .hx-input { flex: 1 1 auto; width: 100%; }
+.hx-input--clearable { padding-right: var(--hx-spacing-x7); } /* reserve room for the clear icon */
+.hx-input__clear {
+  position: absolute; right: var(--hx-spacing-x2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x4); height: var(--hx-size-icon-x4);
+  padding: 0; border: none; background: transparent;
+  font-size: var(--hx-size-icon-x4);
+  color: var(--hx-color-icon-tertiary); cursor: pointer;
+}
+.hx-input__clear:hover { color: var(--hx-color-icon-secondary); }
+.hx-input__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
 
 /* Checkbox — Task 2 ground truth: 18x18 box, radius 2. The re-based radius scale only
    has 3/5/9999 (small/medium/pill) — there is no 2. Per the plan's explicit instruction,
