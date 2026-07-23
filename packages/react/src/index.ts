@@ -84,3 +84,5 @@ export { Link } from "./Link/Link";
 export type { LinkProps } from "./Link/Link";
 export { Loader } from "./Loader/Loader";
 export type { LoaderProps, LoaderSize, LoaderColor } from "./Loader/Loader";
+export { Popover } from "./Popover/Popover";
+export type { PopoverProps, PopoverPlacement, PopoverSize, PopoverTrigger } from "./Popover/Popover";

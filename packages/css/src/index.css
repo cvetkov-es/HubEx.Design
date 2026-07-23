@@ -1178,4 +1178,39 @@
   background: var(--hx-color-background-inverse);
   pointer-events: none;
 }
+
+/* Popover — Task 10. The official Popover is built on @floating-ui/react
+   (auto-flip via `fallbackPlacements`, a portal, and an arrow whose offset is
+   computed by the `arrow()` middleware against measured collision data);
+   this package never depends on floating-ui, so placement here is static CSS
+   (`.hx-popover--<placement>`, cardinal directions only) and there is no
+   arrow — see the OMITTED list in Popover.tsx for the full reasoning.
+   Ground truth extracted directly from the official bundle's minified
+   PopoverSurface/PopoverContainer styled-components (dist/esm/index.js):
+   background-color -> theme.colors.background['color-background-strong']
+   (EXACT: --hx-color-background-strong), border-radius ->
+   theme.borderRadius['border-radius-medium'] (EXACT: --hx-radius-medium,
+   5px), box-shadow -> theme.shadows['shadow-base'] (EXACT:
+   --hx-shadow-base), padding -> spacing-x250percent for size 'm' (10px) /
+   spacing-x5 for size 'l' (20px), both EXACT token matches. The reference
+   gap between trigger and panel (floating-ui's `gap: 4` middleware option)
+   is reproduced as spacing-x1 (4px), an EXACT match reused from Tooltip's
+   own placement offset. z-index 1000 duplicates the official bundle's own
+   hardcoded floating-layer z-index (no token on our spacing/z scale). */
+.hx-popover-wrap { position: relative; display: inline-block; }
+.hx-popover {
+  position: absolute; z-index: 1000; /* CANT-TELL: no z-index token; matches official's own literal 1000 */
+  display: flex; flex-direction: column; align-items: stretch;
+  background: var(--hx-color-background-strong);
+  border-radius: var(--hx-radius-medium);
+  box-shadow: var(--hx-shadow-base);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-weak);
+  overflow: auto;
+}
+.hx-popover--m { padding: var(--hx-spacing-x250percent); }
+.hx-popover--l { padding: var(--hx-spacing-x5); }
+.hx-popover--top { bottom: calc(100% + var(--hx-spacing-x1)); left: 50%; transform: translateX(-50%); }
+.hx-popover--bottom { top: calc(100% + var(--hx-spacing-x1)); left: 50%; transform: translateX(-50%); }
+.hx-popover--left { right: calc(100% + var(--hx-spacing-x1)); top: 50%; transform: translateY(-50%); }
+.hx-popover--right { left: calc(100% + var(--hx-spacing-x1)); top: 50%; transform: translateY(-50%); }
 .hx-textarea__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
