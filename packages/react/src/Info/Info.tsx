@@ -59,6 +59,20 @@ export function Info({
   popoverAriaLabel,
   popoverAriaLabelledBy,
 }: InfoProps) {
+  // Popover's `open` is only the CONTROLLED value (undefined when
+  // uncontrolled) — it can't be read back to know current visibility. Info
+  // mirrors it into local state via `onOpenChange` (which Popover calls on
+  // every open/close, controlled or not) purely so the trigger button can
+  // expose `aria-expanded`; this does not change who owns open/close state.
+  const [isOpen, setIsOpen] = React.useState(false);
+  const handleOpenChange = React.useCallback(
+    (next: boolean) => {
+      setIsOpen(next);
+      onOpenChange?.(next);
+    },
+    [onOpenChange]
+  );
+
   return (
     <Popover
       content={<span className="hx-info__content">{content}</span>}
@@ -70,11 +84,16 @@ export function Info({
       maxWidth={maxWidth}
       maxHeight={maxHeight}
       open={open}
-      onOpenChange={onOpenChange}
+      onOpenChange={handleOpenChange}
       ariaLabel={popoverAriaLabel}
       ariaLabelledBy={popoverAriaLabelledBy}
     >
-      <button type="button" className="hx-info__trigger" aria-label={ariaLabel}>
+      <button
+        type="button"
+        className="hx-info__trigger"
+        aria-label={ariaLabel}
+        aria-expanded={open !== undefined ? open : isOpen}
+      >
         <Icon name="info" size={16} color="accent" />
       </button>
     </Popover>

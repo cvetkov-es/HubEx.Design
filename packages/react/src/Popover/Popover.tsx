@@ -152,15 +152,19 @@ export function Popover({
 
   React.useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
 
-  // Escape closes regardless of trigger mode.
+  // Escape closes for click/hover/click-hover, but NOT for an unrecognized
+  // trigger value like Dropdown's 'manual' — that mode opts out of all
+  // built-in open/close wiring, visibility is driven exclusively by the
+  // controlled `open` prop, and Escape auto-closing would silently override
+  // that contract.
   React.useEffect(() => {
-    if (!visible || disabled) return;
+    if (!visible || disabled || !(supportsClick || supportsHover)) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setOpen(false);
     };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
-  }, [visible, disabled, setOpen]);
+  }, [visible, disabled, supportsClick, supportsHover, setOpen]);
 
   // Click-outside closes click-mode popovers (no portal, so this checks
   // against the whole wrapper — trigger + panel — via a single ref).
@@ -240,12 +244,40 @@ export function Popover({
   if (maxWidth !== undefined) panelStyle.maxWidth = typeof maxWidth === "number" ? `${maxWidth}px` : maxWidth;
   if (maxHeight !== undefined) panelStyle.maxHeight = typeof maxHeight === "number" ? `${maxHeight}px` : maxHeight;
 
-  const panelHandlers = supportsClick && closeOnPointerLeave
+  // Mouse handlers on the panel: needed both for closeOnPointerLeave
+  // (click-mode's opt-in "also close on pointer leaving trigger+panel") and
+  // for hover/click-hover, where moving the pointer from the trigger onto
+  // the panel must cancel the trigger's pending close timer instead of
+  // letting it fire under the user.
+  const panelMouseHandlers =
+    supportsHover || (supportsClick && closeOnPointerLeave)
+      ? {
+          onMouseEnter: clearCloseTimer,
+          onMouseLeave: () => scheduleClose(resolveDelay(hoverDelay, "close")),
+        }
+      : undefined;
+
+  // Focus handlers on the panel: only relevant for hover/click-hover, where
+  // tabbing focus into interactive panel content must cancel the close timer
+  // the same way hovering it does. onBlur only schedules a close if focus is
+  // actually leaving the whole popover (trigger + panel) — moving focus
+  // between elements inside the panel, or from the panel back to the
+  // trigger, must not close it.
+  const panelFocusHandlers = supportsHover
     ? {
-        onMouseEnter: clearCloseTimer,
-        onMouseLeave: () => scheduleClose(resolveDelay(hoverDelay, "close")),
+        onFocus: clearCloseTimer,
+        onBlur: (event: React.FocusEvent) => {
+          const related = event.relatedTarget as Node | null;
+          if (related && wrapRef.current?.contains(related)) return;
+          scheduleClose(resolveDelay(hoverDelay, "close"));
+        },
       }
     : undefined;
+
+  const panelHandlers =
+    panelMouseHandlers || panelFocusHandlers
+      ? { ...panelMouseHandlers, ...panelFocusHandlers }
+      : undefined;
 
   return (
     <span className="hx-popover-wrap" ref={wrapRef}>

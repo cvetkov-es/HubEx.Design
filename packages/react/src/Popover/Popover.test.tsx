@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, act } from "@testing-library/react";
 import * as React from "react";
-import { Popover } from "./Popover";
+import { Popover, type PopoverTrigger } from "./Popover";
 
 test("panel is not shown initially (uncontrolled, default click trigger)", () => {
   render(
@@ -53,6 +53,22 @@ test("Escape key closes an open popover", () => {
   expect(screen.queryByText("Panel content")).not.toBeInTheDocument();
 });
 
+test("Escape does not close a trigger='manual' popover (opts out of built-in open/close wiring)", () => {
+  render(
+    // Cast mirrors Dropdown's own pass-through of unrecognized trigger
+    // literals (see Dropdown.tsx) — Popover's own type only allows
+    // click/hover/click-hover, but at runtime an unrecognized value falls
+    // through to neither, same as Dropdown's 'manual'.
+    <Popover content="Panel content" trigger={"manual" as unknown as PopoverTrigger} open={true}>
+      <button>Trigger</button>
+    </Popover>
+  );
+  expect(screen.getByText("Panel content")).toBeInTheDocument();
+
+  fireEvent.keyDown(document, { key: "Escape" });
+  expect(screen.getByText("Panel content")).toBeInTheDocument();
+});
+
 test("hover trigger opens the panel on mouseenter and closes (after the close delay) on mouseleave", () => {
   vi.useFakeTimers();
   try {
@@ -69,6 +85,63 @@ test("hover trigger opens the panel on mouseenter and closes (after the close de
       vi.runAllTimers();
     });
     expect(screen.queryByText("Panel content")).not.toBeInTheDocument();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+test("hover trigger stays open when the pointer moves onto the panel", () => {
+  vi.useFakeTimers();
+  try {
+    render(
+      <Popover content="Panel content" trigger="hover">
+        <button>Trigger</button>
+      </Popover>
+    );
+    fireEvent.mouseEnter(screen.getByText("Trigger"));
+    expect(screen.getByText("Panel content")).toBeInTheDocument();
+
+    // Pointer leaves the trigger (starts the close timer)...
+    fireEvent.mouseLeave(screen.getByText("Trigger"));
+    // ...then lands on the panel before the timer fires.
+    fireEvent.mouseEnter(screen.getByText("Panel content"));
+
+    act(() => {
+      vi.runAllTimers();
+    });
+    // No pending timer should have survived the panel mouseenter.
+    expect(screen.getByText("Panel content")).toBeInTheDocument();
+
+    // Leaving the panel itself still closes it (after the delay).
+    fireEvent.mouseLeave(screen.getByText("Panel content"));
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(screen.queryByText("Panel content")).not.toBeInTheDocument();
+  } finally {
+    vi.useRealTimers();
+  }
+});
+
+test("hover trigger stays open when focus moves into panel content", () => {
+  vi.useFakeTimers();
+  try {
+    render(
+      <Popover content={<button>Panel button</button>} trigger="hover">
+        <button>Trigger</button>
+      </Popover>
+    );
+    fireEvent.mouseEnter(screen.getByText("Trigger"));
+    expect(screen.getByText("Panel button")).toBeInTheDocument();
+
+    // Trigger loses focus/hover as the user tabs into the panel content.
+    fireEvent.mouseLeave(screen.getByText("Trigger"));
+    fireEvent.focus(screen.getByText("Panel button"));
+
+    act(() => {
+      vi.runAllTimers();
+    });
+    expect(screen.getByText("Panel button")).toBeInTheDocument();
   } finally {
     vi.useRealTimers();
   }

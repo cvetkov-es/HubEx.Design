@@ -59,6 +59,27 @@ test("trigger='hover' opens on mouseenter", () => {
   expect(screen.getByText("Helpful explanation")).toBeInTheDocument();
 });
 
+test("trigger exposes aria-expanded, flipping from false to true when opened", () => {
+  render(<Info content="Helpful explanation" />);
+  const trigger = screen.getByRole("button", { name: "Information" });
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+  fireEvent.click(trigger);
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+
+  fireEvent.click(trigger);
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+});
+
+test("trigger's aria-expanded tracks a controlled open prop", () => {
+  const { rerender } = render(<Info content="Helpful explanation" open={false} onOpenChange={() => {}} />);
+  const trigger = screen.getByRole("button", { name: "Information" });
+  expect(trigger).toHaveAttribute("aria-expanded", "false");
+
+  rerender(<Info content="Helpful explanation" open={true} onOpenChange={() => {}} />);
+  expect(trigger).toHaveAttribute("aria-expanded", "true");
+});
+
 test("maxWidth/maxHeight are applied as inline styles on the panel", () => {
   render(<Info content="Helpful explanation" maxWidth={200} maxHeight={100} />);
   fireEvent.click(screen.getByRole("button", { name: "Information" }));

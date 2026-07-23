@@ -112,6 +112,18 @@ test("trigger='manual' ignores clicks; only the controlled open prop drives visi
   expect(screen.getByText("Menu item")).toBeInTheDocument();
 });
 
+test("trigger='manual' does not close on Escape (only the controlled open prop drives visibility)", () => {
+  render(
+    <Dropdown content={<div>Menu item</div>} trigger="manual" open={true}>
+      <button>Trigger</button>
+    </Dropdown>
+  );
+  expect(screen.getByText("Menu item")).toBeInTheDocument();
+
+  fireEvent.keyDown(document, { key: "Escape" });
+  expect(screen.getByText("Menu item")).toBeInTheDocument();
+});
+
 test("clicking a menu item inside content can close the dropdown via onOpenChange", () => {
   function Harness() {
     const [open, setOpen] = React.useState(false);
