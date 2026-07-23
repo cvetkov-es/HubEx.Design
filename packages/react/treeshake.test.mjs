@@ -178,7 +178,9 @@ test("importing only Text yields a bundle free of unrelated components' classes"
 test("importing only Link yields a bundle free of unrelated components' classes", async () => {
   const out = await bundleSize(`import { Link } from "./dist/index.js"; console.log(Link);`);
   const bytes = Buffer.byteLength(out, "utf8");
-  assert.ok(bytes < 8000, `Link-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  // Byte-size ceiling guards against Text or other components being pulled in at runtime.
+  // Link imports Text type-only (erased at compile), so runtime coupling would bloat this significantly.
+  assert.ok(bytes < 2000, `Link-only bundle too large: ${bytes} bytes (expected < 2000; size growth suggests runtime coupling)`);
   assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
   assert.ok(
     !out.includes("hx-avatar"),
