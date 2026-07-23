@@ -104,6 +104,74 @@
 }
 .hx-btn[disabled] { opacity: .5; cursor: not-allowed; }
 
+/* Task 4: align to the official @hubex/design-system Button API. Geometry ported
+   verbatim from `tools/.official-ds-ref/package/dist/esm/index.js` (the `X`/`z`
+   Button functions), expressed only in --hx-* tokens. */
+
+/* Icon glyph inside a Button (Material webfont, string names only -- never inline
+   SVG; see the ban documented on Icon.tsx). Default color inherits the button's
+   own text color (currentColor); the two `iconColor` values from the official
+   API become explicit overrides via the modifier classes below. Size: 18px
+   normally, 16px only for round+small -- ported from the official bundle's
+   `getIconSize` (round && size === "small" ? 16 : 18). */
+.hx-btn__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'material'; font-style: normal; font-weight: normal;
+  font-size: var(--hx-size-icon-x450percent); /* 18px, official default */
+  line-height: 1; color: currentColor;
+  -webkit-font-smoothing: antialiased;
+}
+.hx-btn--round.hx-btn--sm .hx-btn__icon { font-size: var(--hx-size-icon-x4); } /* 16px, round+small only */
+.hx-btn__icon--accent { color: var(--hx-color-icon-accent); }
+.hx-btn__icon--secondary { color: var(--hx-color-icon-secondary); }
+.hx-btn__label { display: inline-flex; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* Round (circle icon button). Diameter comes from --hx-size-button-circle-{s,m}
+   (NOT --hx-size-button-m, which is the pill's height) -- exact port of the
+   official bundle's `n = c ? {small:{width:24,height:24}, medium:{width:32,
+   height:32}} : ...`. Declared after the base rule and `.hx-btn--sm` above so
+   it wins the cascade at equal specificity; the combined `.hx-btn--round.hx-btn--sm`
+   rule below has higher specificity and wins regardless of order. */
+.hx-btn--round {
+  padding: 0; flex: none;
+  width: var(--hx-size-button-circle-m); height: var(--hx-size-button-circle-m);
+  border-radius: var(--hx-border-radius-circle);
+}
+.hx-btn--round.hx-btn--sm {
+  width: var(--hx-size-button-circle-s); height: var(--hx-size-button-circle-s);
+}
+
+/* fullWidth -- official: only applies when NOT round (!c && Q ? {width:"100%",
+   flex:"1 1 auto", ...} : {}); round buttons keep their fixed circle size. */
+.hx-btn--full:not(.hx-btn--round) { min-width: 0; width: 100%; flex: 1 1 auto; }
+
+/* Loading -- official swaps the button's content for a small (12px,
+   --hx-size-loader-s token) spinning ring Loader and keeps the button's own box
+   the same size. Ported here as a CSS-only spinner rather than importing the
+   Loader component, which would pull extra module weight into the
+   tree-shaking-guarded Button-only bundle (see treeshake.test.mjs). Spinner
+   color = currentColor, matching the official Loader's default iconColor. */
+.hx-btn--loading { position: relative; cursor: wait; }
+.hx-btn--loading > * { visibility: hidden; }
+.hx-btn--loading::after {
+  content: ""; position: absolute;
+  width: var(--hx-size-loader-s); height: var(--hx-size-loader-s);
+  border: 2px solid currentColor; border-right-color: transparent;
+  border-radius: var(--hx-border-radius-circle);
+  animation: hx-btn-spin .8s linear infinite;
+}
+@keyframes hx-btn-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* error -- official: $error only re-themes the Dashed variant's border (see
+   the dashed block above, borderColor: t ? color-border-error : ...); the
+   other variants ignore it visually in the vendored bundle. The message itself
+   renders as a caption-sized line below the button (official ErrorText). */
+.hx-btn--dashed.hx-btn--error { border-color: var(--hx-color-border-error); }
+.hx-btn__error {
+  display: block; margin-top: var(--hx-spacing-x05);
+  font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error);
+}
+
 .hx-field { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); }
 .hx-label { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-secondary); }
 
