@@ -284,20 +284,79 @@
 .hx-toggle:disabled { opacity: .5; cursor: not-allowed; }
 
 /* Select — Task 2 ground truth: "Input & Select" share one spec (radius 3, height 32,
-   fill #FFFFFF, stroke #EEEEEE -> hover #999999 -> focus #32B4EB); mirrors .hx-input. */
+   fill #FFFFFF, stroke #EEEEEE -> hover #999999 -> focus #32B4EB); mirrors .hx-input.
+   Task 5: the React Select is now a typeahead combobox — the element carrying
+   this class is a plain <input type="text"> (not a native <select>), so
+   cursor switches from pointer to text; height migrated off the literal
+   `32px` onto the real `--hx-size-input-m` token, same as .hx-input above.
+   Extra right padding reserves room for the chevron/clear icon (see
+   .hx-select__chevron/.hx-select__clear below). */
 .hx-select {
-  height: 32px;
-  padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
+  height: var(--hx-size-input-m);
+  padding: 0 var(--hx-spacing-x7) 0 var(--hx-size-x3); /* right: 28px, reserves room for the chevron/clear icon; left: 12px — no --hx-spacing-x3 exists, reusing --hx-size-x3 (same value) */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
   background: var(--hx-color-background-inverse);
   border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
-  cursor: pointer;
+  cursor: text;
 }
 .hx-select:hover { border-color: var(--hx-color-border-secondary); }
 .hx-select:focus { outline: none; border-color: var(--hx-color-border-accent); }
 .hx-select--invalid { border-color: var(--hx-color-border-error); }
 .hx-select:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+
+/* Select combobox chrome — Task 5: self-contained typeahead combobox, CSS-
+   positioned menu (no floating-ui/portal). */
+.hx-select-wrap { display: inline-flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-select-control { position: relative; display: inline-flex; align-items: center; }
+.hx-select__chevron, .hx-select__clear {
+  position: absolute; right: var(--hx-spacing-x2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x4); height: var(--hx-size-icon-x4);
+  font-family: 'material'; font-style: normal; font-size: var(--hx-size-icon-x4);
+  color: var(--hx-color-icon-tertiary);
+}
+.hx-select__clear { border: none; background: transparent; padding: 0; cursor: pointer; }
+.hx-select__clear:hover { color: var(--hx-color-icon-secondary); }
+.hx-select-menu {
+  position: absolute; top: calc(100% + var(--hx-spacing-x1)); left: 0; right: 0;
+  z-index: 1000; /* no z-index token in the scale; same literal convention as .hx-menu/.hx-modal above */
+  max-height: 240px; /* CANT-TELL: no scale token for a dropdown max-height; literal, same convention as Menu/Modal's own unmatched literals */
+  overflow-y: auto;
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
+  box-shadow: var(--hx-shadow-base);
+}
+.hx-select-listbox { list-style: none; margin: 0; padding: 0; }
+.hx-select-option {
+  display: flex; align-items: center;
+  height: var(--hx-size-input-m);
+  padding: 0 var(--hx-spacing-x3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  cursor: pointer;
+}
+.hx-select-option--active { background: var(--hx-color-background-hoverlist); }
+.hx-select-option--selected { color: var(--hx-color-text-accent); }
+.hx-select-option--disabled { color: var(--hx-color-text-neutral); cursor: not-allowed; }
+.hx-select__empty {
+  padding: var(--hx-spacing-x3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-secondary);
+}
+.hx-select__actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--hx-spacing-x1);
+  padding: var(--hx-spacing-x2); border-top: 1px solid var(--hx-color-border-primary);
+}
+.hx-select__action {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x6); height: var(--hx-size-icon-x6);
+  font-family: 'material'; font-style: normal;
+  border: none; border-radius: var(--hx-radius-small); background: transparent;
+  color: var(--hx-color-icon-secondary); cursor: pointer;
+}
+.hx-select__action:hover { background: var(--hx-color-background-hoverlist); }
+.hx-select__action:disabled { opacity: .5; cursor: not-allowed; }
 
 /* Table — Task 2 ground truth: TableRow height 40, hover #F8F8FA
    (--hx-color-background-hoverlist); TableHead 11px text, color #777777
