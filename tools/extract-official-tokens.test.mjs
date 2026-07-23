@@ -1,7 +1,7 @@
 // tools/extract-official-tokens.test.mjs
 import { test, expect } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
-import { extractHubExTokens } from './extract-official-tokens.mjs';
+import { extractHubExTokens, ALIASES, toStyleDictionaryJSON } from './extract-official-tokens.mjs';
 
 const BUNDLE_PATH = 'tools/.official-ds-ref/package/dist/esm/index.js';
 const bundleAvailable = existsSync(BUNDLE_PATH);
@@ -39,4 +39,34 @@ test.skipIf(!bundleAvailable)('composite typography -> sub-tokens, no garbage', 
 });
 test.skipIf(!bundleAvailable)('composite shadow -> single box-shadow value', () => {
   expect(t['shadow-base']).toMatch(/px .*(#|rgba)/);
+});
+
+test.skipIf(!bundleAvailable)('back-compat ALIASES have no collision with extracted flat names', () => {
+  for (const name of Object.keys(ALIASES)) {
+    expect(t[name], `ALIASES key "${name}" unexpectedly collides with a real extracted token`).toBeUndefined();
+  }
+});
+
+test.skipIf(!bundleAvailable)('back-compat aliases regroup into the emitted Style Dictionary JSON', () => {
+  const sd = toStyleDictionaryJSON({ ...t, ...ALIASES });
+  // old --hx-radius-* names, referencing the new border-radius-* scale
+  expect(sd.radius.small.value).toBe('{border.radius-small.value}');
+  expect(sd.radius.medium.value).toBe('{border.radius-medium.value}');
+  expect(sd.radius.pill.value).toBe('{border.radius-pill.value}');
+  // old --hx-size-x* names, referencing the new spacing-x* scale
+  expect(sd.size.x05.value).toBe('{spacing.x05.value}');
+  expect(sd.size.x1.value).toBe('{spacing.x1.value}');
+  expect(sd.size.x150percent.value).toBe('{spacing.x150percent.value}');
+  expect(sd.size.x2.value).toBe('{spacing.x2.value}');
+  expect(sd.size.x250percent.value).toBe('{spacing.x250percent.value}');
+  expect(sd.size.x3.value).toBe('{spacing.x3.value}');
+  // old --hx-font-size-* names, referencing the new typography sub-tokens
+  expect(sd.font['size-base'].value).toBe('{font.body-regular-size.value}');
+  expect(sd.font['size-sm'].value).toBe('{font.caption-regular-size.value}');
+  expect(sd.font['size-lg'].value).toBe('{font.H3-size.value}');
+  // every reference target actually exists in the emitted JSON (no dangling refs)
+  for (const ref of Object.values(ALIASES)) {
+    const [group, leaf] = ref.slice(1, -7).split('.'); // strip "{" ... ".value}"
+    expect(sd[group]?.[leaf], `dangling alias reference ${ref}`).toBeDefined();
+  }
 });

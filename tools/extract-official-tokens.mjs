@@ -42,18 +42,43 @@ export function extractHubExTokens(src) {
   return out;
 }
 
-import { readFileSync, writeFileSync } from 'node:fs';
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const flat = extractHubExTokens(readFileSync('tools/.official-ds-ref/package/dist/esm/index.js', 'utf8'));
-  // Mirror the nesting the existing style-dictionary config (css transformGroup,
-  // prefix "hx") expects: every emitted `--hx-<name>` variable name is produced by
-  // joining the JSON path with '-'. Splitting each flat token name on its FIRST
-  // dash into { category: firstSegment, leaf: remainder } is a lossless, collision-
-  // free 2-level regrouping (verified against the 0.4.0 vendor dump: no flat name is
-  // dash-less, and no two names share a (category, remainder) pair) that reconstructs
-  // the exact original flat name when the CSS transform re-joins the path - unlike a
-  // naive full-dash split, it never makes one token's leaf also a parent group of
-  // another (e.g. color-text-accent vs color-text-accent-hover).
+// Back-compat aliases: old published 0.3.0 `--hx-*` names that no longer exist verbatim
+// in the official 0.4.0 token set, mapped to Style Dictionary references pointing at
+// the new canonical token. Keyed by the OLD flat name (same convention as everything
+// extractHubExTokens produces) so toStyleDictionaryJSON() regroups them the same way
+// and reconstructs the exact old `--hx-<name>` CSS variable on every regeneration -
+// consumers pinned to the old names keep working without a literal "alias" JSON group
+// (which would emit `--hx-alias-*` and defeat the point).
+// Reference paths were read off the actual grouping toStyleDictionaryJSON() produces:
+// border-radius-* flat names split to group "border" (leaf "radius-*"), spacing-x*
+// flat names split to group "spacing" (leaf "x*"), font-<name>-size flat names split
+// to group "font" (leaf "<name>-size").
+export const ALIASES = {
+  'radius-small': '{border.radius-small.value}',
+  'radius-medium': '{border.radius-medium.value}',
+  'radius-pill': '{border.radius-pill.value}',
+  'size-x05': '{spacing.x05.value}',
+  'size-x1': '{spacing.x1.value}',
+  'size-x150percent': '{spacing.x150percent.value}',
+  'size-x2': '{spacing.x2.value}',
+  'size-x250percent': '{spacing.x250percent.value}',
+  'size-x3': '{spacing.x3.value}',
+  'font-size-base': '{font.body-regular-size.value}',
+  'font-size-sm': '{font.caption-regular-size.value}',
+  'font-size-lg': '{font.H3-size.value}',
+};
+
+// Mirror the nesting the existing style-dictionary config (css transformGroup,
+// prefix "hx") expects: every emitted `--hx-<name>` variable name is produced by
+// joining the JSON path with '-'. Splitting each flat token name on its FIRST
+// dash into { category: firstSegment, leaf: remainder } is a lossless, collision-
+// free 2-level regrouping (verified against the 0.4.0 vendor dump: no flat name is
+// dash-less, and no two names share a (category, remainder) pair) that reconstructs
+// the exact original flat name when the CSS transform re-joins the path - unlike a
+// naive full-dash split, it never makes one token's leaf also a parent group of
+// another (e.g. color-text-accent vs color-text-accent-hover). ALIASES keys are old
+// flat names too, so they run through the exact same regrouping.
+export function toStyleDictionaryJSON(flat) {
   const sd = {};
   for (const [name, value] of Object.entries(flat)) {
     const dash = name.indexOf('-');
@@ -61,6 +86,13 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     const leaf = dash === -1 ? name : name.slice(dash + 1);
     (sd[cat] ??= {})[leaf] = { value };
   }
+  return sd;
+}
+
+import { readFileSync, writeFileSync } from 'node:fs';
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const flat = extractHubExTokens(readFileSync('tools/.official-ds-ref/package/dist/esm/index.js', 'utf8'));
+  const sd = toStyleDictionaryJSON({ ...flat, ...ALIASES });
   writeFileSync('packages/tokens/src/tokens.json', JSON.stringify(sd, null, 2) + '\n');
-  console.log('Wrote', Object.keys(flat).length, 'tokens');
+  console.log('Wrote', Object.keys(flat).length, 'tokens +', Object.keys(ALIASES).length, 'back-compat aliases');
 }
