@@ -1266,4 +1266,76 @@
   box-shadow: 0 0 0 var(--hx-spacing-x05) var(--hx-color-border-accent);
 }
 .hx-info__content { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
+
+/* SegmentedControl — Task 10. SELF-CONTAINED: no floating-ui, positioned
+   inline in normal flow (not an overlay). Ground truth extracted from the
+   official bundle's minified SegmentedControlRoot/ItemWrapper/ItemRadio/
+   ItemLabel/ActionButton styled-components (dist/esm/index.js).
+   .hx-segmented (Root): inline-flex, gap spacing-x05, padding spacing-x1,
+   background color-background-subtle, border-radius-pill — all EXACT.
+   .hx-segmented__item (ItemWrapper): height uses --hx-size-tab-m rather than
+   the official's literal spacing-x6 (24px) — a deliberate substitution
+   (there IS a purpose-built token family for exactly this "tab-like
+   control" height that the official bundle doesn't reference, so this
+   package uses it instead of the closest spacing token); padding
+   0 spacing-x2, border-radius-pill, background color-background-inverse
+   when selected else transparent (hoverlist on hover unless
+   disabled/selected) — all EXACT beyond the height substitution.
+   .hx-segmented__radio (ItemRadio): gap spacing-x05, focus-visible outline
+   spacing-x025 solid color-border-accent with spacing-x1 offset — EXACT.
+   .hx-segmented__action (ActionButton): circular icon button, focus-visible
+   outline spacing-x05 solid color-border-accent — EXACT. Transition
+   durations (0.15s) have no matching token, kept literal (CANT-TELL),
+   matching Button/Info's own precedent for the same property. */
+.hx-segmented {
+  display: inline-flex; align-items: center;
+  gap: var(--hx-spacing-x05);
+  padding: var(--hx-spacing-x1);
+  background: var(--hx-color-background-subtle);
+  border-radius: var(--hx-radius-pill);
+}
+.hx-segmented__item {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hx-spacing-x05);
+  height: var(--hx-size-tab-m);
+  padding: 0 var(--hx-spacing-x2);
+  border-radius: var(--hx-radius-pill);
+  background: transparent;
+  transition: background 0.15s ease; /* CANT-TELL: no duration token */
+}
+.hx-segmented__item--active { background: var(--hx-color-background-inverse); }
+.hx-segmented__item:not(.hx-segmented__item--active):hover {
+  background: var(--hx-color-background-hoverlist);
+}
+.hx-segmented__radio {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hx-spacing-x05);
+  cursor: pointer;
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
+}
+.hx-segmented__radio[aria-checked="true"] { cursor: default; }
+.hx-segmented__radio[aria-disabled="true"] {
+  cursor: not-allowed; color: var(--hx-color-text-neutral);
+}
+.hx-segmented__radio:focus-visible {
+  outline: var(--hx-spacing-x025) solid var(--hx-color-border-accent);
+  outline-offset: var(--hx-spacing-x1);
+  border-radius: var(--hx-radius-pill);
+}
+.hx-segmented__label {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;
+}
+.hx-segmented__action {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; margin: 0; border: none; background: transparent;
+  color: inherit; cursor: pointer;
+}
+.hx-segmented__action:disabled { cursor: not-allowed; opacity: 0.5; }
+.hx-segmented__action:focus-visible {
+  outline: var(--hx-spacing-x05) solid var(--hx-color-border-accent);
+  outline-offset: var(--hx-spacing-x05);
+  border-radius: var(--hx-border-radius-circle);
+}
+
 .hx-textarea__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }

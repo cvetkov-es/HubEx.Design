@@ -278,3 +278,52 @@ test("importing only Search yields a bundle free of unrelated components' classe
     "Search legitimately runtime-imports InputBase, so its bundle should include hx-inputbase"
   );
 });
+
+// Task 10: SegmentedControl is the one new overlay-group export that is
+// SELF-CONTAINED (no Popover/floating-ui reuse) — it only runtime-imports
+// Icon (like Button/Search already do for their own leaf dependencies), so a
+// SegmentedControl-only bundle must stay free of react-dom AND of every
+// unrelated component's literal class strings, including the sibling
+// Popover/Dropdown/Info trio this task also added.
+test("importing only SegmentedControl yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { SegmentedControl } from "./dist/index.js"; console.log(SegmentedControl);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `SegmentedControl-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "SegmentedControl-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "SegmentedControl-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "SegmentedControl-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "SegmentedControl-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-popover"),
+    "SegmentedControl-only bundle must not pull in Popover (hx-popover class found) — it has no overlay dependency"
+  );
+  assert.ok(
+    !out.includes("hx-dropdown"),
+    "SegmentedControl-only bundle must not pull in Dropdown (hx-dropdown class found)"
+  );
+  assert.ok(
+    !out.includes("hx-info__"),
+    "SegmentedControl-only bundle must not pull in Info (hx-info__ class found)"
+  );
+  assert.ok(
+    out.includes("hx-segmented"),
+    "SegmentedControl-only bundle must include its own hx-segmented literal class"
+  );
+  assert.ok(
+    out.includes("hx-icon"),
+    "SegmentedControl legitimately runtime-imports Icon, so its bundle should include hx-icon"
+  );
+});

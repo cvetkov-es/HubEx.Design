@@ -96,3 +96,9 @@ export type {
 } from "./Dropdown/Dropdown";
 export { Info } from "./Info/Info";
 export type { InfoProps, InfoPlacement, InfoTrigger } from "./Info/Info";
+export { SegmentedControl } from "./SegmentedControl/SegmentedControl";
+export type {
+  SegmentedControlProps,
+  SegmentedControlOption,
+  SegmentedControlActionIcon,
+} from "./SegmentedControl/SegmentedControl";
