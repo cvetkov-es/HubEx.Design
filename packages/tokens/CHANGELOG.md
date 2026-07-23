@@ -1,5 +1,19 @@
 # @cvetkov_es/tokens
 
+## 0.4.0
+
+### Minor Changes
+
+- Rebased the design system's source of truth from hand-decoded Figma onto the official `@hubex/design-system@0.4.0` (themes.HubEx). BREAKING:
+
+  - Tokens 104→195 (added full spacing/size/typography/shadow scales). Renames kept as WORKING aliases: `--hx-radius-*`→`--hx-border-radius-*`, `--hx-size-x*`→`--hx-spacing-x*`. Typo `backgroundg`→`background` fixed.
+  - Button.size `sm|md`→`small|medium` (old values kept as runtime aliases).
+  - Toggle now requires `name`; `onChange` is `(checked, event)`.
+  - Select rewritten to a self-contained `options`-based combobox (old children/`<option>` API removed).
+  - Badge split into a five-member family (Badge/BadgeDot/BadgeCount/BadgeTag/BadgeShift); old `variant="dot|count|tag"` removed.
+  - Pagination rewritten to `{totalItems, page, pageSize, onChange}` (old `{page,pageCount,onPageChange}` removed).
+  - 10 new components: Text, Link, Loader, InputBase, Search, TextArea, Info, SegmentedControl, Popover, Dropdown.
+
 ## 0.3.0
 
 ### Minor Changes
