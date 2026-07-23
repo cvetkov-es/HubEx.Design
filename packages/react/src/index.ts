@@ -74,3 +74,5 @@ export { DatePicker } from "./DatePicker/DatePicker";
 export type { DatePickerProps } from "./DatePicker/DatePicker";
 export { Text } from "./Text/Text";
 export type { TextProps, TextVariant, TextColor } from "./Text/Text";
+export { Link } from "./Link/Link";
+export type { LinkProps } from "./Link/Link";

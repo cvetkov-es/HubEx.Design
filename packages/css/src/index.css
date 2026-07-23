@@ -991,3 +991,42 @@
 .hx-text--color-text-neutral { color: var(--hx-color-text-neutral); }
 .hx-text--color-text-weak { color: var(--hx-color-text-weak); }
 .hx-text--color-text-accent { color: var(--hx-color-text-accent); }
+
+/* Link (Task 8) — new component. Typography/color/truncation are supplied by
+   the shared `.hx-text--<variant>`/`.hx-text--<color>`/`.hx-text--ellipsis`
+   rules above (Link.tsx applies them directly, see its top comment); this
+   block only carries anchor-specific chrome: geometry-free, ported verbatim
+   from the vendored bundle's LinkRoot styled-component (the `G` function —
+   hover/focus/focus-visible/active states, disabled state). The 2px value
+   used below for text-underline-offset/outline-offset/border-radius is a
+   single exact match for --hx-size-x05 (the same token .hx-checkbox already
+   reuses for its own 2px radius) — used via var() in all three places rather
+   than repeated as a literal. Outline stroke WIDTH (2px solid) is left
+   literal, matching this file's existing convention for every other
+   `outline: 2px solid ...` rule (Checkbox/Radio/Toggle/Pagination/etc. above
+   — stroke widths are never mapped onto the spacing/size scale in this
+   file). `:active`'s `filter: brightness(0.9)` has no token equivalent
+   (dimensionless ratio, not a color/size value) — kept literal, ported
+   verbatim from the bundle. */
+.hx-link {
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hx-link:not(.hx-link--disabled):hover,
+.hx-link:not(.hx-link--disabled):focus {
+  text-decoration: underline;
+  text-underline-offset: var(--hx-size-x05);
+}
+.hx-link:not(.hx-link--disabled):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: var(--hx-size-x05);
+  border-radius: var(--hx-size-x05);
+}
+.hx-link:not(.hx-link--disabled):active {
+  filter: brightness(0.9); /* CANT-TELL: no token for a brightness ratio; ported verbatim from the official bundle's :active state */
+}
+.hx-link--disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}

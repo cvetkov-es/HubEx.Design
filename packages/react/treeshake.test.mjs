@@ -174,3 +174,30 @@ test("importing only Text yields a bundle free of unrelated components' classes"
     "Text-only bundle must include its own hx-text literal class"
   );
 });
+
+test("importing only Link yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Link } from "./dist/index.js"; console.log(Link);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Link-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Link-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Link-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Link-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Link-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    out.includes("hx-link"),
+    "Link-only bundle must include its own hx-link literal class"
+  );
+});
