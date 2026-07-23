@@ -1127,3 +1127,55 @@
   color: var(--hx-color-icon-tertiary); cursor: pointer;
 }
 .hx-search__clear:hover { color: var(--hx-color-icon-secondary); }
+
+/* TextArea (Task 9) — new component; no vendored bundle implementation exists
+   to port geometry from (TextArea.d.ts is present but the compiled bundle
+   has no TextArea function — grepped, absent), so geometry mirrors .hx-input
+   (Task 2 ground truth: radius 3, fill #FFFFFF, stroke #EEEEEE -> hover
+   #999999 -> focus #32B4EB; disabled fill #F8F8F8) with vertical padding
+   added (a multi-line control, unlike Input's fixed-height single line) and
+   `min-height` in place of a fixed `height` so it can grow beyond one row. */
+.hx-textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--hx-size-input-m);
+  padding: var(--hx-spacing-x2) var(--hx-size-x3); /* 8px / 12px — see legend re: no --hx-spacing-x3 */
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-border-radius-small);
+  outline: none;
+  resize: vertical;
+  transition: border-color .1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hx-textarea::placeholder { color: var(--hx-color-text-secondary); }
+.hx-textarea:hover { border-color: var(--hx-color-border-secondary); }
+.hx-textarea:focus { border-color: var(--hx-color-border-accent); }
+.hx-textarea--invalid { border-color: var(--hx-color-border-error); }
+.hx-textarea:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+/* autoSize (TextArea.tsx sets height imperatively via JS): the user-drag
+   resize handle makes no sense once height tracks content automatically,
+   and overflow only appears past the JS-computed `maxRows` cap. */
+.hx-textarea--autosize { resize: none; overflow-y: auto; }
+.hx-textarea--clearable { padding-right: var(--hx-spacing-x7); } /* reserve room for the clear icon, mirrors .hx-input--clearable */
+
+.hx-textarea-wrap { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); width: 100%; }
+.hx-textarea-control { position: relative; display: flex; }
+.hx-textarea-control > .hx-textarea { flex: 1 1 auto; }
+.hx-textarea__clear {
+  position: absolute; top: var(--hx-spacing-x2); right: var(--hx-spacing-x2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x4); height: var(--hx-size-icon-x4);
+  padding: 0; border: none; background: transparent;
+  font-size: var(--hx-size-icon-x4);
+  color: var(--hx-color-icon-tertiary); cursor: pointer;
+}
+.hx-textarea__clear:hover { color: var(--hx-color-icon-secondary); }
+.hx-textarea__counter {
+  position: absolute; bottom: var(--hx-spacing-x1); right: var(--hx-spacing-x2);
+  padding: 0 var(--hx-spacing-x05);
+  font-size: var(--hx-font-size-sm); color: var(--hx-color-text-secondary);
+  background: var(--hx-color-background-inverse);
+  pointer-events: none;
+}
+.hx-textarea__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }

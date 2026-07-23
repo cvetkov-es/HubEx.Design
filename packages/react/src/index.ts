@@ -9,6 +9,8 @@ export { InputBase } from "./InputBase/InputBase";
 export type { InputBaseProps } from "./InputBase/InputBase";
 export { Search } from "./Search/Search";
 export type { SearchProps } from "./Search/Search";
+export { TextArea } from "./TextArea/TextArea";
+export type { TextAreaProps } from "./TextArea/TextArea";
 export { Field } from "./Field/Field";
 export type { FieldProps } from "./Field/Field";
 export { Checkbox } from "./Checkbox/Checkbox";
