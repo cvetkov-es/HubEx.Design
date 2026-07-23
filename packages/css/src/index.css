@@ -242,6 +242,16 @@
 }
 .hx-checkbox:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-checkbox:disabled { opacity: .5; cursor: not-allowed; }
+/* Task 6: indeterminate (`el.indeterminate` is set imperatively by the React
+   component, see Checkbox.tsx). Compound selector (two classes) matches
+   `:checked::after`'s specificity so this dash glyph wins regardless of
+   source order when a box is both checked AND indeterminate. */
+.hx-checkbox.hx-checkbox--indeterminate { background: var(--hx-color-background-accent); border-color: var(--hx-color-border-accent); }
+.hx-checkbox.hx-checkbox--indeterminate::after {
+  content: ""; position: absolute; left: 4px; top: 8px; /* dash glyph: no exact-value token exists at this size, same as the checkmark glyph immediately above */
+  width: 10px; height: 2px; border: none; transform: none;
+  background: var(--hx-color-icon-inverse);
+}
 
 /* Radio — Task 2 ground truth: 18x18 circle, radius 999. Per the plan's instruction,
    999 (radio/circle) and 9999 (pill) collapse onto the single --hx-radius-pill token —
