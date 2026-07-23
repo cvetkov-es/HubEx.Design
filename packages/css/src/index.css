@@ -288,19 +288,35 @@
    track: 0.1.0 misused the BORDER-role token --hx-color-border-strong as a background
    fill (its own comment: "no explicit unchecked dump found"). The re-based set has a
    proper BACKGROUND-role token at the same hex — --hx-color-background-neutral
-   (#CCCCCC) — used here instead, fixing the role mismatch as a side effect. */
+   (#CCCCCC) — used here instead, fixing the role mismatch as a side effect.
+   Task 6: the element backing this class changed from a <button role="switch">
+   to a real <input type="checkbox" role="switch"> (see Toggle.tsx's top
+   comment for why), so it's now styled with the SAME appearance:none +
+   ::after-pseudo-element pattern as .hx-checkbox/.hx-radio above, driven by
+   :checked instead of the old [aria-checked="true"] attribute selector. */
 .hx-toggle {
-  display: inline-flex; align-items: center;
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: none; margin: 0;
+  display: inline-block;
   width: 24px; height: 14px; padding: 2px;
   border: none; border-radius: var(--hx-radius-pill);
   background: var(--hx-color-background-neutral);
   cursor: pointer;
-  justify-content: flex-start;
 }
-.hx-toggle[aria-checked="true"] { background: var(--hx-color-background-accent); justify-content: flex-end; }
-.hx-toggle::after { content: ""; width: 10px; height: 10px; border-radius: var(--hx-radius-pill); background: var(--hx-color-icon-inverse); }
+.hx-toggle::after {
+  content: ""; position: absolute; top: 2px; left: 2px;
+  width: 10px; height: 10px; border-radius: var(--hx-radius-pill);
+  background: var(--hx-color-icon-inverse);
+  transition: transform .15s ease;
+}
+.hx-toggle:checked { background: var(--hx-color-background-accent); }
+.hx-toggle:checked::after { transform: translateX(10px); } /* 24 - 2*2(padding) - 10(thumb) = 10px travel */
 .hx-toggle:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-toggle:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Optional <label> wrapper when Toggle is rendered with a `label` prop
+   (mirrors .hx-radio-label's layout chrome). */
+.hx-toggle-label { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); cursor: pointer; }
 
 /* Select — Task 2 ground truth: "Input & Select" share one spec (radius 3, height 32,
    fill #FFFFFF, stroke #EEEEEE -> hover #999999 -> focus #32B4EB); mirrors .hx-input.
