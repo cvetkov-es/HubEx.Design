@@ -156,7 +156,7 @@
 .hx-btn--loading::after {
   content: ""; position: absolute;
   width: var(--hx-size-loader-s); height: var(--hx-size-loader-s);
-  border: 2px solid currentColor; border-right-color: transparent;
+  border: var(--hx-spacing-x05) solid currentColor; border-right-color: transparent;
   border-radius: var(--hx-border-radius-circle);
   animation: hx-btn-spin .8s linear infinite;
 }

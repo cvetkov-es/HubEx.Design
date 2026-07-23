@@ -57,8 +57,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
    */
   icon?: string;
   endIcon?: string;
-  /** Token for the icon (and, for `variant="ghost"` only in the official design,
-   *  the paired text) color. Ignored when `icon`/`endIcon` are absent. */
+  /** Token for the icon color. Ignored when `icon`/`endIcon` are absent. */
   iconColor?: ButtonIconColor;
   /** Accessible name override; also settable via the native `aria-label` attribute. */
   ariaLabel?: string;
