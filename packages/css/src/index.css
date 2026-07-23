@@ -759,6 +759,26 @@
 .hx-avatar--eight { background: var(--hx-color-avatar-eight-background); border-color: var(--hx-color-avatar-eight-border); color: var(--hx-color-avatar-eight-text); }
 .hx-avatar--nine { background: var(--hx-color-avatar-nine-background); border-color: var(--hx-color-avatar-nine-border); color: var(--hx-color-avatar-nine-text); }
 
+/* AvatarGroup (Task 7, additive) — no Figma ground truth for the overlap/ring
+   geometry; -8px overlap and the 2px ring both reuse existing spacing tokens
+   (--hx-spacing-x2/-x05) rather than inventing new literals, flagged CANT-TELL.
+   Avatar itself only exposes two physical sizes (sm/md — unchanged); the
+   group's three-size API (l/m/s) is realized by `.hx-avatar-group__avatar--*`
+   modifier classes that win over Avatar's own `.hx-avatar--sm/md` at equal
+   specificity by appearing later in the cascade (see AvatarGroup.tsx). l=md's
+   32px, m=sm's 24px, s a new 20px step — all three are exact
+   --hx-spacing-x8/-x6/-x5 matches. */
+.hx-avatar-group { display: inline-flex; align-items: center; }
+.hx-avatar-group__avatar {
+  margin-left: calc(var(--hx-spacing-x2) * -1);
+  border: var(--hx-spacing-x05) solid var(--hx-color-background-inverse);
+}
+.hx-avatar-group__avatar:first-child { margin-left: 0; }
+.hx-avatar-group__avatar--l { width: var(--hx-spacing-x8); height: var(--hx-spacing-x8); font-size: var(--hx-font-size-sm); }
+.hx-avatar-group__avatar--m { width: var(--hx-spacing-x6); height: var(--hx-spacing-x6); font-size: var(--hx-font-size-sm); }
+.hx-avatar-group__avatar--s { width: var(--hx-spacing-x5); height: var(--hx-spacing-x5); font-size: var(--hx-font-size-sm); }
+.hx-avatar-group__overflow { background: var(--hx-color-background-neutral); color: var(--hx-color-text-primary); }
+
 /* Alert — no ground truth in Task 2's list; only var() names fixed (same geometry as
    0.1.0). There is no --hx-color-border-success token in the re-based set (only
    background/text/icon-success exist); --hx-alert--success reuses --hx-color-text-success

@@ -56,6 +56,8 @@ export type {
 } from "./Badge/Badge.types";
 export { Avatar } from "./Avatar/Avatar";
 export type { AvatarProps } from "./Avatar/Avatar";
+export { AvatarGroup } from "./Avatar/AvatarGroup";
+export type { AvatarGroupProps, AvatarGroupItem, AvatarGroupSize } from "./Avatar/AvatarGroup";
 export { Label } from "./Label/Label";
 export type { LabelProps } from "./Label/Label";
 export { Alert } from "./Alert/Alert";
