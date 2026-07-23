@@ -10,3 +10,7 @@ raw-inventory.json
 # Secrets — never commit
 .env
 .env.*
+
+# Vendored reference copy of the official design system (regenerate via
+# tools/vendor-official-ds.mjs) — not our source, don't commit it.
+tools/.official-ds-ref/
