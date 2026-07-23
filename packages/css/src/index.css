@@ -926,3 +926,68 @@
 .hx-calendar__day--selected, .hx-calendar__day--selected:hover {
   background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse);
 }
+
+/* Text (Task 8) — new component, ported from the official DS's TextRoot
+   (`n.p` styled-component in the vendored bundle). Every variant renders a
+   <p> (Text.tsx); base rule supplies the layout reset + the official
+   fallback color (color-text-primary) used whenever no `color` prop/class
+   is present. Each `.hx-text--font-*` rule pulls its four typography
+   sub-tokens verbatim from @cvetkov_es/tokens — no literal size/weight/
+   line-height/family here, all real --hx-font-<stem>-* matches. */
+.hx-text { margin: 0; font-family: var(--hx-font-family); color: var(--hx-color-text-primary); }
+.hx-text--ellipsis {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  min-width: 0; max-width: 100%;
+}
+.hx-text--font-H0 {
+  font-size: var(--hx-font-h0-size); font-weight: var(--hx-font-h0-weight);
+  line-height: var(--hx-font-h0-line-height); font-family: var(--hx-font-h0-family);
+}
+.hx-text--font-H1 {
+  font-size: var(--hx-font-h1-size); font-weight: var(--hx-font-h1-weight);
+  line-height: var(--hx-font-h1-line-height); font-family: var(--hx-font-h1-family);
+}
+.hx-text--font-H2 {
+  font-size: var(--hx-font-h2-size); font-weight: var(--hx-font-h2-weight);
+  line-height: var(--hx-font-h2-line-height); font-family: var(--hx-font-h2-family);
+}
+.hx-text--font-H3 {
+  font-size: var(--hx-font-h3-size); font-weight: var(--hx-font-h3-weight);
+  line-height: var(--hx-font-h3-line-height); font-family: var(--hx-font-h3-family);
+}
+.hx-text--font-body-regular {
+  font-size: var(--hx-font-body-regular-size); font-weight: var(--hx-font-body-regular-weight);
+  line-height: var(--hx-font-body-regular-line-height); font-family: var(--hx-font-body-regular-family);
+}
+.hx-text--font-body-medium {
+  font-size: var(--hx-font-body-medium-size); font-weight: var(--hx-font-body-medium-weight);
+  line-height: var(--hx-font-body-medium-line-height); font-family: var(--hx-font-body-medium-family);
+}
+.hx-text--font-paragraph-regular {
+  font-size: var(--hx-font-paragraph-regular-size); font-weight: var(--hx-font-paragraph-regular-weight);
+  line-height: var(--hx-font-paragraph-regular-line-height); font-family: var(--hx-font-paragraph-regular-family);
+}
+.hx-text--font-paragraph-medium {
+  font-size: var(--hx-font-paragraph-medium-size); font-weight: var(--hx-font-paragraph-medium-weight);
+  line-height: var(--hx-font-paragraph-medium-line-height); font-family: var(--hx-font-paragraph-medium-family);
+}
+.hx-text--font-tooltip-regular {
+  font-size: var(--hx-font-tooltip-regular-size); font-weight: var(--hx-font-tooltip-regular-weight);
+  line-height: var(--hx-font-tooltip-regular-line-height); font-family: var(--hx-font-tooltip-regular-family);
+}
+.hx-text--font-tooltip-medium {
+  font-size: var(--hx-font-tooltip-medium-size); font-weight: var(--hx-font-tooltip-medium-weight);
+  line-height: var(--hx-font-tooltip-medium-line-height); font-family: var(--hx-font-tooltip-medium-family);
+}
+.hx-text--font-caption-regular {
+  font-size: var(--hx-font-caption-regular-size); font-weight: var(--hx-font-caption-regular-weight);
+  line-height: var(--hx-font-caption-regular-line-height); font-family: var(--hx-font-caption-regular-family);
+}
+.hx-text--color-text-inverse { color: var(--hx-color-text-inverse); }
+.hx-text--color-text-subtle { color: var(--hx-color-text-subtle); }
+.hx-text--color-text-error { color: var(--hx-color-text-error); }
+.hx-text--color-text-secondary { color: var(--hx-color-text-secondary); }
+.hx-text--color-text-primary { color: var(--hx-color-text-primary); }
+.hx-text--color-text-neutral { color: var(--hx-color-text-neutral); }
+.hx-text--color-text-weak { color: var(--hx-color-text-weak); }
+.hx-text--color-text-accent { color: var(--hx-color-text-accent); }

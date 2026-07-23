@@ -138,3 +138,39 @@ test("importing only BadgeDot yields a bundle free of unrelated components' clas
     "BadgeDot-only bundle must include its own hx-badge-dot literal class"
   );
 });
+
+// Task 8: Text/Link/Loader are brand-new components (not previously exported
+// at all). Importing just Text must not drag in any pre-existing component's
+// literal class strings — proving the new per-component entry (src/Text/Text.tsx,
+// added to the tsup `entry` glob via src/*/*.tsx) is tree-shaken exactly like
+// every sibling component.
+test("importing only Text yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Text } from "./dist/index.js"; console.log(Text);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Text-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Text-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Text-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Text-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Text-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "Text-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    out.includes("hx-text"),
+    "Text-only bundle must include its own hx-text literal class"
+  );
+});
