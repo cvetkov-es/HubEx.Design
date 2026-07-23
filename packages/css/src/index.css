@@ -1213,4 +1213,27 @@
 .hx-popover--bottom { top: calc(100% + var(--hx-spacing-x1)); left: 50%; transform: translateX(-50%); }
 .hx-popover--left { right: calc(100% + var(--hx-spacing-x1)); top: 50%; transform: translateY(-50%); }
 .hx-popover--right { left: calc(100% + var(--hx-spacing-x1)); top: 50%; transform: translateY(-50%); }
+
+/* Dropdown — Task 10. Built on Popover (positioning/open-state engine,
+   reused via Popover's `panelClassName`/`role` internal extensions — see
+   Popover.tsx) — `.hx-dropdown` layers Dropdown-specific surface styling
+   over `.hx-popover`'s own, sourced after it so it wins on the shared
+   properties. Ground truth extracted from the official bundle's minified
+   DropdownSurface styled-component (dist/esm/index.js): background-color ->
+   color-background-inverse (EXACT — white, vs. Popover's dark
+   color-background-strong), border-radius -> border-radius-small (EXACT,
+   3px vs. Popover's 5px), padding: 0 (menu items supply their own row
+   padding), box-shadow -> shadow-base (EXACT, same as Popover). min-width
+   232px duplicates the official bundle's own hardcoded default width
+   fallback (no token on our spacing scale covers it). Placement offset
+   (top/bottom/left/right) is inherited unchanged from `.hx-popover--<placement>`;
+   `.hx-dropdown--<placement>` carries no rules of its own — it's a DOM hook
+   only, matching what `matchTriggerWidth`/per-side geometry would otherwise
+   need (both OMITTED, see Dropdown.tsx). */
+.hx-dropdown {
+  background: var(--hx-color-background-inverse);
+  border-radius: var(--hx-radius-small);
+  padding: 0;
+  min-width: 232px; /* CANT-TELL: no token matches; duplicates official's own literal fallback */
+}
 .hx-textarea__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }

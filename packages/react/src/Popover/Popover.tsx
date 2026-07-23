@@ -60,6 +60,25 @@ export interface PopoverProps {
   disabled?: boolean;
   ariaLabel?: string;
   ariaLabelledBy?: string;
+  /**
+   * INTERNAL EXTENSION — not part of the official Popover API (which fixes
+   * the panel's role to "dialog"). Dropdown/Info reuse this Popover
+   * implementation as their positioning/open-state engine and need to put
+   * their own role (menu/listbox/"none"→no attribute/etc.) on the SAME panel
+   * element rather than nesting a second role-bearing wrapper inside it.
+   * `undefined` (default) keeps the official "dialog"; `null` omits the role
+   * attribute entirely.
+   * @default 'dialog'
+   */
+  role?: string | null;
+  /**
+   * INTERNAL EXTENSION — not part of the official Popover API. Extra class
+   * name(s) merged onto the panel element, after the built-in
+   * `hx-popover*` classes. Lets Dropdown/Info add their own `hx-dropdown` /
+   * `hx-info__panel` class to the same physical panel Popover renders,
+   * instead of wrapping it in an extra `<div>`.
+   */
+  panelClassName?: string;
 }
 
 // Popover is a plain named function component (no forwardRef) — same
@@ -102,6 +121,8 @@ export function Popover({
   disabled = false,
   ariaLabel,
   ariaLabelledBy,
+  role = "dialog",
+  panelClassName,
 }: PopoverProps) {
   const isControlled = open !== undefined;
   const [uncontrolledOpen, setUncontrolledOpen] = React.useState(false);
@@ -231,8 +252,15 @@ export function Popover({
       {trigger_}
       {visible && !disabled && (
         <span
-          className={`hx-popover hx-popover--${placement} hx-popover--${size}`}
-          role="dialog"
+          className={[
+            "hx-popover",
+            `hx-popover--${placement}`,
+            `hx-popover--${size}`,
+            panelClassName,
+          ]
+            .filter(Boolean)
+            .join(" ")}
+          role={role === null ? undefined : role}
           style={panelStyle}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledBy}

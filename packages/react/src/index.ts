@@ -86,3 +86,11 @@ export { Loader } from "./Loader/Loader";
 export type { LoaderProps, LoaderSize, LoaderColor } from "./Loader/Loader";
 export { Popover } from "./Popover/Popover";
 export type { PopoverProps, PopoverPlacement, PopoverSize, PopoverTrigger } from "./Popover/Popover";
+export { Dropdown } from "./Dropdown/Dropdown";
+export type {
+  DropdownProps,
+  DropdownPlacement,
+  DropdownTrigger,
+  DropdownRole,
+  DropdownAriaHasPopup,
+} from "./Dropdown/Dropdown";
