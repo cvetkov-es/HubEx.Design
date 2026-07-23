@@ -94,3 +94,5 @@ export type {
   DropdownRole,
   DropdownAriaHasPopup,
 } from "./Dropdown/Dropdown";
+export { Info } from "./Info/Info";
+export type { InfoProps, InfoPlacement, InfoTrigger } from "./Info/Info";

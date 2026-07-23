@@ -1236,4 +1236,34 @@
   padding: 0;
   min-width: 232px; /* CANT-TELL: no token matches; duplicates official's own literal fallback */
 }
+
+/* Info — Task 10. Built on Popover for positioning/open-state (the panel
+   itself is plain `.hx-popover`, unstyled further — `.hx-info__content`
+   below carries no box styling of its own). `.hx-info__trigger` is the
+   circular icon-button trigger; ground truth extracted from the official
+   bundle's minified InfoTriggerButton styled-component (dist/esm/index.js):
+   width/height -> spacing-x4 (EXACT, 16px), border 1px solid
+   color-border-primary (EXACT), border-radius-circle (EXACT), background
+   color-background-inverse (EXACT), hover/active border-color
+   color-border-accent (EXACT), focus-visible box-shadow ring of spacing-x05
+   (EXACT, 2px) in color-border-accent. transition durations (0.15s) have no
+   matching token on our scale, kept literal (CANT-TELL) matching Button's
+   own precedent for the same property. */
+.hx-info__trigger {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-spacing-x4); height: var(--hx-spacing-x4);
+  padding: 0; line-height: 0;
+  border: 1px solid var(--hx-color-border-primary);
+  border-radius: var(--hx-border-radius-circle);
+  background-color: var(--hx-color-background-inverse);
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* CANT-TELL: no duration token */
+}
+.hx-info__trigger:hover { border-color: var(--hx-color-border-accent); }
+.hx-info__trigger[aria-expanded="true"] { border-color: var(--hx-color-border-accent); }
+.hx-info__trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--hx-spacing-x05) var(--hx-color-border-accent);
+}
+.hx-info__content { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
 .hx-textarea__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
