@@ -46,3 +46,26 @@ test("shows tooltip content on focus and hides on blur", () => {
   fireEvent.blur(screen.getByText("Trigger"));
   expect(screen.queryByText("Helpful hint")).not.toBeInTheDocument();
 });
+
+test("defaults to the bottom placement class", () => {
+  render(
+    <Tooltip content="Helpful hint">
+      <button>Trigger</button>
+    </Tooltip>
+  );
+  fireEvent.mouseEnter(screen.getByText("Trigger"));
+  expect(screen.getByText("Helpful hint")).toHaveClass("hx-tooltip--bottom");
+});
+
+test.each(["top", "bottom", "left", "right"] as const)(
+  "placement=%s renders the matching modifier class",
+  (placement) => {
+    render(
+      <Tooltip content="Helpful hint" placement={placement}>
+        <button>Trigger</button>
+      </Tooltip>
+    );
+    fireEvent.mouseEnter(screen.getByText("Trigger"));
+    expect(screen.getByText("Helpful hint")).toHaveClass(`hx-tooltip--${placement}`);
+  }
+);

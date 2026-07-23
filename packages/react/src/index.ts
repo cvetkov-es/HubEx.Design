@@ -26,7 +26,7 @@ export type { ModalProps } from "./Modal/Modal";
 export { Drawer } from "./Drawer/Drawer";
 export type { DrawerProps } from "./Drawer/Drawer";
 export { Tooltip } from "./Tooltip/Tooltip";
-export type { TooltipProps } from "./Tooltip/Tooltip";
+export type { TooltipProps, TooltipPlacement } from "./Tooltip/Tooltip";
 export { Tabs } from "./Tabs/Tabs";
 export type { TabsProps, TabItem } from "./Tabs/Tabs";
 export { Menu } from "./Menu/Menu";
