@@ -665,9 +665,9 @@
    (--hx-color-background-error; the upstream Figma "backgroundg" typo is
    corrected to "background" as of 0.2.x — see tokens.json). Prior hardcoded
    6px/16px/4px/20px/3px/6px/14px literals are now mapped onto their exact
-   --hx-spacing-*/--hx-font-caption-regular-line-height token matches (all of
-   6/16/4/20/3 exist on the spacing scale, and 14px is the caption line-height
-   token) — Badge-Dot/Count/Tag/Shift still have no explicit Figma ground
+   --hx-spacing-x* and --hx-font-caption-regular-line-height token matches
+   (all of 6/16/4/20/3 exist on the spacing scale, and 14px is the caption
+   line-height token) — Badge-Dot/Count/Tag/Shift still have no explicit Figma ground
    truth beyond Badge-Count, so geometry is otherwise unchanged from 0.1.0/0.2.0. */
 .hx-badge {
   display: inline-flex; align-items: center; justify-content: center;
