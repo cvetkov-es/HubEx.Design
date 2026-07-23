@@ -38,6 +38,11 @@ export const Checkbox = /* @__PURE__ */ Object.assign(
       if (innerRef.current) innerRef.current.indeterminate = !!indeterminate;
     }, [indeterminate]);
 
+    // Stable identity across renders -- without this, a new callback ref is
+    // created every render, causing React to detach/reattach the DOM node's
+    // refs (and re-run any ref callbacks the caller passed) on every render.
+    const mergedRef = React.useCallback(mergeRefs(ref, innerRef), [ref]);
+
     const cls = ["hx-checkbox", indeterminate && "hx-checkbox--indeterminate", className]
       .filter(Boolean)
       .join(" ");
@@ -49,7 +54,7 @@ export const Checkbox = /* @__PURE__ */ Object.assign(
     const input = (
       <input
         {...rest}
-        ref={mergeRefs(ref, innerRef)}
+        ref={mergedRef}
         type="checkbox"
         id={inputId}
         className={cls}
