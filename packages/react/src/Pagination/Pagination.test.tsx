@@ -85,6 +85,27 @@ test("uses ellipsis items once totalPages exceeds the compact threshold", () => 
   expect(screen.queryByRole("button", { name: "Page 50" })).not.toBeInTheDocument();
 });
 
+test("default compactThreshold is 7: exactly 7 total pages render with no ellipsis", () => {
+  // 700 items / 100 per page = 7 pages, at the compact threshold boundary.
+  render(<Pagination totalItems={700} defaultPageSize={100} />);
+  expect(screen.queryByText("…")).not.toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Page 7" })).toBeInTheDocument();
+});
+
+test("default compactThreshold is 7: 8 total pages render with an ellipsis", () => {
+  // 800 items / 100 per page = 8 pages, just over the compact threshold.
+  render(<Pagination totalItems={800} defaultPageSize={100} />);
+  expect(screen.queryAllByText("…").length).toBeGreaterThan(0);
+});
+
+test("default pageSizeOptions are 25/50/100, with no 10 tier", () => {
+  render(<Pagination totalItems={1000} />);
+  const values = screen
+    .getAllByRole("option")
+    .map((option) => (option as HTMLOptionElement).value);
+  expect(values).toEqual(["25", "50", "100"]);
+});
+
 test("getPageAriaLabel overrides the per-page aria-label", () => {
   render(<Pagination totalItems={100} getPageAriaLabel={(p) => `Go to page ${p}`} />);
   expect(screen.getByRole("button", { name: "Go to page 1" })).toBeInTheDocument();

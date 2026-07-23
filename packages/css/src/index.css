@@ -689,12 +689,17 @@
 }
 .hx-badge-count {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: var(--hx-spacing-x4); height: var(--hx-spacing-x4); padding: 0 var(--hx-spacing-x1); /* 16px / 0 4px */
+  height: var(--hx-spacing-x4); /* 16px, constant regardless of digit count */
   border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
   color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 is applied via --bg-error below */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
   line-height: var(--hx-font-caption-regular-line-height);
 }
+/* Single- vs multi-digit shape, confirmed from the vendored bundle (`os=n.span`,
+   `$singleDigit`): single digit is a fixed 16x16 circle with 0 padding; multi-digit
+   grows with the content, `min-width: auto`, 0 4px padding. */
+.hx-badge-count--single { width: var(--hx-spacing-x4); min-width: var(--hx-spacing-x4); padding: var(--hx-spacing-x0); }
+.hx-badge-count--multi { min-width: auto; padding: 0 var(--hx-spacing-x1); }
 /* `background` (BadgeDotProps/BadgeCountProps) selects one of the
    --hx-color-background-* tokens (BadgeBackgroundToken); one modifier class
    per token value, shared between Dot and Count so the token set is declared
@@ -720,19 +725,21 @@
   display: inline-flex; align-items: center; justify-content: center;
   height: var(--hx-spacing-x5); padding: 0 var(--hx-spacing-x150percent); /* 20px / 0 6px, ex .hx-badge--tag */
   border-radius: var(--hx-radius-pill); border: 1px solid transparent;
+  background: transparent; /* always transparent, confirmed from the vendored bundle (`hs=n.span`) */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
   line-height: var(--hx-font-caption-regular-line-height);
 }
-/* type=new/beta x tone=light/dark: no Figma ground truth for Tag colour-by-type
-   (new/beta didn't exist pre-Task-7); picked the closest semantic pairing —
-   new=accent blue (re-using the existing --background-highlight light-accent
-   tint), beta=warning orange (no light-warning tint token exists, so `light`
-   falls back to the neutral --background-subtle fill with a warning border/text).
-   Flagged CANT-TELL, a designer call. */
-.hx-badge-tag--new.hx-badge-tag--light { background: var(--hx-color-background-highlight); border-color: var(--hx-color-border-accent); color: var(--hx-color-text-accent); }
-.hx-badge-tag--new.hx-badge-tag--dark { background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); }
-.hx-badge-tag--beta.hx-badge-tag--light { background: var(--hx-color-background-subtle); border-color: var(--hx-color-border-warning); color: var(--hx-color-text-warning); }
-.hx-badge-tag--beta.hx-badge-tag--dark { background: var(--hx-color-background-warning); color: var(--hx-color-text-inverse); }
+/* type/tone colour mapping confirmed from the vendored bundle
+   (`gs={new:{light:{border:"color-border-accent",text:"color-text-secondary"},
+   dark:{border:"color-border-accent",text:"color-text-neutral"}},
+   beta:{light:{border:"color-border-error",text:"color-text-secondary"},
+   dark:{border:"color-border-error",text:"color-text-neutral"}}}`, read via
+   `ns(A,B){return gs[A][B]}`): border is keyed ONLY by type, text ONLY by
+   tone; background is never set (stays transparent above). */
+.hx-badge-tag--new { border-color: var(--hx-color-border-accent); }
+.hx-badge-tag--beta { border-color: var(--hx-color-border-error); }
+.hx-badge-tag--light { color: var(--hx-color-text-secondary); }
+.hx-badge-tag--dark { color: var(--hx-color-text-neutral); }
 
 .hx-badge-shift {
   display: inline-flex; flex: none;
@@ -782,9 +789,9 @@
 .hx-avatar--eight { background: var(--hx-color-avatar-eight-background); border-color: var(--hx-color-avatar-eight-border); color: var(--hx-color-avatar-eight-text); }
 .hx-avatar--nine { background: var(--hx-color-avatar-nine-background); border-color: var(--hx-color-avatar-nine-border); color: var(--hx-color-avatar-nine-text); }
 
-/* AvatarGroup (Task 7, additive) — no Figma ground truth for the overlap/ring
-   geometry; -8px overlap and the 2px ring both reuse existing spacing tokens
-   (--hx-spacing-x2/-x05) rather than inventing new literals, flagged CANT-TELL.
+/* AvatarGroup (Task 7, additive) — size-dependent overlap/ring confirmed from
+   the vendored bundle (`Et=n.div`): `marginRight: -{s:8,m:12,l:16}px` and a
+   ring `boxShadow` of `"s"===$size?1:2` px (`--hx-color-border-inverse`).
    Avatar itself only exposes two physical sizes (sm/md — unchanged); the
    group's three-size API (l/m/s) is realized by `.hx-avatar-group__avatar--*`
    modifier classes that win over Avatar's own `.hx-avatar--sm/md` at equal
@@ -792,14 +799,27 @@
    32px, m=sm's 24px, s a new 20px step — all three are exact
    --hx-spacing-x8/-x6/-x5 matches. */
 .hx-avatar-group { display: inline-flex; align-items: center; }
-.hx-avatar-group__avatar {
-  margin-left: calc(var(--hx-spacing-x2) * -1);
-  border: var(--hx-spacing-x05) solid var(--hx-color-background-inverse);
+/* No un-sized base overlap/ring: AvatarGroup.tsx always pairs the base class
+   with one of --l/--m/--s (default size 'l'), so the per-size rules below are
+   the only overlap/ring declarations that ever apply. */
+.hx-avatar-group__avatar--l {
+  width: var(--hx-spacing-x8); height: var(--hx-spacing-x8); font-size: var(--hx-font-size-sm);
+  margin-left: calc(var(--hx-spacing-x4) * -1); /* -16px */
+  border: var(--hx-spacing-x05) solid var(--hx-color-background-inverse); /* 2px ring */
 }
-.hx-avatar-group__avatar:first-child { margin-left: 0; }
-.hx-avatar-group__avatar--l { width: var(--hx-spacing-x8); height: var(--hx-spacing-x8); font-size: var(--hx-font-size-sm); }
-.hx-avatar-group__avatar--m { width: var(--hx-spacing-x6); height: var(--hx-spacing-x6); font-size: var(--hx-font-size-sm); }
-.hx-avatar-group__avatar--s { width: var(--hx-spacing-x5); height: var(--hx-spacing-x5); font-size: var(--hx-font-size-sm); }
+.hx-avatar-group__avatar--m {
+  width: var(--hx-spacing-x6); height: var(--hx-spacing-x6); font-size: var(--hx-font-size-sm);
+  margin-left: calc(var(--hx-spacing-x3) * -1); /* -12px */
+  border: var(--hx-spacing-x05) solid var(--hx-color-background-inverse); /* 2px ring */
+}
+.hx-avatar-group__avatar--s {
+  width: var(--hx-spacing-x5); height: var(--hx-spacing-x5); font-size: var(--hx-font-size-sm);
+  margin-left: calc(var(--hx-spacing-x2) * -1); /* -8px */
+  border: var(--hx-spacing-x025) solid var(--hx-color-background-inverse); /* 1px ring */
+}
+.hx-avatar-group__avatar--l:first-child,
+.hx-avatar-group__avatar--m:first-child,
+.hx-avatar-group__avatar--s:first-child { margin-left: 0; }
 .hx-avatar-group__overflow { background: var(--hx-color-background-neutral); color: var(--hx-color-text-primary); }
 
 /* Alert — no ground truth in Task 2's list; only var() names fixed (same geometry as

@@ -23,6 +23,9 @@ export const BadgeTag = /* @__PURE__ */ Object.assign(
       ]
         .filter(Boolean)
         .join(" ");
+      // Confirmed from the vendored bundle (`function Ls`): when `children` is
+      // omitted, the label falls back to "Beta"/"New" by `type`.
+      const content = children ?? (type === "beta" ? "Beta" : "New");
       return (
         <span
           {...rest}
@@ -30,7 +33,7 @@ export const BadgeTag = /* @__PURE__ */ Object.assign(
           className={cls}
           {...(ariaLabel !== undefined ? { "aria-label": ariaLabel } : {})}
         >
-          {children}
+          {content}
         </span>
       );
     }

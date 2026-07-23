@@ -90,3 +90,51 @@ test("importing only Button yields a tiny, react-free bundle", async () => {
     "Button-only bundle must not pull in other components (DatePicker's hx-datepicker class found)"
   );
 });
+
+// Task 7 regression guard: the Badge family was split into five independent
+// exports (Badge, BadgeDot, BadgeCount, BadgeTag, BadgeShift) plus Pagination
+// and the AvatarGroup rewrite. Importing just one Badge-family export must not
+// drag in unrelated components' literal class strings (proving per-export
+// tree-shaking, not just per-package).
+test("importing only BadgeDot yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { BadgeDot } from "./dist/index.js"; console.log(BadgeDot);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `BadgeDot-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "BadgeDot-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-avatar-group"),
+    "BadgeDot-only bundle must not pull in other components (AvatarGroup's hx-avatar-group class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "BadgeDot-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "BadgeDot-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "BadgeDot-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge-tag"),
+    "BadgeDot-only bundle must not pull in sibling Badge-family components (BadgeTag's hx-badge-tag class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge-count"),
+    "BadgeDot-only bundle must not pull in sibling Badge-family components (BadgeCount's hx-badge-count class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge-shift"),
+    "BadgeDot-only bundle must not pull in sibling Badge-family components (BadgeShift's hx-badge-shift class found)"
+  );
+  assert.ok(
+    out.includes("hx-badge-dot"),
+    "BadgeDot-only bundle must include its own hx-badge-dot literal class"
+  );
+});

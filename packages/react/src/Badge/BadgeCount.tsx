@@ -14,10 +14,19 @@ export interface BadgeCountProps extends Omit<React.HTMLAttributes<HTMLSpanEleme
 // separate assignment statement (it's required for cross-component tree-shaking).
 // Pill built from --hx-radius-pill + the chosen --hx-color-background-* token
 // (default error), matching Task 2 ground truth for the old Badge-Count variant.
+// Single-vs-multi-digit shape confirmed from the vendored bundle (`function ms`
+// / `os=n.span`): `$singleDigit=String(value).length===1` selects fixed 16x16
+// circle (padding 0) vs a growing pill (padding 0 4px, min-width auto).
 export const BadgeCount = /* @__PURE__ */ Object.assign(
   /* @__PURE__ */ React.forwardRef<HTMLSpanElement, BadgeCountProps>(
     ({ value, background = "error", ariaLabel, className, ...rest }, ref) => {
-      const cls = ["hx-badge-count", `hx-badge-count--bg-${background}`, className]
+      const isSingleDigit = String(value).length === 1;
+      const cls = [
+        "hx-badge-count",
+        isSingleDigit ? "hx-badge-count--single" : "hx-badge-count--multi",
+        `hx-badge-count--bg-${background}`,
+        className,
+      ]
         .filter(Boolean)
         .join(" ");
       return (

@@ -21,18 +21,16 @@ export interface BuildPaginationItemsOptions {
   siblingCount?: number;
   /**
    * At or below this many total pages, all pages render with no ellipsis.
-   * Not given an explicit default value in the vendored .d.ts; this
-   * implementation defaults it to `edgeCount * 2` (CANT-TELL, a reasonable
-   * guess consistent with the two 5-page edge blocks).
+   * @default 7 (confirmed from the vendored bundle, `function Gt`:
+   * `E.compactThreshold ?? 7`).
    */
   compactThreshold?: number;
 }
 
 const DEFAULT_PAGE = 1;
 const DEFAULT_PAGE_SIZE = 25;
-// Not present in the vendored .d.ts (only its *name*, DEFAULT_PAGE_SIZE_OPTIONS,
-// is known); CANT-TELL, a reasonable common page-size ladder.
-const DEFAULT_PAGE_SIZE_OPTIONS = [10, 25, 50, 100];
+// Confirmed from the vendored bundle (`var Pt=[25,50,100]`) — no "10" tier.
+const DEFAULT_PAGE_SIZE_OPTIONS = [25, 50, 100];
 const DEFAULT_PAGE_SIZE_LABEL = "Content";
 const DEFAULT_PAGINATION_ARIA_LABEL = "Pagination";
 const defaultGetPageAriaLabel = (page: number) => `Page ${page}`;
@@ -66,7 +64,7 @@ function buildPaginationItems(
 ): PaginationItemDescriptor[] {
   const edgeCount = options.edgeCount ?? 5;
   const siblingCount = options.siblingCount ?? 2;
-  const compactThreshold = options.compactThreshold ?? edgeCount * 2;
+  const compactThreshold = options.compactThreshold ?? 7;
 
   if (totalPages <= 0) return [];
   if (totalPages <= compactThreshold) {

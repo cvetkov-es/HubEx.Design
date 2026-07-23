@@ -17,6 +17,21 @@ test("is a pill built from --hx-radius-pill and defaults to the error background
   expect(screen.getByText("5")).toHaveClass("hx-badge-count", "hx-badge-count--bg-error");
 });
 
+// Confirmed from the vendored bundle (`function ms`/`os=n.span`, `$singleDigit`):
+// a single-digit value renders a fixed 16x16 circle (0 padding); a multi-digit
+// value renders a growing pill (min-width auto, 0 4px padding).
+test.each([0, 5, 9])("value=%s (single digit) applies the single-digit shape class", (value) => {
+  render(<BadgeCount value={value} />);
+  expect(screen.getByText(String(value))).toHaveClass("hx-badge-count--single");
+  expect(screen.getByText(String(value))).not.toHaveClass("hx-badge-count--multi");
+});
+
+test.each([10, 99, "99+"])("value=%s (multi-digit) applies the multi-digit shape class", (value) => {
+  render(<BadgeCount value={value} />);
+  expect(screen.getByText(String(value))).toHaveClass("hx-badge-count--multi");
+  expect(screen.getByText(String(value))).not.toHaveClass("hx-badge-count--single");
+});
+
 test("applies a custom background token modifier class", () => {
   render(<BadgeCount value={5} background="accent" />);
   expect(screen.getByText("5")).toHaveClass("hx-badge-count--bg-accent");
