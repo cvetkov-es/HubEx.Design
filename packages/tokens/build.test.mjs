@@ -41,3 +41,31 @@ test("census-derived, non-Figma font tokens are still present", () => {
   assert.match(css, /--hx-font-family:\s*Roboto/);
   assert.match(css, /--hx-font-size-base:\s*13px/);
 });
+
+test("official 0.4.0 token scales are present (Task 2)", () => {
+  assert.match(css, /--hx-spacing-x2:\s*8px/);
+  assert.match(css, /--hx-border-radius-pill:\s*9999px/);
+  assert.match(css, /--hx-font-body-regular-size:\s*13px/);
+  assert.match(css, /--hx-shadow-base:/);
+  assert.doesNotMatch(css, /backgroundg/);
+  assert.match(css, /--hx-color-background-error:\s*#ED1940/);
+});
+
+test("back-compat aliases resolve to the new canonical values (Task 2)", () => {
+  // Style Dictionary's css/variables format (this config runs no `outputReferences`
+  // option) resolves token references to their literal value at build time rather
+  // than emitting a CSS `var(...)` indirection - so `--hx-radius-pill` ships as the
+  // resolved literal `9999px`, not `var(--hx-border-radius-pill)`.
+  assert.match(css, /--hx-radius-pill:\s*9999px/);
+  assert.match(css, /--hx-size-x2:\s*8px/);
+  assert.match(css, /--hx-radius-small:\s*3px/);
+  assert.match(css, /--hx-radius-medium:\s*5px/);
+  assert.match(css, /--hx-size-x05:\s*2px/);
+  assert.match(css, /--hx-size-x1:\s*4px/);
+  assert.match(css, /--hx-size-x150percent:\s*6px/);
+  assert.match(css, /--hx-size-x250percent:\s*10px/);
+  assert.match(css, /--hx-size-x3:\s*12px/);
+  assert.match(css, /--hx-font-size-base:\s*13px/);
+  assert.match(css, /--hx-font-size-sm:\s*11px/);
+  assert.match(css, /--hx-font-size-lg:\s*16px/);
+});

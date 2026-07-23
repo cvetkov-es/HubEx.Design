@@ -90,3 +90,240 @@ test("importing only Button yields a tiny, react-free bundle", async () => {
     "Button-only bundle must not pull in other components (DatePicker's hx-datepicker class found)"
   );
 });
+
+// Task 7 regression guard: the Badge family was split into five independent
+// exports (Badge, BadgeDot, BadgeCount, BadgeTag, BadgeShift) plus Pagination
+// and the AvatarGroup rewrite. Importing just one Badge-family export must not
+// drag in unrelated components' literal class strings (proving per-export
+// tree-shaking, not just per-package).
+test("importing only BadgeDot yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { BadgeDot } from "./dist/index.js"; console.log(BadgeDot);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `BadgeDot-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "BadgeDot-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-avatar-group"),
+    "BadgeDot-only bundle must not pull in other components (AvatarGroup's hx-avatar-group class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "BadgeDot-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "BadgeDot-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "BadgeDot-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge-tag"),
+    "BadgeDot-only bundle must not pull in sibling Badge-family components (BadgeTag's hx-badge-tag class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge-count"),
+    "BadgeDot-only bundle must not pull in sibling Badge-family components (BadgeCount's hx-badge-count class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge-shift"),
+    "BadgeDot-only bundle must not pull in sibling Badge-family components (BadgeShift's hx-badge-shift class found)"
+  );
+  assert.ok(
+    out.includes("hx-badge-dot"),
+    "BadgeDot-only bundle must include its own hx-badge-dot literal class"
+  );
+});
+
+// Task 8: Text/Link/Loader are brand-new components (not previously exported
+// at all). Importing just Text must not drag in any pre-existing component's
+// literal class strings — proving the new per-component entry (src/Text/Text.tsx,
+// added to the tsup `entry` glob via src/*/*.tsx) is tree-shaken exactly like
+// every sibling component.
+test("importing only Text yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Text } from "./dist/index.js"; console.log(Text);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Text-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Text-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Text-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Text-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Text-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "Text-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    out.includes("hx-text"),
+    "Text-only bundle must include its own hx-text literal class"
+  );
+});
+
+test("importing only Link yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Link } from "./dist/index.js"; console.log(Link);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  // Byte-size ceiling guards against Text or other components being pulled in at runtime.
+  // Link imports Text type-only (erased at compile), so runtime coupling would bloat this significantly.
+  assert.ok(bytes < 2000, `Link-only bundle too large: ${bytes} bytes (expected < 2000; size growth suggests runtime coupling)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Link-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Link-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Link-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Link-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    out.includes("hx-link"),
+    "Link-only bundle must include its own hx-link literal class"
+  );
+});
+
+test("importing only Loader yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Loader } from "./dist/index.js"; console.log(Loader);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Loader-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Loader-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Loader-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Loader-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Loader-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-text"),
+    "Loader-only bundle must not pull in other components (Text's hx-text class found)"
+  );
+  assert.ok(
+    !out.includes("hx-link"),
+    "Loader-only bundle must not pull in other components (Link's hx-link class found)"
+  );
+  assert.ok(
+    out.includes("hx-loader"),
+    "Loader-only bundle must include its own hx-loader literal class"
+  );
+});
+
+// Task 9: Search is built on InputBase and imports it at RUNTIME (a real
+// component reference, not just a type), so a Search-only bundle legitimately
+// contains `hx-inputbase` -- unlike every other guard above, this one does
+// NOT assert against that. It still proves Search doesn't drag in unrelated,
+// unrunning components (Avatar/Pagination/Badge).
+test("importing only Search yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { Search } from "./dist/index.js"; console.log(Search);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `Search-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "Search-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "Search-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "Search-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    !out.includes("hx-select"),
+    "Search-only bundle must not pull in other components (Select's hx-select class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "Search-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    out.includes("hx-search"),
+    "Search-only bundle must include its own hx-search literal class"
+  );
+  assert.ok(
+    out.includes("hx-inputbase"),
+    "Search legitimately runtime-imports InputBase, so its bundle should include hx-inputbase"
+  );
+});
+
+// Task 10: SegmentedControl is the one new overlay-group export that is
+// SELF-CONTAINED (no Popover/floating-ui reuse) — it only runtime-imports
+// Icon (like Button/Search already do for their own leaf dependencies), so a
+// SegmentedControl-only bundle must stay free of react-dom AND of every
+// unrelated component's literal class strings, including the sibling
+// Popover/Dropdown/Info trio this task also added.
+test("importing only SegmentedControl yields a bundle free of unrelated components' classes", async () => {
+  const out = await bundleSize(`import { SegmentedControl } from "./dist/index.js"; console.log(SegmentedControl);`);
+  const bytes = Buffer.byteLength(out, "utf8");
+  assert.ok(bytes < 8000, `SegmentedControl-only bundle too large: ${bytes} bytes (expected < 8000)`);
+  assert.ok(!/react-dom/.test(out), "react-dom must be external, not bundled");
+  assert.ok(
+    !out.includes("hx-avatar"),
+    "SegmentedControl-only bundle must not pull in other components (Avatar's hx-avatar class found)"
+  );
+  assert.ok(
+    !out.includes("hx-pagination"),
+    "SegmentedControl-only bundle must not pull in other components (Pagination's hx-pagination class found)"
+  );
+  assert.ok(
+    !out.includes("hx-badge"),
+    "SegmentedControl-only bundle must not pull in other components (Badge's hx-badge class found)"
+  );
+  assert.ok(
+    !out.includes("hx-btn"),
+    "SegmentedControl-only bundle must not pull in other components (Button's hx-btn class found)"
+  );
+  assert.ok(
+    !out.includes("hx-popover"),
+    "SegmentedControl-only bundle must not pull in Popover (hx-popover class found) — it has no overlay dependency"
+  );
+  assert.ok(
+    !out.includes("hx-dropdown"),
+    "SegmentedControl-only bundle must not pull in Dropdown (hx-dropdown class found)"
+  );
+  assert.ok(
+    !out.includes("hx-info__"),
+    "SegmentedControl-only bundle must not pull in Info (hx-info__ class found)"
+  );
+  assert.ok(
+    out.includes("hx-segmented"),
+    "SegmentedControl-only bundle must include its own hx-segmented literal class"
+  );
+  assert.ok(
+    out.includes("hx-icon"),
+    "SegmentedControl legitimately runtime-imports Icon, so its bundle should include hx-icon"
+  );
+});

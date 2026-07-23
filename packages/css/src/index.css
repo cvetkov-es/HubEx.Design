@@ -104,6 +104,74 @@
 }
 .hx-btn[disabled] { opacity: .5; cursor: not-allowed; }
 
+/* Task 4: align to the official @hubex/design-system Button API. Geometry ported
+   verbatim from `tools/.official-ds-ref/package/dist/esm/index.js` (the `X`/`z`
+   Button functions), expressed only in --hx-* tokens. */
+
+/* Icon glyph inside a Button (Material webfont, string names only -- never inline
+   SVG; see the ban documented on Icon.tsx). Default color inherits the button's
+   own text color (currentColor); the two `iconColor` values from the official
+   API become explicit overrides via the modifier classes below. Size: 18px
+   normally, 16px only for round+small -- ported from the official bundle's
+   `getIconSize` (round && size === "small" ? 16 : 18). */
+.hx-btn__icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: 'material'; font-style: normal; font-weight: normal;
+  font-size: var(--hx-size-icon-x450percent); /* 18px, official default */
+  line-height: 1; color: currentColor;
+  -webkit-font-smoothing: antialiased;
+}
+.hx-btn--round.hx-btn--sm .hx-btn__icon { font-size: var(--hx-size-icon-x4); } /* 16px, round+small only */
+.hx-btn__icon--accent { color: var(--hx-color-icon-accent); }
+.hx-btn__icon--secondary { color: var(--hx-color-icon-secondary); }
+.hx-btn__label { display: inline-flex; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+/* Round (circle icon button). Diameter comes from --hx-size-button-circle-{s,m}
+   (NOT --hx-size-button-m, which is the pill's height) -- exact port of the
+   official bundle's `n = c ? {small:{width:24,height:24}, medium:{width:32,
+   height:32}} : ...`. Declared after the base rule and `.hx-btn--sm` above so
+   it wins the cascade at equal specificity; the combined `.hx-btn--round.hx-btn--sm`
+   rule below has higher specificity and wins regardless of order. */
+.hx-btn--round {
+  padding: 0; flex: none;
+  width: var(--hx-size-button-circle-m); height: var(--hx-size-button-circle-m);
+  border-radius: var(--hx-border-radius-circle);
+}
+.hx-btn--round.hx-btn--sm {
+  width: var(--hx-size-button-circle-s); height: var(--hx-size-button-circle-s);
+}
+
+/* fullWidth -- official: only applies when NOT round (!c && Q ? {width:"100%",
+   flex:"1 1 auto", ...} : {}); round buttons keep their fixed circle size. */
+.hx-btn--full:not(.hx-btn--round) { min-width: 0; width: 100%; flex: 1 1 auto; }
+
+/* Loading -- official swaps the button's content for a small (12px,
+   --hx-size-loader-s token) spinning ring Loader and keeps the button's own box
+   the same size. Ported here as a CSS-only spinner rather than importing the
+   Loader component, which would pull extra module weight into the
+   tree-shaking-guarded Button-only bundle (see treeshake.test.mjs). Spinner
+   color = currentColor, matching the official Loader's default iconColor. */
+.hx-btn--loading { position: relative; cursor: wait; }
+.hx-btn--loading > * { visibility: hidden; }
+.hx-btn--loading::after {
+  content: ""; position: absolute;
+  width: var(--hx-size-loader-s); height: var(--hx-size-loader-s);
+  border: var(--hx-spacing-x05) solid currentColor; border-right-color: transparent;
+  border-radius: var(--hx-border-radius-circle);
+  animation: hx-btn-spin .8s linear infinite;
+}
+@keyframes hx-btn-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* error -- official: $error only re-themes the Dashed variant's border (see
+   the dashed block above, borderColor: t ? color-border-error : ...); the
+   other variants ignore it visually in the vendored bundle. The message itself
+   renders as a caption-sized line below the button (official ErrorText). */
+.hx-btn--dashed.hx-btn--error { border-color: var(--hx-color-border-error); }
+.hx-btn__error {
+  display: block; margin-top: var(--hx-spacing-x05);
+  font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error);
+}
+
 .hx-field { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); }
 .hx-label { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-secondary); }
 
@@ -111,9 +179,12 @@
    stroke #EEEEEE -> hover #999999 -> focus #32B4EB; disabled fill #F8F8F8.
    #F8F8F8 exists as both --hx-color-background-page and --hx-color-background-weak
    (same hex); "weak" is used here as the better semantic fit for a muted/disabled
-   form-control surface (vs. "page", the whole-canvas background). */
+   form-control surface (vs. "page", the whole-canvas background). Height: now that
+   a real control-height token exists (`--hx-size-input-m`, added by the tokens
+   re-base after this comment was first written), it replaces the literal `32px`
+   this rule used to carry. */
 .hx-input {
-  height: 32px;
+  height: var(--hx-size-input-m);
   padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
@@ -124,6 +195,30 @@
 .hx-input:focus { outline: none; border-color: var(--hx-color-border-accent); }
 .hx-input--invalid { border-color: var(--hx-color-border-error); }
 .hx-input:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+
+/* Input chrome — Task 5: align the React Input to the official API (label,
+   errorText, allowClear, fullWidth). The bare .hx-input rule above is left
+   untouched as the control's own box style; these rules only style the
+   wrapper/label/clear/error chrome the component now optionally renders
+   around it. A plain `<Input placeholder="..." />` with no label/errorText/
+   allowClear renders none of the modifier classes below, so it stays
+   visually identical to the pre-Task-5 bare control. */
+.hx-input-wrap { display: inline-flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-input-wrap.hx-input--full { display: flex; width: 100%; }
+.hx-input-control { position: relative; display: inline-flex; align-items: center; }
+.hx-input-wrap.hx-input--full .hx-input-control { display: flex; width: 100%; }
+.hx-input-wrap.hx-input--full .hx-input-control > .hx-input { flex: 1 1 auto; width: 100%; }
+.hx-input--clearable { padding-right: var(--hx-spacing-x7); } /* reserve room for the clear icon */
+.hx-input__clear {
+  position: absolute; right: var(--hx-spacing-x2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x4); height: var(--hx-size-icon-x4);
+  padding: 0; border: none; background: transparent;
+  font-size: var(--hx-size-icon-x4);
+  color: var(--hx-color-icon-tertiary); cursor: pointer;
+}
+.hx-input__clear:hover { color: var(--hx-color-icon-secondary); }
+.hx-input__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
 
 /* Checkbox — Task 2 ground truth: 18x18 box, radius 2. The re-based radius scale only
    has 3/5/9999 (small/medium/pill) — there is no 2. Per the plan's explicit instruction,
@@ -147,6 +242,17 @@
 }
 .hx-checkbox:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-checkbox:disabled { opacity: .5; cursor: not-allowed; }
+/* Task 6: indeterminate (`el.indeterminate` is set imperatively by the React
+   component, see Checkbox.tsx). Compound selector (two classes) matches
+   `:checked::after`'s specificity; it relies on being placed AFTER the
+   `:checked::after` rule above (equal specificity, later source order wins)
+   so this dash glyph wins when a box is both checked AND indeterminate. */
+.hx-checkbox.hx-checkbox--indeterminate { background: var(--hx-color-background-accent); border-color: var(--hx-color-border-accent); }
+.hx-checkbox.hx-checkbox--indeterminate::after {
+  content: ""; position: absolute; left: var(--hx-spacing-x1); top: var(--hx-spacing-x2);
+  width: var(--hx-spacing-x250percent); height: var(--hx-spacing-x05); border: none; transform: none;
+  background: var(--hx-color-icon-inverse);
+}
 
 /* Radio — Task 2 ground truth: 18x18 circle, radius 999. Per the plan's instruction,
    999 (radio/circle) and 9999 (pill) collapse onto the single --hx-radius-pill token —
@@ -169,40 +275,127 @@
 .hx-radio:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-radio:disabled { opacity: .5; cursor: not-allowed; }
 
+/* Radio label + RadioGroup — Task 6: align to the official API's RadioGroup
+   (options/name/value/direction). Geometry-free layout chrome only: gap
+   between the control and its text, gap between stacked/inline options. */
+.hx-radio-label { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); cursor: pointer; }
+.hx-radio-label--disabled { cursor: not-allowed; color: var(--hx-color-text-tertiary); }
+.hx-radio-group { display: inline-flex; gap: var(--hx-spacing-x3); }
+.hx-radio-group--column { flex-direction: column; }
+.hx-radio-group--row { flex-direction: row; }
+
 /* Toggle — Task 2 ground truth: track 24x14, radius 999 -> --hx-radius-pill (see Radio's
    note on the 999/9999 collapse). Checked bg = accent #32B4EB; thumb white. Unchecked
    track: 0.1.0 misused the BORDER-role token --hx-color-border-strong as a background
    fill (its own comment: "no explicit unchecked dump found"). The re-based set has a
    proper BACKGROUND-role token at the same hex — --hx-color-background-neutral
-   (#CCCCCC) — used here instead, fixing the role mismatch as a side effect. */
+   (#CCCCCC) — used here instead, fixing the role mismatch as a side effect.
+   Task 6: the element backing this class changed from a <button role="switch">
+   to a real <input type="checkbox" role="switch"> (see Toggle.tsx's top
+   comment for why), so it's now styled with the SAME appearance:none +
+   ::after-pseudo-element pattern as .hx-checkbox/.hx-radio above, driven by
+   :checked instead of the old [aria-checked="true"] attribute selector. */
 .hx-toggle {
-  display: inline-flex; align-items: center;
-  width: 24px; height: 14px; padding: 2px;
+  appearance: none; -webkit-appearance: none;
+  position: relative; flex: none; margin: 0;
+  display: inline-block;
+  width: var(--hx-spacing-x6); height: var(--hx-spacing-x350percent); padding: var(--hx-spacing-x05);
   border: none; border-radius: var(--hx-radius-pill);
   background: var(--hx-color-background-neutral);
   cursor: pointer;
-  justify-content: flex-start;
 }
-.hx-toggle[aria-checked="true"] { background: var(--hx-color-background-accent); justify-content: flex-end; }
-.hx-toggle::after { content: ""; width: 10px; height: 10px; border-radius: var(--hx-radius-pill); background: var(--hx-color-icon-inverse); }
+.hx-toggle::after {
+  content: ""; position: absolute; top: var(--hx-spacing-x05); left: var(--hx-spacing-x05);
+  width: 10px; height: 10px; border-radius: var(--hx-radius-pill);
+  background: var(--hx-color-icon-inverse);
+  transition: transform .15s ease;
+}
+.hx-toggle:checked { background: var(--hx-color-background-accent); }
+.hx-toggle:checked::after { transform: translateX(var(--hx-spacing-x250percent)); } /* 24 - 2*2(padding) - 10(thumb) = 10px travel */
 .hx-toggle:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-toggle:disabled { opacity: .5; cursor: not-allowed; }
 
+/* Optional <label> wrapper when Toggle is rendered with a `label` prop
+   (mirrors .hx-radio-label's layout chrome). */
+.hx-toggle-label { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); cursor: pointer; }
+
 /* Select — Task 2 ground truth: "Input & Select" share one spec (radius 3, height 32,
-   fill #FFFFFF, stroke #EEEEEE -> hover #999999 -> focus #32B4EB); mirrors .hx-input. */
+   fill #FFFFFF, stroke #EEEEEE -> hover #999999 -> focus #32B4EB); mirrors .hx-input.
+   Task 5: the React Select is now a typeahead combobox — the element carrying
+   this class is a plain <input type="text"> (not a native <select>), so
+   cursor switches from pointer to text; height migrated off the literal
+   `32px` onto the real `--hx-size-input-m` token, same as .hx-input above.
+   Extra right padding reserves room for the chevron/clear icon (see
+   .hx-select__chevron/.hx-select__clear below). */
 .hx-select {
-  height: 32px;
-  padding: 0 var(--hx-size-x3); /* 12px — no --hx-spacing-x3 exists; reusing --hx-size-x3 (12px, same value) */
+  height: var(--hx-size-input-m);
+  padding: 0 var(--hx-spacing-x7) 0 var(--hx-size-x3); /* right: 28px, reserves room for the chevron/clear icon; left: 12px — no --hx-spacing-x3 exists, reusing --hx-size-x3 (same value) */
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
   background: var(--hx-color-background-inverse);
   border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
-  cursor: pointer;
+  cursor: text;
 }
 .hx-select:hover { border-color: var(--hx-color-border-secondary); }
 .hx-select:focus { outline: none; border-color: var(--hx-color-border-accent); }
 .hx-select--invalid { border-color: var(--hx-color-border-error); }
 .hx-select:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+
+/* Select combobox chrome — Task 5: self-contained typeahead combobox, CSS-
+   positioned menu (no floating-ui/portal). */
+.hx-select-wrap { display: inline-flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-select-control { position: relative; display: inline-flex; align-items: center; }
+.hx-select__chevron, .hx-select__clear {
+  position: absolute; right: var(--hx-spacing-x2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x4); height: var(--hx-size-icon-x4);
+  font-family: 'material'; font-style: normal; font-size: var(--hx-size-icon-x4);
+  color: var(--hx-color-icon-tertiary);
+}
+/* aria-hidden and non-interactive: let clicks fall through to the input
+   beneath it instead of swallowing them (it has no onClick of its own). */
+.hx-select__chevron { pointer-events: none; }
+.hx-select__clear { border: none; background: transparent; padding: 0; cursor: pointer; }
+.hx-select__clear:hover { color: var(--hx-color-icon-secondary); }
+.hx-select-menu {
+  position: absolute; top: calc(100% + var(--hx-spacing-x1)); left: 0; right: 0;
+  z-index: 1000; /* no z-index token in the scale; same literal convention as .hx-menu/.hx-modal above */
+  max-height: 240px; /* CANT-TELL: no scale token for a dropdown max-height; literal, same convention as Menu/Modal's own unmatched literals */
+  overflow-y: auto;
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
+  box-shadow: var(--hx-shadow-base);
+}
+.hx-select-listbox { list-style: none; margin: 0; padding: 0; }
+.hx-select-option {
+  display: flex; align-items: center;
+  height: var(--hx-size-input-m);
+  padding: 0 var(--hx-spacing-x3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  cursor: pointer;
+}
+.hx-select-option--active { background: var(--hx-color-background-hoverlist); }
+.hx-select-option--selected { color: var(--hx-color-text-accent); }
+.hx-select-option--disabled { color: var(--hx-color-text-neutral); cursor: not-allowed; }
+.hx-select__empty {
+  padding: var(--hx-spacing-x3);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-secondary);
+}
+.hx-select__actions {
+  display: flex; align-items: center; justify-content: flex-end; gap: var(--hx-spacing-x1);
+  padding: var(--hx-spacing-x2); border-top: 1px solid var(--hx-color-border-primary);
+}
+.hx-select__action {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x6); height: var(--hx-size-icon-x6);
+  font-family: 'material'; font-style: normal;
+  border: none; border-radius: var(--hx-radius-small); background: transparent;
+  color: var(--hx-color-icon-secondary); cursor: pointer;
+}
+.hx-select__action:hover { background: var(--hx-color-background-hoverlist); }
+.hx-select__action:disabled { opacity: .5; cursor: not-allowed; }
 
 /* Table — Task 2 ground truth: TableRow height 40, hover #F8F8FA
    (--hx-color-background-hoverlist); TableHead 11px text, color #777777
@@ -240,25 +433,48 @@
   text-align: left;
 }
 
-/* Pagination — no ground truth in Task 2's list; only var() names fixed (same geometry
-   as 0.1.0), following the same 32px control-height scale as Button/Input/Select. */
-.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); }
+/* Pagination (Task 7 rewrite) — no ground truth in Task 2's list; only var()
+   names fixed (same 32px control-height scale as Button/Input/Select — now an
+   exact --hx-spacing-x8 token match, fixing the prior literal). The official
+   API has no prev/next arrow buttons (only page buttons, ellipsis, and a
+   page-size select appear in the vendored Pagination.styles.d.ts), so the old
+   `.hx-pagination__btn` prev/next rule is dropped; `.hx-pagination__ellipsis`
+   and `.hx-pagination__size*` are new. */
+.hx-pagination { display: inline-flex; align-items: center; gap: var(--hx-spacing-x4); flex-wrap: wrap; }
 .hx-pagination__pages { display: flex; align-items: center; gap: var(--hx-spacing-x1); list-style: none; margin: 0; padding: 0; }
-.hx-pagination__btn, .hx-pagination__page {
+.hx-pagination__page {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 32px; height: 32px; padding: 0 var(--hx-spacing-x2);
+  min-width: var(--hx-spacing-x8); height: var(--hx-spacing-x8); padding: 0 var(--hx-spacing-x2);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
   color: var(--hx-color-text-primary);
   background: var(--hx-color-background-inverse);
   border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-small);
   cursor: pointer;
 }
-.hx-pagination__btn:hover, .hx-pagination__page:hover { background: var(--hx-color-background-hoverlist); }
-.hx-pagination__btn:disabled, .hx-pagination__page:disabled { opacity: .5; cursor: not-allowed; }
-.hx-pagination__btn:focus-visible, .hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
+.hx-pagination__page:hover { background: var(--hx-color-background-hoverlist); }
+.hx-pagination__page:disabled { opacity: .5; cursor: not-allowed; }
+.hx-pagination__page:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 .hx-pagination__page--active {
   background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); border-color: var(--hx-color-border-accent);
 }
+.hx-pagination__ellipsis {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--hx-spacing-x8); height: var(--hx-spacing-x8);
+  color: var(--hx-color-text-secondary); font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+}
+.hx-pagination__size { display: inline-flex; align-items: center; gap: var(--hx-spacing-x2); }
+.hx-pagination__size-label {
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-secondary);
+}
+.hx-pagination__size-select {
+  height: var(--hx-spacing-x8); padding: 0 var(--hx-spacing-x2);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-neutral); border-radius: var(--hx-radius-small);
+  cursor: pointer;
+}
+.hx-pagination__size-select:disabled { opacity: .5; cursor: not-allowed; }
+.hx-pagination__size-select:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
 /* Modal — Task 2 ground truth: radius 5 (--hx-radius-medium), width 560. Scrim =
    --hx-color-overlay (rgba(0,0,0,0.5)) — this is now a REAL token (0.1.0 had no overlay
@@ -306,21 +522,42 @@
 /* Tooltip — Task 2 ground truth: radius 5 (--hx-radius-medium), fill #353535
    (--hx-color-background-primary), text #FEFEFE (--hx-color-text-weak) 13px
    (--hx-font-size-base) — all four now EXACT token matches (0.1.0 had to round every
-   one of these: fill onto #1F1F1F, radius onto 4px, text-size onto 11px). */
+   one of these: fill onto #1F1F1F, radius onto 4px, text-size onto 11px).
+   Task 7: CSS-positioned `placement` (top/bottom/left/right, no floating-ui) —
+   base .hx-tooltip carries only the box styling; a `.hx-tooltip--<placement>`
+   modifier (always present, default 'bottom' per the official API) supplies the
+   offset/anchor. The 8px/4px arrow geometry (previously hardcoded literals) is
+   now var(--hx-spacing-x2)/var(--hx-spacing-x1) — both exact token matches. */
 .hx-tooltip-wrap { position: relative; display: inline-block; }
 .hx-tooltip {
-  position: absolute; bottom: calc(100% + var(--hx-spacing-x2)); left: 50%; transform: translateX(-50%);
-  z-index: 10;
-  max-width: 250px; padding: var(--hx-spacing-x2);
+  position: absolute; z-index: 10;
+  max-width: 250px; /* CANT-TELL: no token on the spacing/size scale for 250px */
+  padding: var(--hx-spacing-x2);
   background: var(--hx-color-background-primary); color: var(--hx-color-text-weak);
   border-radius: var(--hx-radius-medium);
   font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); line-height: 1.3;
   white-space: normal;
 }
+.hx-tooltip--top { bottom: calc(100% + var(--hx-spacing-x2)); left: 50%; transform: translateX(-50%); }
+.hx-tooltip--bottom { top: calc(100% + var(--hx-spacing-x2)); left: 50%; transform: translateX(-50%); }
+.hx-tooltip--left { right: calc(100% + var(--hx-spacing-x2)); top: 50%; transform: translateY(-50%); }
+.hx-tooltip--right { left: calc(100% + var(--hx-spacing-x2)); top: 50%; transform: translateY(-50%); }
 .hx-tooltip__arrow {
-  position: absolute; top: 100%; left: 50%;
-  width: 8px; height: 8px; margin-left: -4px; margin-top: -4px;
+  position: absolute;
+  width: var(--hx-spacing-x2); height: var(--hx-spacing-x2);
   background: var(--hx-color-background-primary); transform: rotate(45deg);
+}
+.hx-tooltip--top .hx-tooltip__arrow {
+  top: 100%; left: 50%; margin-left: calc(var(--hx-spacing-x1) * -1); margin-top: calc(var(--hx-spacing-x1) * -1);
+}
+.hx-tooltip--bottom .hx-tooltip__arrow {
+  bottom: 100%; left: 50%; margin-left: calc(var(--hx-spacing-x1) * -1); margin-bottom: calc(var(--hx-spacing-x1) * -1);
+}
+.hx-tooltip--left .hx-tooltip__arrow {
+  left: 100%; top: 50%; margin-top: calc(var(--hx-spacing-x1) * -1); margin-left: calc(var(--hx-spacing-x1) * -1);
+}
+.hx-tooltip--right .hx-tooltip__arrow {
+  right: 100%; top: 50%; margin-top: calc(var(--hx-spacing-x1) * -1); margin-right: calc(var(--hx-spacing-x1) * -1);
 }
 
 /* Tabs — no ground truth in Task 2's list; only var() names fixed (same geometry as
@@ -421,30 +658,104 @@
 .hx-chip__remove:hover { background: var(--hx-color-border-primary); color: var(--hx-color-text-primary); }
 .hx-chip__remove:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
-/* Badge — Task 2 ground truth: Badge-Count radius 9999 (--hx-radius-pill), fill #ED1940
-   (--hx-color-background-error; the upstream Figma "backgroundg" typo is corrected to
-   "background" here as of 0.2.x — see tokens.json). Badge-Dot/Badge-Tag have
-   no explicit ground truth in Task 2; their prior hardcoded 999px literals are replaced
-   with the same --hx-radius-pill token (999 and 9999 collapse identically, see the
-   Radio/Toggle note above) and their var() names fixed. */
+/* Badge family (Task 7) — BREAKING restructure of the old single Badge
+   (variant: dot|count|tag + count) into five components: Badge (semantic
+   pill), BadgeDot, BadgeCount, BadgeTag, BadgeShift. Task 2 ground truth:
+   Badge-Count radius 9999 (--hx-radius-pill), fill #ED1940
+   (--hx-color-background-error; the upstream Figma "backgroundg" typo is
+   corrected to "background" as of 0.2.x — see tokens.json). Prior hardcoded
+   6px/16px/4px/20px/3px/6px/14px literals are now mapped onto their exact
+   --hx-spacing-x* and --hx-font-caption-regular-line-height token matches
+   (all of 6/16/4/20/3 exist on the spacing scale, and 14px is the caption
+   line-height token) — Badge-Dot/Count/Tag/Shift still have no explicit Figma ground
+   truth beyond Badge-Count, so geometry is otherwise unchanged from 0.1.0/0.2.0. */
 .hx-badge {
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--hx-font-family);
+  height: var(--hx-spacing-x5); padding: 0 var(--hx-spacing-x150percent); /* 20px / 0 6px */
+  border-radius: var(--hx-radius-pill);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  line-height: var(--hx-font-caption-regular-line-height);
 }
-.hx-badge--dot {
-  width: 6px; height: 6px; padding: 0; border-radius: var(--hx-radius-pill);
-  background: var(--hx-color-background-error);
+.hx-badge--neutral { background: var(--hx-color-background-neutral); color: var(--hx-color-text-primary); }
+.hx-badge--accent { background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); }
+.hx-badge--success { background: var(--hx-color-background-success); color: var(--hx-color-text-inverse); }
+.hx-badge--warning { background: var(--hx-color-background-warning); color: var(--hx-color-text-inverse); }
+.hx-badge--error { background: var(--hx-color-background-error); color: var(--hx-color-text-inverse); }
+
+.hx-badge-dot {
+  display: inline-flex; flex: none;
+  width: var(--hx-spacing-x150percent); height: var(--hx-spacing-x150percent); /* 6px, Task 2/0.1.0 geometry */
+  border-radius: var(--hx-radius-pill);
 }
-.hx-badge--count {
-  min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
-  background: var(--hx-color-background-error); color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 */
-  font-size: var(--hx-font-size-sm); line-height: 14px;
+.hx-badge-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--hx-spacing-x4); /* 16px, constant regardless of digit count */
+  border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
+  color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 is applied via --bg-error below */
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  line-height: var(--hx-font-caption-regular-line-height);
 }
-.hx-badge--tag {
-  height: 20px; padding: 3px 6px; border-radius: var(--hx-radius-pill);
-  border: 1px solid var(--hx-color-border-error); color: var(--hx-color-text-secondary);
-  font-size: var(--hx-font-size-sm); line-height: 14px;
+/* Single- vs multi-digit shape, confirmed from the vendored bundle (`os=n.span`,
+   `$singleDigit`): single digit is a fixed 16x16 circle with 0 padding; multi-digit
+   grows with the content, `min-width: auto`, 0 4px padding. */
+.hx-badge-count--single { width: var(--hx-spacing-x4); min-width: var(--hx-spacing-x4); padding: var(--hx-spacing-x0); }
+.hx-badge-count--multi { min-width: auto; padding: 0 var(--hx-spacing-x1); }
+/* `background` (BadgeDotProps/BadgeCountProps) selects one of the
+   --hx-color-background-* tokens (BadgeBackgroundToken); one modifier class
+   per token value, shared between Dot and Count so the token set is declared
+   exactly once. */
+.hx-badge-dot--bg-primary, .hx-badge-count--bg-primary { background: var(--hx-color-background-primary); }
+.hx-badge-dot--bg-secondary, .hx-badge-count--bg-secondary { background: var(--hx-color-background-secondary); }
+.hx-badge-dot--bg-tertiary, .hx-badge-count--bg-tertiary { background: var(--hx-color-background-tertiary); }
+.hx-badge-dot--bg-strong, .hx-badge-count--bg-strong { background: var(--hx-color-background-strong); }
+.hx-badge-dot--bg-neutral, .hx-badge-count--bg-neutral { background: var(--hx-color-background-neutral); }
+.hx-badge-dot--bg-subtle, .hx-badge-count--bg-subtle { background: var(--hx-color-background-subtle); }
+.hx-badge-dot--bg-weak, .hx-badge-count--bg-weak { background: var(--hx-color-background-weak); }
+.hx-badge-dot--bg-page, .hx-badge-count--bg-page { background: var(--hx-color-background-page); }
+.hx-badge-dot--bg-hoverlist, .hx-badge-count--bg-hoverlist { background: var(--hx-color-background-hoverlist); }
+.hx-badge-dot--bg-inverse, .hx-badge-count--bg-inverse { background: var(--hx-color-background-inverse); }
+.hx-badge-dot--bg-accent, .hx-badge-count--bg-accent { background: var(--hx-color-background-accent); }
+.hx-badge-dot--bg-accent-hover, .hx-badge-count--bg-accent-hover { background: var(--hx-color-background-accent-hover); }
+.hx-badge-dot--bg-highlight, .hx-badge-count--bg-highlight { background: var(--hx-color-background-highlight); }
+.hx-badge-dot--bg-success, .hx-badge-count--bg-success { background: var(--hx-color-background-success); }
+.hx-badge-dot--bg-warning, .hx-badge-count--bg-warning { background: var(--hx-color-background-warning); }
+.hx-badge-dot--bg-error, .hx-badge-count--bg-error { background: var(--hx-color-background-error); }
+
+.hx-badge-tag {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--hx-spacing-x5); padding: 0 var(--hx-spacing-x150percent); /* 20px / 0 6px, ex .hx-badge--tag */
+  border-radius: var(--hx-radius-pill); border: 1px solid transparent;
+  background: transparent; /* always transparent, confirmed from the vendored bundle (`hs=n.span`) */
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  line-height: var(--hx-font-caption-regular-line-height);
 }
+/* type/tone colour mapping confirmed from the vendored bundle
+   (`gs={new:{light:{border:"color-border-accent",text:"color-text-secondary"},
+   dark:{border:"color-border-accent",text:"color-text-neutral"}},
+   beta:{light:{border:"color-border-error",text:"color-text-secondary"},
+   dark:{border:"color-border-error",text:"color-text-neutral"}}}`, read via
+   `ns(A,B){return gs[A][B]}`): border is keyed ONLY by type, text ONLY by
+   tone; background is never set (stays transparent above). */
+.hx-badge-tag--new { border-color: var(--hx-color-border-accent); }
+.hx-badge-tag--beta { border-color: var(--hx-color-border-error); }
+.hx-badge-tag--light { color: var(--hx-color-text-secondary); }
+.hx-badge-tag--dark { color: var(--hx-color-text-neutral); }
+
+.hx-badge-shift {
+  display: inline-flex; flex: none;
+  border-radius: var(--hx-border-radius-circle);
+  border: 1px solid var(--hx-color-border-primary);
+}
+/* size (BadgeShiftProps): xl 24x24, l 16x16, m 12x12, s 8x8 — per the official
+   doc comment; all four exact --hx-spacing-* matches. */
+.hx-badge-shift--xl { width: var(--hx-spacing-x6); height: var(--hx-spacing-x6); }
+.hx-badge-shift--l { width: var(--hx-spacing-x4); height: var(--hx-spacing-x4); }
+.hx-badge-shift--m { width: var(--hx-spacing-x3); height: var(--hx-spacing-x3); }
+.hx-badge-shift--s { width: var(--hx-spacing-x2); height: var(--hx-spacing-x2); }
+/* status: online=success green, offline=neutral grey — no Figma ground truth,
+   the obvious semantic mapping onto existing background tokens. */
+.hx-badge-shift--online { background: var(--hx-color-background-success); }
+.hx-badge-shift--offline { background: var(--hx-color-background-neutral); }
 
 /* Avatar (base) — no ground truth in Task 2's list (the 9-colour palette is Task 4's
    job); only var() names fixed. Prior hardcoded 999px radius literal replaced with the
@@ -478,6 +789,39 @@
 .hx-avatar--eight { background: var(--hx-color-avatar-eight-background); border-color: var(--hx-color-avatar-eight-border); color: var(--hx-color-avatar-eight-text); }
 .hx-avatar--nine { background: var(--hx-color-avatar-nine-background); border-color: var(--hx-color-avatar-nine-border); color: var(--hx-color-avatar-nine-text); }
 
+/* AvatarGroup (Task 7, additive) — size-dependent overlap/ring confirmed from
+   the vendored bundle (`Et=n.div`): `marginRight: -{s:8,m:12,l:16}px` and a
+   ring `boxShadow` of `"s"===$size?1:2` px (`--hx-color-border-inverse`).
+   Avatar itself only exposes two physical sizes (sm/md — unchanged); the
+   group's three-size API (l/m/s) is realized by `.hx-avatar-group__avatar--*`
+   modifier classes that win over Avatar's own `.hx-avatar--sm/md` at equal
+   specificity by appearing later in the cascade (see AvatarGroup.tsx). l=md's
+   32px, m=sm's 24px, s a new 20px step — all three are exact
+   --hx-spacing-x8/-x6/-x5 matches. */
+.hx-avatar-group { display: inline-flex; align-items: center; }
+/* No un-sized base overlap/ring: AvatarGroup.tsx always pairs the base class
+   with one of --l/--m/--s (default size 'l'), so the per-size rules below are
+   the only overlap/ring declarations that ever apply. */
+.hx-avatar-group__avatar--l {
+  width: var(--hx-spacing-x8); height: var(--hx-spacing-x8); font-size: var(--hx-font-size-sm);
+  margin-left: calc(var(--hx-spacing-x4) * -1); /* -16px */
+  border: var(--hx-spacing-x05) solid var(--hx-color-background-inverse); /* 2px ring */
+}
+.hx-avatar-group__avatar--m {
+  width: var(--hx-spacing-x6); height: var(--hx-spacing-x6); font-size: var(--hx-font-size-sm);
+  margin-left: calc(var(--hx-spacing-x3) * -1); /* -12px */
+  border: var(--hx-spacing-x05) solid var(--hx-color-background-inverse); /* 2px ring */
+}
+.hx-avatar-group__avatar--s {
+  width: var(--hx-spacing-x5); height: var(--hx-spacing-x5); font-size: var(--hx-font-size-sm);
+  margin-left: calc(var(--hx-spacing-x2) * -1); /* -8px */
+  border: var(--hx-spacing-x025) solid var(--hx-color-background-inverse); /* 1px ring */
+}
+.hx-avatar-group__avatar--l:first-child,
+.hx-avatar-group__avatar--m:first-child,
+.hx-avatar-group__avatar--s:first-child { margin-left: 0; }
+.hx-avatar-group__overflow { background: var(--hx-color-background-neutral); color: var(--hx-color-text-primary); }
+
 /* Alert — no ground truth in Task 2's list; only var() names fixed (same geometry as
    0.1.0). There is no --hx-color-border-success token in the re-based set (only
    background/text/icon-success exist); --hx-alert--success reuses --hx-color-text-success
@@ -496,14 +840,46 @@
 .hx-alert__body { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); }
 .hx-alert__title { font-weight: 600; }
 
-/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont, never
-   SVG (unchanged from 0.1.0; no token references here to fix — font-size 20px has no
-   scale token and was already a literal). */
+/* Icon — renders Material Icons GLYPHS BY NAME as ligature text via a webfont,
+   never SVG. Task 7: the tokens package now HAS a full --hx-size-icon-* scale
+   (0.1.0/0.2.0 predate it, hence the old "font-size 20px has no scale token"
+   note — no longer true), so the previous literal `font-size: 20px` on the
+   base rule is replaced by a required `.hx-icon--<step>` modifier class (the
+   component always adds one; `size` unset resolves to x5/20px, its old
+   default value unchanged) instead of an inline style. `color` similarly maps
+   onto one `.hx-icon--color-<token>` modifier class per --hx-color-icon-*
+   token, added only when a color prop is given (no default recolor). */
 .hx-icon {
   font-family: 'material'; font-style: normal; font-weight: normal;
-  font-size: 20px; line-height: 1; display: inline-flex;
+  line-height: 1; display: inline-flex;
   -webkit-font-smoothing: antialiased;
 }
+.hx-icon--x3 { font-size: var(--hx-size-icon-x3); }
+.hx-icon--x350percent { font-size: var(--hx-size-icon-x350percent); }
+.hx-icon--x4 { font-size: var(--hx-size-icon-x4); }
+.hx-icon--x450percent { font-size: var(--hx-size-icon-x450percent); }
+.hx-icon--x5 { font-size: var(--hx-size-icon-x5); }
+.hx-icon--x6 { font-size: var(--hx-size-icon-x6); }
+.hx-icon--x7 { font-size: var(--hx-size-icon-x7); }
+.hx-icon--x8 { font-size: var(--hx-size-icon-x8); }
+.hx-icon--x10 { font-size: var(--hx-size-icon-x10); }
+.hx-icon--x12 { font-size: var(--hx-size-icon-x12); }
+.hx-icon--x14 { font-size: var(--hx-size-icon-x14); }
+.hx-icon--x15 { font-size: var(--hx-size-icon-x15); }
+.hx-icon--x16 { font-size: var(--hx-size-icon-x16); }
+.hx-icon--color-primary { color: var(--hx-color-icon-primary); }
+.hx-icon--color-secondary { color: var(--hx-color-icon-secondary); }
+.hx-icon--color-tertiary { color: var(--hx-color-icon-tertiary); }
+.hx-icon--color-neutral { color: var(--hx-color-icon-neutral); }
+.hx-icon--color-subtle { color: var(--hx-color-icon-subtle); }
+.hx-icon--color-inverse { color: var(--hx-color-icon-inverse); }
+.hx-icon--color-weak { color: var(--hx-color-icon-weak); }
+.hx-icon--color-accent { color: var(--hx-color-icon-accent); }
+.hx-icon--color-accent-hover { color: var(--hx-color-icon-accent-hover); }
+.hx-icon--color-success { color: var(--hx-color-icon-success); }
+.hx-icon--color-warning { color: var(--hx-color-icon-warning); }
+.hx-icon--color-error { color: var(--hx-color-icon-error); }
+.hx-icon--color-rating { color: var(--hx-color-icon-rating); }
 
 /* Calendar / DatePicker — no ground truth in Task 2's list; only var() names fixed
    (same geometry as 0.1.0). */
@@ -550,3 +926,416 @@
 .hx-calendar__day--selected, .hx-calendar__day--selected:hover {
   background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse);
 }
+
+/* Text (Task 8) — new component, ported from the official DS's TextRoot
+   (`n.p` styled-component in the vendored bundle). Every variant renders a
+   <p> (Text.tsx); base rule supplies the layout reset + the official
+   fallback color (color-text-primary) used whenever no `color` prop/class
+   is present. Each `.hx-text--font-*` rule pulls its four typography
+   sub-tokens verbatim from @cvetkov_es/tokens — no literal size/weight/
+   line-height/family here, all real --hx-font-<stem>-* matches. */
+.hx-text { margin: 0; font-family: var(--hx-font-family); color: var(--hx-color-text-primary); }
+.hx-text--ellipsis {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  min-width: 0; max-width: 100%;
+}
+.hx-text--font-H0 {
+  font-size: var(--hx-font-h0-size); font-weight: var(--hx-font-h0-weight);
+  line-height: var(--hx-font-h0-line-height); font-family: var(--hx-font-h0-family);
+}
+.hx-text--font-H1 {
+  font-size: var(--hx-font-h1-size); font-weight: var(--hx-font-h1-weight);
+  line-height: var(--hx-font-h1-line-height); font-family: var(--hx-font-h1-family);
+}
+.hx-text--font-H2 {
+  font-size: var(--hx-font-h2-size); font-weight: var(--hx-font-h2-weight);
+  line-height: var(--hx-font-h2-line-height); font-family: var(--hx-font-h2-family);
+}
+.hx-text--font-H3 {
+  font-size: var(--hx-font-h3-size); font-weight: var(--hx-font-h3-weight);
+  line-height: var(--hx-font-h3-line-height); font-family: var(--hx-font-h3-family);
+}
+.hx-text--font-body-regular {
+  font-size: var(--hx-font-body-regular-size); font-weight: var(--hx-font-body-regular-weight);
+  line-height: var(--hx-font-body-regular-line-height); font-family: var(--hx-font-body-regular-family);
+}
+.hx-text--font-body-medium {
+  font-size: var(--hx-font-body-medium-size); font-weight: var(--hx-font-body-medium-weight);
+  line-height: var(--hx-font-body-medium-line-height); font-family: var(--hx-font-body-medium-family);
+}
+.hx-text--font-paragraph-regular {
+  font-size: var(--hx-font-paragraph-regular-size); font-weight: var(--hx-font-paragraph-regular-weight);
+  line-height: var(--hx-font-paragraph-regular-line-height); font-family: var(--hx-font-paragraph-regular-family);
+}
+.hx-text--font-paragraph-medium {
+  font-size: var(--hx-font-paragraph-medium-size); font-weight: var(--hx-font-paragraph-medium-weight);
+  line-height: var(--hx-font-paragraph-medium-line-height); font-family: var(--hx-font-paragraph-medium-family);
+}
+.hx-text--font-tooltip-regular {
+  font-size: var(--hx-font-tooltip-regular-size); font-weight: var(--hx-font-tooltip-regular-weight);
+  line-height: var(--hx-font-tooltip-regular-line-height); font-family: var(--hx-font-tooltip-regular-family);
+}
+.hx-text--font-tooltip-medium {
+  font-size: var(--hx-font-tooltip-medium-size); font-weight: var(--hx-font-tooltip-medium-weight);
+  line-height: var(--hx-font-tooltip-medium-line-height); font-family: var(--hx-font-tooltip-medium-family);
+}
+.hx-text--font-caption-regular {
+  font-size: var(--hx-font-caption-regular-size); font-weight: var(--hx-font-caption-regular-weight);
+  line-height: var(--hx-font-caption-regular-line-height); font-family: var(--hx-font-caption-regular-family);
+}
+.hx-text--color-text-inverse { color: var(--hx-color-text-inverse); }
+.hx-text--color-text-subtle { color: var(--hx-color-text-subtle); }
+.hx-text--color-text-error { color: var(--hx-color-text-error); }
+.hx-text--color-text-secondary { color: var(--hx-color-text-secondary); }
+.hx-text--color-text-primary { color: var(--hx-color-text-primary); }
+.hx-text--color-text-neutral { color: var(--hx-color-text-neutral); }
+.hx-text--color-text-weak { color: var(--hx-color-text-weak); }
+.hx-text--color-text-accent { color: var(--hx-color-text-accent); }
+
+/* Link (Task 8) — new component. Typography/color/truncation are supplied by
+   the shared `.hx-text--<variant>`/`.hx-text--<color>`/`.hx-text--ellipsis`
+   rules above (Link.tsx applies them directly, see its top comment); this
+   block only carries anchor-specific chrome: geometry-free, ported verbatim
+   from the vendored bundle's LinkRoot styled-component (the `G` function —
+   hover/focus/focus-visible/active states, disabled state). The 2px value
+   used below for text-underline-offset/outline-offset/border-radius is a
+   single exact match for --hx-size-x05 (the same token .hx-checkbox already
+   reuses for its own 2px radius) — used via var() in all three places rather
+   than repeated as a literal. Outline stroke WIDTH (2px solid) is left
+   literal, matching this file's existing convention for every other
+   `outline: 2px solid ...` rule (Checkbox/Radio/Toggle/Pagination/etc. above
+   — stroke widths are never mapped onto the spacing/size scale in this
+   file). `:active`'s `filter: brightness(0.9)` has no token equivalent
+   (dimensionless ratio, not a color/size value) — kept literal, ported
+   verbatim from the bundle. */
+.hx-link {
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+.hx-link:not(.hx-link--disabled):hover,
+.hx-link:not(.hx-link--disabled):focus {
+  text-decoration: underline;
+  text-underline-offset: var(--hx-size-x05);
+}
+.hx-link:not(.hx-link--disabled):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: var(--hx-size-x05);
+  border-radius: var(--hx-size-x05);
+}
+.hx-link:not(.hx-link--disabled):active {
+  filter: brightness(0.9); /* CANT-TELL: no token for a brightness ratio; ported verbatim from the official bundle's :active state */
+}
+.hx-link--disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Loader (Task 8) — new component. The official bundle animates an inline
+   SVG glyph; this package bans inline SVG (see Icon.tsx), so the spinner is
+   reimplemented as a CSS bordered-ring, same convention already established
+   by the Button's own `.hx-btn--loading::after` spinner above (border color
+   trick: solid currentColor with the right edge transparent, rotated via
+   @keyframes). Ring thickness reuses the same --hx-spacing-x05 (2px) token
+   Button's spinner uses. Timing (1.1s ease infinite) is ported verbatim from
+   the vendored bundle's `animation: rotate 1.1s infinite ease` — no token
+   exists for an animation-duration, kept as the extracted literal. size/color
+   map onto --hx-size-loader-{s,m,l} / --hx-color-icon-{primary,secondary,
+   error}, both exact matches to the official LoaderSizeTokens/
+   LoaderColorTokens enum members (small/medium/large,
+   color-icon-primary/secondary/error). */
+.hx-loader {
+  display: inline-block; flex: none;
+  border: var(--hx-spacing-x05) solid currentColor; border-right-color: transparent;
+  border-radius: var(--hx-border-radius-circle);
+  animation: hx-loader-spin 1.1s ease infinite;
+}
+@keyframes hx-loader-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.hx-loader--small { width: var(--hx-size-loader-s); height: var(--hx-size-loader-s); }
+.hx-loader--medium { width: var(--hx-size-loader-m); height: var(--hx-size-loader-m); }
+.hx-loader--large { width: var(--hx-size-loader-l); height: var(--hx-size-loader-l); }
+.hx-loader--color-icon-primary { color: var(--hx-color-icon-primary); }
+.hx-loader--color-icon-secondary { color: var(--hx-color-icon-secondary); }
+.hx-loader--color-icon-error { color: var(--hx-color-icon-error); }
+
+/* InputBase (Task 9) — new primitive component; Search and (a future
+   refactor of) Select build on it. Geometry ported from the vendored
+   bundle's own InputBase styled-input function (grep "rightSlotWidthPx" in
+   tools/.official-ds-ref/.../index.js): padding "7px <right> 7px <left>",
+   border 1px solid (primary at rest / secondary on hover / accent on focus /
+   error on invalid), border-radius small, background inverse (weak when
+   disabled). Height uses --hx-size-input-m (32px) instead of the official's
+   implicit padding+line-height-derived height, matching every other control
+   in this file (.hx-input/.hx-select) for a consistent control row height.
+   Left/right absolute-positioned icon slots at a 10px (--hx-spacing-x250percent)
+   inset, matching the bundle's `top:7px;left:10px`/`top:7px;right:10px`
+   (this file uses flex + translateY centering instead of a fixed 7px, since
+   .hx-inputbase-control is a flex row of variable height content, not a
+   fixed-height box like the official's). */
+.hx-inputbase {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--hx-size-input-m);
+  padding: 0 var(--hx-spacing-x250percent);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
+  outline: none;
+  transition: border-color .1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hx-inputbase::placeholder { color: var(--hx-color-text-secondary); }
+.hx-inputbase:hover { border-color: var(--hx-color-border-secondary); }
+.hx-inputbase:focus { border-color: var(--hx-color-border-accent); }
+.hx-inputbase--invalid { border-color: var(--hx-color-border-error); }
+.hx-inputbase:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+/* 36px = left inset 10 (--hx-spacing-x250percent) + icon 18 (--hx-size-icon-x450percent)
+   + gap 8 (--hx-spacing-x2) — composed from tokens to match the official
+   bundle's fixed 36px left-icon padding (no single 36px spacing token exists). */
+.hx-inputbase--has-left {
+  padding-left: calc(var(--hx-spacing-x250percent) + var(--hx-size-icon-x450percent) + var(--hx-spacing-x2));
+}
+/* Right padding for `rightSlot` is dynamic (`rightSlotWidthPx`) and reserved
+   via inline style on the element itself (see InputBase.tsx) — no fixed
+   class needed here, unlike the left column above. */
+
+.hx-inputbase-wrap { display: inline-flex; flex-direction: column; gap: var(--hx-spacing-x1); }
+.hx-inputbase-wrap.hx-inputbase--full { display: flex; width: 100%; }
+.hx-inputbase-control { position: relative; display: inline-flex; align-items: center; }
+.hx-inputbase-wrap.hx-inputbase--full .hx-inputbase-control { display: flex; width: 100%; }
+.hx-inputbase__left, .hx-inputbase__right {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  pointer-events: none; /* interactive children (e.g. a clear button) opt back in below */
+}
+.hx-inputbase__left { left: var(--hx-spacing-x250percent); font-size: var(--hx-size-icon-x450percent); color: var(--hx-color-icon-secondary); }
+.hx-inputbase__right { right: var(--hx-spacing-x250percent); }
+.hx-inputbase__right > * { pointer-events: auto; }
+.hx-inputbase__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }
+
+/* Search (Task 9) — built on InputBase (see Search.tsx); `.hx-search` carries
+   no geometry of its own (InputBase's own rules already supply the box,
+   left-icon slot, right-slot padding), it exists only as a stable hook class.
+   `.hx-search__clear` mirrors `.hx-input__clear`/`.hx-select__clear`'s same
+   icon-button convention (icon-tertiary at rest, icon-secondary on hover). */
+.hx-search { }
+.hx-search__clear {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x450percent); height: var(--hx-size-icon-x450percent);
+  padding: 0; border: none; background: transparent;
+  font-size: var(--hx-size-icon-x450percent);
+  color: var(--hx-color-icon-tertiary); cursor: pointer;
+}
+.hx-search__clear:hover { color: var(--hx-color-icon-secondary); }
+
+/* TextArea (Task 9) — new component; no vendored bundle implementation exists
+   to port geometry from (TextArea.d.ts is present but the compiled bundle
+   has no TextArea function — grepped, absent), so geometry mirrors .hx-input
+   (Task 2 ground truth: radius 3, fill #FFFFFF, stroke #EEEEEE -> hover
+   #999999 -> focus #32B4EB; disabled fill #F8F8F8) with vertical padding
+   added (a multi-line control, unlike Input's fixed-height single line) and
+   `min-height` in place of a fixed `height` so it can grow beyond one row. */
+.hx-textarea {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--hx-size-input-m);
+  padding: var(--hx-spacing-x2) var(--hx-size-x3); /* 8px / 12px — see legend re: no --hx-spacing-x3 */
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base);
+  color: var(--hx-color-text-primary);
+  background: var(--hx-color-background-inverse);
+  border: 1px solid var(--hx-color-border-primary); border-radius: var(--hx-radius-small);
+  outline: none;
+  resize: vertical;
+  transition: border-color .1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hx-textarea::placeholder { color: var(--hx-color-text-secondary); }
+.hx-textarea:hover { border-color: var(--hx-color-border-secondary); }
+.hx-textarea:focus { border-color: var(--hx-color-border-accent); }
+.hx-textarea--invalid { border-color: var(--hx-color-border-error); }
+.hx-textarea:disabled { background: var(--hx-color-background-weak); cursor: not-allowed; }
+/* autoSize (TextArea.tsx sets height imperatively via JS): the user-drag
+   resize handle makes no sense once height tracks content automatically,
+   and overflow only appears past the JS-computed `maxRows` cap. */
+.hx-textarea--autosize { resize: none; overflow-y: auto; }
+.hx-textarea--clearable { padding-right: var(--hx-spacing-x7); } /* reserve room for the clear icon, mirrors .hx-input--clearable */
+
+.hx-textarea-wrap { display: flex; flex-direction: column; gap: var(--hx-spacing-x1); width: 100%; }
+.hx-textarea-control { position: relative; display: flex; }
+.hx-textarea-control > .hx-textarea { flex: 1 1 auto; }
+.hx-textarea__clear {
+  position: absolute; top: var(--hx-spacing-x2); right: var(--hx-spacing-x2);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-size-icon-x4); height: var(--hx-size-icon-x4);
+  padding: 0; border: none; background: transparent;
+  font-size: var(--hx-size-icon-x4);
+  color: var(--hx-color-icon-tertiary); cursor: pointer;
+}
+.hx-textarea__clear:hover { color: var(--hx-color-icon-secondary); }
+.hx-textarea__counter {
+  position: absolute; bottom: var(--hx-spacing-x1); right: var(--hx-spacing-x2);
+  padding: 0 var(--hx-spacing-x05);
+  font-size: var(--hx-font-size-sm); color: var(--hx-color-text-secondary);
+  background: var(--hx-color-background-inverse);
+  pointer-events: none;
+}
+
+/* Popover — Task 10. The official Popover is built on @floating-ui/react
+   (auto-flip via `fallbackPlacements`, a portal, and an arrow whose offset is
+   computed by the `arrow()` middleware against measured collision data);
+   this package never depends on floating-ui, so placement here is static CSS
+   (`.hx-popover--<placement>`, cardinal directions only) and there is no
+   arrow — see the OMITTED list in Popover.tsx for the full reasoning.
+   Ground truth extracted directly from the official bundle's minified
+   PopoverSurface/PopoverContainer styled-components (dist/esm/index.js):
+   background-color -> theme.colors.background['color-background-strong']
+   (EXACT: --hx-color-background-strong), border-radius ->
+   theme.borderRadius['border-radius-medium'] (EXACT: --hx-radius-medium,
+   5px), box-shadow -> theme.shadows['shadow-base'] (EXACT:
+   --hx-shadow-base), padding -> spacing-x250percent for size 'm' (10px) /
+   spacing-x5 for size 'l' (20px), both EXACT token matches. The reference
+   gap between trigger and panel (floating-ui's `gap: 4` middleware option)
+   is reproduced as spacing-x1 (4px), an EXACT match reused from Tooltip's
+   own placement offset. z-index 1000 duplicates the official bundle's own
+   hardcoded floating-layer z-index (no token on our spacing/z scale). */
+.hx-popover-wrap { position: relative; display: inline-block; }
+.hx-popover {
+  position: absolute; z-index: 1000; /* CANT-TELL: no z-index token; matches official's own literal 1000 */
+  display: flex; flex-direction: column; align-items: stretch;
+  background: var(--hx-color-background-strong);
+  border-radius: var(--hx-radius-medium);
+  box-shadow: var(--hx-shadow-base);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-weak);
+  overflow: auto;
+}
+.hx-popover--m { padding: var(--hx-spacing-x250percent); }
+.hx-popover--l { padding: var(--hx-spacing-x5); }
+.hx-popover--top { bottom: calc(100% + var(--hx-spacing-x1)); left: 50%; transform: translateX(-50%); }
+.hx-popover--bottom { top: calc(100% + var(--hx-spacing-x1)); left: 50%; transform: translateX(-50%); }
+.hx-popover--left { right: calc(100% + var(--hx-spacing-x1)); top: 50%; transform: translateY(-50%); }
+.hx-popover--right { left: calc(100% + var(--hx-spacing-x1)); top: 50%; transform: translateY(-50%); }
+
+/* Dropdown — Task 10. Built on Popover (positioning/open-state engine,
+   reused via Popover's `panelClassName`/`role` internal extensions — see
+   Popover.tsx) — `.hx-dropdown` layers Dropdown-specific surface styling
+   over `.hx-popover`'s own, sourced after it so it wins on the shared
+   properties. Ground truth extracted from the official bundle's minified
+   DropdownSurface styled-component (dist/esm/index.js): background-color ->
+   color-background-inverse (EXACT — white, vs. Popover's dark
+   color-background-strong), border-radius -> border-radius-small (EXACT,
+   3px vs. Popover's 5px), padding: 0 (menu items supply their own row
+   padding), box-shadow -> shadow-base (EXACT, same as Popover). min-width
+   232px duplicates the official bundle's own hardcoded default width
+   fallback (no token on our spacing scale covers it). Placement offset
+   (top/bottom/left/right) is inherited unchanged from `.hx-popover--<placement>`;
+   `.hx-dropdown--<placement>` carries no rules of its own — it's a DOM hook
+   only, matching what `matchTriggerWidth`/per-side geometry would otherwise
+   need (both OMITTED, see Dropdown.tsx). */
+.hx-dropdown {
+  background: var(--hx-color-background-inverse);
+  border-radius: var(--hx-radius-small);
+  padding: 0;
+  min-width: 232px; /* CANT-TELL: no token matches; duplicates official's own literal fallback */
+}
+
+/* Info — Task 10. Built on Popover for positioning/open-state (the panel
+   itself is plain `.hx-popover`, unstyled further — `.hx-info__content`
+   below carries no box styling of its own). `.hx-info__trigger` is the
+   circular icon-button trigger; ground truth extracted from the official
+   bundle's minified InfoTriggerButton styled-component (dist/esm/index.js):
+   width/height -> spacing-x4 (EXACT, 16px), border 1px solid
+   color-border-primary (EXACT), border-radius-circle (EXACT), background
+   color-background-inverse (EXACT), hover/active border-color
+   color-border-accent (EXACT), focus-visible box-shadow ring of spacing-x05
+   (EXACT, 2px) in color-border-accent. transition durations (0.15s) have no
+   matching token on our scale, kept literal (CANT-TELL) matching Button's
+   own precedent for the same property. */
+.hx-info__trigger {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: var(--hx-spacing-x4); height: var(--hx-spacing-x4);
+  padding: 0; line-height: 0;
+  border: 1px solid var(--hx-color-border-primary);
+  border-radius: var(--hx-border-radius-circle);
+  background-color: var(--hx-color-background-inverse);
+  cursor: pointer;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; /* CANT-TELL: no duration token */
+}
+.hx-info__trigger:hover { border-color: var(--hx-color-border-accent); }
+.hx-info__trigger[aria-expanded="true"] { border-color: var(--hx-color-border-accent); }
+.hx-info__trigger:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--hx-spacing-x05) var(--hx-color-border-accent);
+}
+.hx-info__content { font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); }
+
+/* SegmentedControl — Task 10. SELF-CONTAINED: no floating-ui, positioned
+   inline in normal flow (not an overlay). Ground truth extracted from the
+   official bundle's minified SegmentedControlRoot/ItemWrapper/ItemRadio/
+   ItemLabel/ActionButton styled-components (dist/esm/index.js).
+   .hx-segmented (Root): inline-flex, gap spacing-x05, padding spacing-x1,
+   background color-background-subtle, border-radius-pill — all EXACT.
+   .hx-segmented__item (ItemWrapper): height uses --hx-size-tab-m rather than
+   the official's literal spacing-x6 (24px) — a deliberate substitution
+   (there IS a purpose-built token family for exactly this "tab-like
+   control" height that the official bundle doesn't reference, so this
+   package uses it instead of the closest spacing token); padding
+   0 spacing-x2, border-radius-pill, background color-background-inverse
+   when selected else transparent (hoverlist on hover unless
+   disabled/selected) — all EXACT beyond the height substitution.
+   .hx-segmented__radio (ItemRadio): gap spacing-x05, focus-visible outline
+   spacing-x025 solid color-border-accent with spacing-x1 offset — EXACT.
+   .hx-segmented__action (ActionButton): circular icon button, focus-visible
+   outline spacing-x05 solid color-border-accent — EXACT. Transition
+   durations (0.15s) have no matching token, kept literal (CANT-TELL),
+   matching Button/Info's own precedent for the same property. */
+.hx-segmented {
+  display: inline-flex; align-items: center;
+  gap: var(--hx-spacing-x05);
+  padding: var(--hx-spacing-x1);
+  background: var(--hx-color-background-subtle);
+  border-radius: var(--hx-radius-pill);
+}
+.hx-segmented__item {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hx-spacing-x05);
+  height: var(--hx-size-tab-m);
+  padding: 0 var(--hx-spacing-x2);
+  border-radius: var(--hx-radius-pill);
+  background: transparent;
+  transition: background 0.15s ease; /* CANT-TELL: no duration token */
+}
+.hx-segmented__item--active { background: var(--hx-color-background-inverse); }
+.hx-segmented__item:not(.hx-segmented__item--active):hover {
+  background: var(--hx-color-background-hoverlist);
+}
+.hx-segmented__radio {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--hx-spacing-x05);
+  cursor: pointer;
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-base); color: var(--hx-color-text-primary);
+}
+.hx-segmented__radio[aria-checked="true"] { cursor: default; }
+.hx-segmented__radio[aria-disabled="true"] {
+  cursor: not-allowed; color: var(--hx-color-text-neutral);
+}
+.hx-segmented__radio:focus-visible {
+  outline: var(--hx-spacing-x025) solid var(--hx-color-border-accent);
+  outline-offset: var(--hx-spacing-x1);
+  border-radius: var(--hx-radius-pill);
+}
+.hx-segmented__label {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%;
+}
+.hx-segmented__action {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0; margin: 0; border: none; background: transparent;
+  color: inherit; cursor: pointer;
+}
+.hx-segmented__action:disabled { cursor: not-allowed; opacity: 0.5; }
+.hx-segmented__action:focus-visible {
+  outline: var(--hx-spacing-x05) solid var(--hx-color-border-accent);
+  outline-offset: var(--hx-spacing-x05);
+  border-radius: var(--hx-border-radius-circle);
+}
+
+.hx-textarea__error { font-size: var(--hx-font-size-sm); color: var(--hx-color-text-error); }

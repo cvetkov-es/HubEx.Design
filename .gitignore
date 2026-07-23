@@ -4,9 +4,14 @@ dist/
 *.log
 raw-inventory.json
 
-# Figma design-source exports (kept locally, not in git — real source is Figma)
+# Figma design-source exports (kept locally, not in git — historical only;
+# the source of truth is @hubex/design-system, see README.md)
 *.fig
 
 # Secrets — never commit
 .env
 .env.*
+
+# Vendored reference copy of the official design system (regenerate via
+# tools/vendor-official-ds.mjs) — not our source, don't commit it.
+tools/.official-ds-ref/

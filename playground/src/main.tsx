@@ -8,7 +8,12 @@ import "@cvetkov_es/css";
 import {
   Alert,
   Avatar,
+  AvatarGroup,
   Badge,
+  BadgeCount,
+  BadgeDot,
+  BadgeShift,
+  BadgeTag,
   Breadcrumbs,
   Button,
   Calendar,
@@ -16,18 +21,29 @@ import {
   Chip,
   DatePicker,
   Drawer,
+  Dropdown,
   Field,
   Icon,
+  Info,
   Input,
+  InputBase,
   Label,
+  Link,
+  Loader,
   Menu,
   Modal,
   Pagination,
+  Popover,
   Radio,
+  RadioGroup,
+  Search,
+  SegmentedControl,
   Select,
   Table,
   Tabs,
   Tag,
+  Text,
+  TextArea,
   Toggle,
   Tooltip
 } from "@cvetkov_es/react";
@@ -88,30 +104,52 @@ function RadioSection() {
   );
 }
 
+function RadioGroupSection() {
+  const [plan, setPlan] = useState("pro");
+  return (
+    <Section title="RadioGroup">
+      <RadioGroup
+        name="playground-plan"
+        value={plan}
+        onChange={(value) => setPlan(value)}
+        direction="row"
+        options={[
+          { value: "free", label: "Free" },
+          { value: "pro", label: "Pro" },
+          { value: "enterprise", label: "Enterprise" },
+        ]}
+      />
+      <span>Selected: {plan}</span>
+    </Section>
+  );
+}
+
 function ToggleSection() {
   const [on, setOn] = useState(false);
   return (
     <Section title="Toggle">
-      <Toggle checked={on} onChange={setOn} />
+      {/* onChange signature is now (checked, event) — see Toggle.tsx; `name` is
+          required now that Toggle is backed by a real <input type="checkbox">. */}
+      <Toggle name="playground-toggle" checked={on} onChange={(checked) => setOn(checked)} />
       <span>{on ? "On" : "Off"}</span>
-      <Toggle checked disabled onChange={() => {}} />
+      <Toggle name="playground-toggle-disabled" checked disabled onChange={() => {}} />
     </Section>
   );
 }
 
 function SelectSection() {
+  const options = [
+    { value: "a", label: "Option A" },
+    { value: "b", label: "Option B" },
+    { value: "c", label: "Option C" },
+  ];
+  const [value, setValue] = useState("b");
   return (
     <Section title="Select">
-      <Select defaultValue="b">
-        <option value="a">Option A</option>
-        <option value="b">Option B</option>
-        <option value="c">Option C</option>
-      </Select>
-      <Select invalid defaultValue="">
-        <option value="" disabled>
-          Invalid
-        </option>
-      </Select>
+      {/* Select is now a self-contained combobox: `options` + `value`/`onChange`
+          replace the old `<Select><option/></Select>` children API. */}
+      <Select options={options} value={value} onChange={(next) => setValue(next)} allowClear />
+      <Select options={options} invalid placeholder="Invalid" />
     </Section>
   );
 }
@@ -142,10 +180,21 @@ function TableSection() {
 }
 
 function PaginationSection() {
+  // BREAKING (0.3.x): the old {page, pageCount, onPageChange} API is gone —
+  // Pagination is now item-count-driven: {totalItems, page, pageSize, onChange}.
   const [page, setPage] = useState(3);
+  const [pageSize, setPageSize] = useState(25);
   return (
     <Section title="Pagination">
-      <Pagination page={page} pageCount={7} onPageChange={setPage} />
+      <Pagination
+        totalItems={162}
+        page={page}
+        pageSize={pageSize}
+        onChange={({ page: nextPage, pageSize: nextSize }) => {
+          setPage(nextPage);
+          setPageSize(nextSize);
+        }}
+      />
     </Section>
   );
 }
@@ -245,14 +294,25 @@ function BreadcrumbsSection() {
 
 function TagChipBadgeSection() {
   return (
-    <Section title="Tag / Chip / Badge">
+    <Section title="Tag / Chip / Badge family">
       <Tag color="neutral">Neutral</Tag>
       <Tag color="brand">Brand</Tag>
       <Tag color="danger">Danger</Tag>
       <Chip onRemove={() => {}}>Removable chip</Chip>
-      <Badge variant="dot" />
-      <Badge variant="count" count={5} />
-      <Badge variant="tag">New</Badge>
+      {/* BREAKING (0.3.x): the old single `<Badge variant="dot|count|tag">` is
+          split into the official DS's Badge family — Badge (semantic pill),
+          BadgeDot, BadgeCount, BadgeTag, BadgeShift. */}
+      <Badge variant="accent">Accent</Badge>
+      <Badge variant="success">Success</Badge>
+      <Badge variant="warning">Warning</Badge>
+      <Badge variant="error">Error</Badge>
+      <BadgeDot ariaLabel="Unread" />
+      <BadgeCount value={5} />
+      <BadgeCount value={12} background="success" />
+      <BadgeTag type="new" />
+      <BadgeTag type="beta" tone="dark" />
+      <BadgeShift status="online" tooltipContent="Online" />
+      <BadgeShift status="offline" size="l" tooltipContent="Offline" />
     </Section>
   );
 }
@@ -277,6 +337,105 @@ function AvatarLabelSection() {
       <Avatar name="Cy" />
       <Avatar name="Eve" size="sm" />
       <Label>Standalone label</Label>
+      <AvatarGroup
+        avatars={[{ name: "Eve" }, { name: "Kim" }, { name: "Xia" }, { name: "Dana" }, { name: "Quy" }]}
+        maxVisible={3}
+      />
+    </Section>
+  );
+}
+
+function TypographySection() {
+  return (
+    <Section title="Text / Link">
+      <Text variant="font-H2">Heading H2</Text>
+      <Text variant="font-body-regular">Body regular</Text>
+      <Text variant="font-body-medium" color="color-text-secondary">
+        Body medium, secondary color
+      </Text>
+      <Link href="https://example.com" external>
+        External link
+      </Link>
+      <Link href="#" disabled>
+        Disabled link
+      </Link>
+    </Section>
+  );
+}
+
+function LoaderSection() {
+  return (
+    <Section title="Loader">
+      <Loader size="small" color="color-icon-primary" />
+      <Loader size="medium" color="color-icon-secondary" />
+      <Loader size="large" color="color-icon-error" />
+    </Section>
+  );
+}
+
+function InputVariantsSection() {
+  const [searchValue, setSearchValue] = useState("");
+  const [inputBaseValue, setInputBaseValue] = useState("");
+  return (
+    <Section title="InputBase / Search / TextArea">
+      <InputBase
+        value={inputBaseValue}
+        onChange={(event) => setInputBaseValue(event.target.value)}
+        placeholder="InputBase"
+        leftIcon={
+          <span className="material" aria-hidden="true">
+            person
+          </span>
+        }
+      />
+      <Search value={searchValue} onChange={(event) => setSearchValue(event.target.value)} placeholder="Search" />
+      <TextArea placeholder="TextArea (auto-size)" autoSize maxRows={4} textLimit={120} allowClear />
+    </Section>
+  );
+}
+
+function OverlaysSection() {
+  return (
+    <Section title="Popover / Dropdown / Info">
+      <Popover content="Popover panel content">
+        <Button variant="secondary">Open popover</Button>
+      </Popover>
+      <Dropdown
+        content={
+          <ul className="hx-dropdown__list" style={{ margin: 0, padding: 0, listStyle: "none" }}>
+            <li>
+              <button type="button" className="hx-menu__item">
+                Edit
+              </button>
+            </li>
+            <li>
+              <button type="button" className="hx-menu__item">
+                Delete
+              </button>
+            </li>
+          </ul>
+        }
+      >
+        <Button variant="secondary">Open dropdown</Button>
+      </Dropdown>
+      <Info content="Extra context shown in a popover." />
+    </Section>
+  );
+}
+
+function SegmentedControlSection() {
+  const [value, setValue] = useState("day");
+  return (
+    <Section title="SegmentedControl">
+      <SegmentedControl
+        value={value}
+        onChange={(next) => setValue(next)}
+        options={[
+          { value: "day", label: "Day" },
+          { value: "week", label: "Week" },
+          { value: "month", label: "Month" },
+        ]}
+      />
     </Section>
   );
 }
@@ -342,6 +501,7 @@ function App() {
       <InputFieldSection />
       <CheckboxSection />
       <RadioSection />
+      <RadioGroupSection />
       <ToggleSection />
       <SelectSection />
       <TableSection />
@@ -354,6 +514,11 @@ function App() {
       <BreadcrumbsSection />
       <TagChipBadgeSection />
       <AvatarLabelSection />
+      <TypographySection />
+      <LoaderSection />
+      <InputVariantsSection />
+      <OverlaysSection />
+      <SegmentedControlSection />
       <AlertSection />
       <IconSection />
       <CalendarSection />

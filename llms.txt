@@ -7,6 +7,22 @@ HubEx UI is the design system for HubEx plugins: a React component library
 back both (`@cvetkov_es/tokens`). If you are an AI building UI for a HubEx plugin,
 this file is the single reference for what exists and how to use it correctly
 — read it before hand-rolling any button, input, table, modal, badge, etc.
+
+**Derived from `@hubex/design-system@0.4.0` (themes.HubEx).** As of this
+release, the source of truth for tokens and component APIs is the official
+`@hubex/design-system` npm package (`themes.HubEx` branch), not Figma. Every
+component listed under "Official-DS-backed components" below realigns its
+props to that package's real TypeScript types (read from the vendored
+reference at `tools/.official-ds-ref/package/dist/esm/src/components/`), with
+documented, deliberate deviations only where this package's own constraints
+require them (no styled-components runtime, no `@floating-ui/react`
+dependency, Material-Icons-font glyphs instead of inline SVG — each is called
+out on the component that has it). `docs/design-source/figma-variables.json`
+and `docs/design-source/figma-variables.txt` are kept only as a **historical
+record** of the earlier, hand-decoded Figma-variable source this system used
+before the rebase — they are **not** the current source of truth and should
+not be read for current token values or component behavior.
+
 Every control below reproduces an existing pattern from the HubEx product; a
 hand-rolled equivalent will visually and behaviorally diverge from the rest
 of the system.
@@ -38,7 +54,13 @@ webfont by name (e.g. `<Icon name="home" />`) — it ships no font files and no
 SVGs. Your app must load the Material Icons font itself and alias it to the
 font-family `"material"` (e.g. Google's hosted webfont via a `<link>` tag, or
 a self-hosted `@font-face` under that family name). If the font isn't loaded,
-`Icon` renders the glyph name as plain text instead of the icon.
+`Icon` renders the glyph name as plain text instead of the icon. Every other
+component that takes an icon (`Button`'s `icon`/`endIcon`, `SegmentedControl`
+option icons, `InputBase`'s `leftIcon`, etc.) is a Material glyph *name*
+string too — this package never bundles or imports inline SVG (see the ban
+documented on `Icon.tsx`); the official `@hubex/design-system` renders these
+as SVG render-prop functions instead, which is the one deviation that recurs
+across almost every component below.
 
 ## Design tokens
 
@@ -46,197 +68,365 @@ Every token below is a real CSS custom property, built by `@cvetkov_es/tokens` i
 `packages/tokens/dist/variables.css` and loaded globally once you `import "@cvetkov_es/css"`.
 **For any custom UI, use these variables (or the `.hx-*` classes below) — never
 hardcode a hex value, a font stack, a radius, or a spacing number.** See
-"Anti-invention rules" right after this section for the specific mistakes this
-release fixes.
+"Anti-invention rules" right after this section for the specific mistakes
+this file's tables must never regress into.
 
-There are **104 tokens total**: **100 map 1:1 to real, named Figma variables**
-(copied verbatim — same name, same value, zero invention) and **4 are
-`font/*` tokens with no Figma variable at all** (census-derived from a
-frequency analysis of the old CSS; kept only because the design has no
-type-scale variables yet — each is called out below). Grouped by the
-token's own Figma namespace, in the order Figma defines them:
+There are **195 tokens total**, transcribed verbatim (same name, same value)
+from `packages/tokens/dist/variables.css`, which is itself generated from
+`@hubex/design-system`'s own `tokens.HubEx` object (see
+`packages/tokens/src/tokens.json`, `packages/tokens/style-dictionary.config.mjs`).
+Grouped below in the order the CSS file defines them. A handful of groups are
+explicitly-declared **back-compat aliases** of a newer, larger scale — each is
+labeled "(legacy alias)" and cross-references the scale it aliases; these
+exist so pre-0.4.0 call sites referencing the old name keep working, not
+because the value differs.
 
-#### `color/text`
+#### `color/text` (12)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-text-accent` | `#32B4EB` | text — accent |
-| `--hx-color-text-accent-hover` | `#70CBF1` | text — accent hover |
-| `--hx-color-text-error` | `#ED1940` | text — error |
-| `--hx-color-text-inverse` | `#FFFFFF` | text — inverse |
-| `--hx-color-text-neutral` | `#CCCCCC` | text — neutral |
-| `--hx-color-text-primary` | `#1F1F1F` | text — primary |
-| `--hx-color-text-secondary` | `#777777` | text — secondary |
-| `--hx-color-text-subtle` | `#EEEEEE` | text — subtle |
-| `--hx-color-text-success` | `#8DC26F` | text — success |
-| `--hx-color-text-tertiary` | `#999999` | text — tertiary |
-| `--hx-color-text-warning` | `#FF991F` | text — warning |
-| `--hx-color-text-weak` | `#FEFEFE` | text — weak |
+| Variable | Value |
+|---|---|
+| `--hx-color-text-primary` | `#1F1F1F` |
+| `--hx-color-text-secondary` | `#777777` |
+| `--hx-color-text-tertiary` | `#999999` |
+| `--hx-color-text-neutral` | `#CCCCCC` |
+| `--hx-color-text-subtle` | `#EEEEEE` |
+| `--hx-color-text-inverse` | `#FFFFFF` |
+| `--hx-color-text-weak` | `#FEFEFE` |
+| `--hx-color-text-accent` | `#32B4EB` |
+| `--hx-color-text-accent-hover` | `#70CBF1` |
+| `--hx-color-text-success` | `#8DC26F` |
+| `--hx-color-text-warning` | `#FF991F` |
+| `--hx-color-text-error` | `#ED1940` |
 
-#### `color/background`
+#### `color/icon` (13)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-background-accent` | `#32B4EB` | background — accent |
-| `--hx-color-background-accent-hover` | `#70CBF1` | background — accent hover |
-| `--hx-color-background-error` | `#ED1940` | background — error (see note below) |
-| `--hx-color-background-highlight` | `#E8F7FD` | background — highlight |
-| `--hx-color-background-hoverlist` | `#F8F8FA` | background — hoverlist |
-| `--hx-color-background-inverse` | `#FFFFFF` | background — inverse |
-| `--hx-color-background-neutral` | `#CCCCCC` | background — neutral |
-| `--hx-color-background-page` | `#F8F8F8` | background — page |
-| `--hx-color-background-primary` | `#353535` | background — primary |
-| `--hx-color-background-secondary` | `#777777` | background — secondary |
-| `--hx-color-background-strong` | `#484856` | background — strong |
-| `--hx-color-background-subtle` | `#EEEEEE` | background — subtle |
-| `--hx-color-background-success` | `#8DC26F` | background — success |
-| `--hx-color-background-tertiary` | `#999999` | background — tertiary |
-| `--hx-color-background-warning` | `#FF991F` | background — warning (see note below) |
-| `--hx-color-background-weak` | `#F8F8F8` | background — weak |
+| Variable | Value |
+|---|---|
+| `--hx-color-icon-primary` | `#1F1F1F` |
+| `--hx-color-icon-secondary` | `#777777` |
+| `--hx-color-icon-tertiary` | `#999999` |
+| `--hx-color-icon-neutral` | `#CCCCCC` |
+| `--hx-color-icon-subtle` | `#EEEEEE` |
+| `--hx-color-icon-inverse` | `#FFFFFF` |
+| `--hx-color-icon-weak` | `#FEFEFE` |
+| `--hx-color-icon-accent` | `#32B4EB` |
+| `--hx-color-icon-accent-hover` | `#70CBF1` |
+| `--hx-color-icon-success` | `#8DC26F` |
+| `--hx-color-icon-warning` | `#FF991F` |
+| `--hx-color-icon-error` | `#ED1940` |
+| `--hx-color-icon-rating` | `#F9C901` |
+
+#### `color/border` (11)
+
+| Variable | Value |
+|---|---|
+| `--hx-color-border-primary` | `#EEEEEE` |
+| `--hx-color-border-secondary` | `#999999` |
+| `--hx-color-border-tertiary` | `#777777` |
+| `--hx-color-border-neutral` | `#CCCCCC` |
+| `--hx-color-border-inverse` | `#FFFFFF` |
+| `--hx-color-border-weak` | `#FEFEFE` |
+| `--hx-color-border-accent` | `#32B4EB` |
+| `--hx-color-border-accent-hover` | `#70CBF1` |
+| `--hx-color-border-success` | `#8DC26F` |
+| `--hx-color-border-warning` | `#FF991F` |
+| `--hx-color-border-error` | `#ED1940` |
+
+#### `color/background` (16)
+
+| Variable | Value |
+|---|---|
+| `--hx-color-background-primary` | `#353535` |
+| `--hx-color-background-secondary` | `#777777` |
+| `--hx-color-background-tertiary` | `#999999` |
+| `--hx-color-background-strong` | `#484856` |
+| `--hx-color-background-neutral` | `#CCCCCC` |
+| `--hx-color-background-subtle` | `#EEEEEE` |
+| `--hx-color-background-weak` | `#F8F8F8` |
+| `--hx-color-background-page` | `#F8F8F8` |
+| `--hx-color-background-hoverlist` | `#F8F8FA` |
+| `--hx-color-background-inverse` | `#FFFFFF` |
+| `--hx-color-background-accent` | `#32B4EB` |
+| `--hx-color-background-accent-hover` | `#70CBF1` |
+| `--hx-color-background-highlight` | `#E8F7FD` |
+| `--hx-color-background-success` | `#8DC26F` |
+| `--hx-color-background-warning` | `#FF991F` |
+| `--hx-color-background-error` | `#ED1940` |
 
 *Note: `--hx-color-background-error` and `--hx-color-background-warning` are
-misspelled in the Figma source as `color-backgroundg-error`/`-warning` (an
-extra "g"). That typo is corrected here so the tokens are reachable by their
-expected name. As with every error hue, these are for error/warning surfaces
-(e.g. the count badge), **never** a button fill — there is no red button.*
+misspelled in the official `@hubex/design-system` source as
+`color-backgroundg-error`/`-warning` (an extra "g") — confirmed present in
+the vendored package itself, not just the old Figma export. That typo is
+corrected here so the tokens are reachable by their expected name. As with
+every error hue, these are for error/warning surfaces (e.g. `BadgeCount`,
+`BadgeDot`), **never** a button fill — there is no red button.*
 
-#### `color/border`
+#### `color/menu` (4)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-border-accent` | `#32B4EB` | border — accent |
-| `--hx-color-border-accent-hover` | `#70CBF1` | border — accent hover |
-| `--hx-color-border-error` | `#ED1940` | border — error |
-| `--hx-color-border-inverse` | `#FFFFFF` | border — inverse |
-| `--hx-color-border-neutral` | `#CCCCCC` | border — neutral |
-| `--hx-color-border-primary` | `#EEEEEE` | border — primary |
-| `--hx-color-border-secondary` | `#999999` | border — secondary |
-| `--hx-color-border-tertiary` | `#777777` | border — tertiary |
-| `--hx-color-border-warning` | `#FF991F` | border — warning |
+| Variable | Value |
+|---|---|
+| `--hx-color-menu-background-default` | `#353535` |
+| `--hx-color-menu-background-hover` | `#39393E` |
+| `--hx-color-menu-background-active` | `#242324` |
+| `--hx-color-menu-background-accent` | `#ED1940` |
 
-#### `color/icon`
+#### `color/overlay` (1)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-icon-accent` | `#32B4EB` | icon — accent |
-| `--hx-color-icon-accent-hover` | `#70CBF1` | icon — accent hover |
-| `--hx-color-icon-error` | `#ED1940` | icon — error |
-| `--hx-color-icon-inverse` | `#FFFFFF` | icon — inverse |
-| `--hx-color-icon-neutral` | `#CCCCCC` | icon — neutral |
-| `--hx-color-icon-primary` | `#1F1F1F` | icon — primary |
-| `--hx-color-icon-rating` | `#F9C901` | icon — rating |
-| `--hx-color-icon-secondary` | `#777777` | icon — secondary |
-| `--hx-color-icon-subtle` | `#EEEEEE` | icon — subtle |
-| `--hx-color-icon-success` | `#8DC26F` | icon — success |
-| `--hx-color-icon-tertiary` | `#999999` | icon — tertiary |
-| `--hx-color-icon-warning` | `#FF991F` | icon — warning |
-| `--hx-color-icon-weak` | `#FEFEFE` | icon — weak |
+| Variable | Value |
+|---|---|
+| `--hx-color-overlay` | `rgba(0,0,0,0.5)` |
 
-#### `color/menu`
-
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-menu-background-accent` | `#ED1940` | menu background — accent |
-| `--hx-color-menu-background-active` | `#242324` | menu background — active |
-| `--hx-color-menu-background-default` | `#353535` | menu background — default |
-| `--hx-color-menu-background-focus` | `#ED1940` | menu background — focus |
-| `--hx-color-menu-background-hover` | `#39393E` | menu background — hover |
-
-#### `color/overlay`
-
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-overlay` | `rgba(0, 0, 0, 0.5)` | overlay (Figma: colors/overlay/color-overlay = #000000 @ alpha 0.50) |
-
-#### `color/avatar`
+#### `color/avatar` (27)
 
 Backs the `Avatar` component's 9 auto-selected colour sets (see the `Avatar`
 entry below) — not meant to be reached for directly in custom UI, but listed
 here because they're real tokens like any other.
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-color-avatar-one-background` | `#FDE8EC` | avatar set one — background |
-| `--hx-color-avatar-one-border` | `#ED1940` | avatar set one — border |
-| `--hx-color-avatar-one-text` | `#ED1940` | avatar set one — text |
-| `--hx-color-avatar-two-background` | `#FFF5E8` | avatar set two — background |
-| `--hx-color-avatar-two-border` | `#FF991F` | avatar set two — border |
-| `--hx-color-avatar-two-text` | `#FF991F` | avatar set two — text |
-| `--hx-color-avatar-three-background` | `#FEF9E5` | avatar set three — background |
-| `--hx-color-avatar-three-border` | `#F9C901` | avatar set three — border |
-| `--hx-color-avatar-three-text` | `#F9C901` | avatar set three — text |
-| `--hx-color-avatar-four-background` | `#E5F6EF` | avatar set four — background |
-| `--hx-color-avatar-four-border` | `#00A861` | avatar set four — border |
-| `--hx-color-avatar-four-text` | `#00A861` | avatar set four — text |
-| `--hx-color-avatar-five-background` | `#EBFAE8` | avatar set five — background |
-| `--hx-color-avatar-five-border` | `#3FCE1B` | avatar set five — border |
-| `--hx-color-avatar-five-text` | `#3FCE1B` | avatar set five — text |
-| `--hx-color-avatar-six-background` | `#E7ECF8` | avatar set six — background |
-| `--hx-color-avatar-six-border` | `#1243BF` | avatar set six — border |
-| `--hx-color-avatar-six-text` | `#1243BF` | avatar set six — text |
-| `--hx-color-avatar-seven-background` | `#ECF3FF` | avatar set seven — background |
-| `--hx-color-avatar-seven-border` | `#4688FF` | avatar set seven — border |
-| `--hx-color-avatar-seven-text` | `#4688FF` | avatar set seven — text |
-| `--hx-color-avatar-eight-background` | `#F6E5FB` | avatar set eight — background |
-| `--hx-color-avatar-eight-border` | `#A200DB` | avatar set eight — border |
-| `--hx-color-avatar-eight-text` | `#A200DB` | avatar set eight — text |
-| `--hx-color-avatar-nine-background` | `#F9E5F7` | avatar set nine — background |
-| `--hx-color-avatar-nine-border` | `#C500B1` | avatar set nine — border |
-| `--hx-color-avatar-nine-text` | `#C500B1` | avatar set nine — text |
+| Variable | Value |
+|---|---|
+| `--hx-color-avatar-one-text` | `#ED1940` |
+| `--hx-color-avatar-one-border` | `#ED1940` |
+| `--hx-color-avatar-one-background` | `#FDE8EC` |
+| `--hx-color-avatar-two-text` | `#FF991F` |
+| `--hx-color-avatar-two-border` | `#FF991F` |
+| `--hx-color-avatar-two-background` | `#FFF5E8` |
+| `--hx-color-avatar-three-text` | `#F9C901` |
+| `--hx-color-avatar-three-border` | `#F9C901` |
+| `--hx-color-avatar-three-background` | `#FEF9E5` |
+| `--hx-color-avatar-four-text` | `#00A861` |
+| `--hx-color-avatar-four-border` | `#00A861` |
+| `--hx-color-avatar-four-background` | `#E5F6EF` |
+| `--hx-color-avatar-five-text` | `#3FCE1B` |
+| `--hx-color-avatar-five-border` | `#3FCE1B` |
+| `--hx-color-avatar-five-background` | `#EBFAE8` |
+| `--hx-color-avatar-six-text` | `#1243BF` |
+| `--hx-color-avatar-six-border` | `#1243BF` |
+| `--hx-color-avatar-six-background` | `#E7ECF8` |
+| `--hx-color-avatar-seven-text` | `#4688FF` |
+| `--hx-color-avatar-seven-border` | `#4688FF` |
+| `--hx-color-avatar-seven-background` | `#ECF3FF` |
+| `--hx-color-avatar-eight-text` | `#A200DB` |
+| `--hx-color-avatar-eight-border` | `#A200DB` |
+| `--hx-color-avatar-eight-background` | `#F6E5FB` |
+| `--hx-color-avatar-nine-text` | `#C500B1` |
+| `--hx-color-avatar-nine-border` | `#C500B1` |
+| `--hx-color-avatar-nine-background` | `#F9E5F7` |
 
-#### `radius`
+#### `font/family` (1)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-radius-small` | `3px` | radius — small (3) |
-| `--hx-radius-medium` | `5px` | radius — medium (5) |
-| `--hx-radius-pill` | `9999px` | radius — pill (9999) |
+| Variable | Value |
+|---|---|
+| `--hx-font-family` | `Roboto, Helvetica, sans-serif` |
 
-#### `size`
+#### `font/heading` — H0–H3 (16)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-size-x05` | `2px` | size — x05 |
-| `--hx-size-x1` | `4px` | size — x1 |
-| `--hx-size-x150percent` | `6px` | size — x150percent |
-| `--hx-size-x2` | `8px` | size — x2 |
-| `--hx-size-x250percent` | `10px` | size — x250percent |
-| `--hx-size-x3` | `12px` | size — x3 |
+Each heading step defines its own size/weight/line-height/family sub-tokens
+(`Text` component's `font-H0`…`font-H3` variants read these).
 
-#### `spacing`
+| Variable | Value |
+|---|---|
+| `--hx-font-h0-size` | `24px` |
+| `--hx-font-h0-weight` | `500` |
+| `--hx-font-h0-line-height` | `28px` |
+| `--hx-font-h0-family` | `Roboto, Helvetica, sans-serif` |
+| `--hx-font-h1-size` | `20px` |
+| `--hx-font-h1-weight` | `500` |
+| `--hx-font-h1-line-height` | `26px` |
+| `--hx-font-h1-family` | `Roboto, Helvetica, sans-serif` |
+| `--hx-font-h2-size` | `18px` |
+| `--hx-font-h2-weight` | `500` |
+| `--hx-font-h2-line-height` | `24px` |
+| `--hx-font-h2-family` | `Roboto, Helvetica, sans-serif` |
+| `--hx-font-h3-size` | `16px` |
+| `--hx-font-h3-weight` | `500` |
+| `--hx-font-h3-line-height` | `22px` |
+| `--hx-font-h3-family` | `Roboto, Helvetica, sans-serif` |
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-spacing-x0` | `0px` | spacing — x0 |
-| `--hx-spacing-x05` | `2px` | spacing — x05 |
-| `--hx-spacing-x1` | `4px` | spacing — x1 |
-| `--hx-spacing-x2` | `8px` | spacing — x2 |
-| `--hx-spacing-x250percent` | `10px` | spacing — x250percent |
-| `--hx-spacing-x4` | `16px` | spacing — x4 |
-| `--hx-spacing-x5` | `20px` | spacing — x5 |
-| `--hx-spacing-x6` | `24px` | spacing — x6 |
+#### `font/body` — regular/medium (8)
 
-#### `font`
+| Variable | Value |
+|---|---|
+| `--hx-font-body-regular-size` | `13px` |
+| `--hx-font-body-regular-weight` | `400` |
+| `--hx-font-body-regular-line-height` | `16px` |
+| `--hx-font-body-regular-family` | `Roboto, Helvetica, sans-serif` |
+| `--hx-font-body-medium-size` | `13px` |
+| `--hx-font-body-medium-weight` | `500` |
+| `--hx-font-body-medium-line-height` | `16px` |
+| `--hx-font-body-medium-family` | `Roboto, Helvetica, sans-serif` |
 
-*All 4 below are census-derived, not real Figma variables (see note above) —
-the only exception to "100 tokens map 1:1 to Figma" in this file.*
+#### `font/paragraph` — regular/medium (8)
 
-| Variable | Value | Description |
-|---|---|---|
-| `--hx-font-family` | `Roboto, -apple-system, "Segoe UI", sans-serif` | font — family |
-| `--hx-font-size-sm` | `11px` | font — size sm |
-| `--hx-font-size-base` | `13px` | font — size base |
-| `--hx-font-size-lg` | `16px` | font — size lg |
+| Variable | Value |
+|---|---|
+| `--hx-font-paragraph-regular-size` | `13px` |
+| `--hx-font-paragraph-regular-weight` | `400` |
+| `--hx-font-paragraph-regular-line-height` | `18px` |
+| `--hx-font-paragraph-regular-family` | `Roboto, Helvetica, sans-serif` |
+| `--hx-font-paragraph-medium-size` | `13px` |
+| `--hx-font-paragraph-medium-weight` | `500` |
+| `--hx-font-paragraph-medium-line-height` | `18px` |
+| `--hx-font-paragraph-medium-family` | `Roboto, Helvetica, sans-serif` |
+
+#### `font/tooltip` — regular/medium (8)
+
+| Variable | Value |
+|---|---|
+| `--hx-font-tooltip-regular-size` | `12px` |
+| `--hx-font-tooltip-regular-weight` | `400` |
+| `--hx-font-tooltip-regular-line-height` | `14px` |
+| `--hx-font-tooltip-regular-family` | `Roboto, Helvetica, sans-serif` |
+| `--hx-font-tooltip-medium-size` | `12px` |
+| `--hx-font-tooltip-medium-weight` | `500` |
+| `--hx-font-tooltip-medium-line-height` | `14px` |
+| `--hx-font-tooltip-medium-family` | `Roboto, Helvetica, sans-serif` |
+
+#### `font/caption` — regular (4)
+
+| Variable | Value |
+|---|---|
+| `--hx-font-caption-regular-size` | `11px` |
+| `--hx-font-caption-regular-weight` | `400` |
+| `--hx-font-caption-regular-line-height` | `14px` |
+| `--hx-font-caption-regular-family` | `Roboto, Helvetica, sans-serif` |
+
+#### `font/size` (legacy alias of `body-regular-size` / `caption-regular-size` / `h3-size`) (3)
+
+| Variable | Value |
+|---|---|
+| `--hx-font-size-base` | `13px` |
+| `--hx-font-size-sm` | `11px` |
+| `--hx-font-size-lg` | `16px` |
+
+#### `border-radius` (4)
+
+| Variable | Value |
+|---|---|
+| `--hx-border-radius-small` | `3px` |
+| `--hx-border-radius-medium` | `5px` |
+| `--hx-border-radius-circle` | `50%` |
+| `--hx-border-radius-pill` | `9999px` |
+
+#### `border/style` (2)
+
+| Variable | Value |
+|---|---|
+| `--hx-border-solid-style` | `solid` |
+| `--hx-border-dashed-style` | `dashed` |
+
+#### `spacing` (21)
+
+| Variable | Value |
+|---|---|
+| `--hx-spacing-x0` | `0px` |
+| `--hx-spacing-x025` | `1px` |
+| `--hx-spacing-x05` | `2px` |
+| `--hx-spacing-x07` | `3px` |
+| `--hx-spacing-x1` | `4px` |
+| `--hx-spacing-x150percent` | `6px` |
+| `--hx-spacing-x2` | `8px` |
+| `--hx-spacing-x250percent` | `10px` |
+| `--hx-spacing-x3` | `12px` |
+| `--hx-spacing-x350percent` | `14px` |
+| `--hx-spacing-x4` | `16px` |
+| `--hx-spacing-x450percent` | `18px` |
+| `--hx-spacing-x5` | `20px` |
+| `--hx-spacing-x6` | `24px` |
+| `--hx-spacing-x7` | `28px` |
+| `--hx-spacing-x8` | `32px` |
+| `--hx-spacing-x10` | `40px` |
+| `--hx-spacing-x12` | `48px` |
+| `--hx-spacing-x14` | `56px` |
+| `--hx-spacing-x15` | `60px` |
+| `--hx-spacing-x16` | `64px` |
+
+#### `unit` (1)
+
+| Variable | Value |
+|---|---|
+| `--hx-unit-base` | `4px` |
+
+#### `size/button` (3)
+
+| Variable | Value |
+|---|---|
+| `--hx-size-button-m` | `32px` |
+| `--hx-size-button-circle-s` | `24px` |
+| `--hx-size-button-circle-m` | `32px` |
+
+#### `size/icon` (13)
+
+| Variable | Value |
+|---|---|
+| `--hx-size-icon-x3` | `12px` |
+| `--hx-size-icon-x350percent` | `14px` |
+| `--hx-size-icon-x4` | `16px` |
+| `--hx-size-icon-x450percent` | `18px` |
+| `--hx-size-icon-x5` | `20px` |
+| `--hx-size-icon-x6` | `24px` |
+| `--hx-size-icon-x7` | `28px` |
+| `--hx-size-icon-x8` | `32px` |
+| `--hx-size-icon-x10` | `40px` |
+| `--hx-size-icon-x12` | `48px` |
+| `--hx-size-icon-x14` | `56px` |
+| `--hx-size-icon-x15` | `60px` |
+| `--hx-size-icon-x16` | `64px` |
+
+#### `size/loader` (3)
+
+| Variable | Value |
+|---|---|
+| `--hx-size-loader-s` | `12px` |
+| `--hx-size-loader-m` | `18px` |
+| `--hx-size-loader-l` | `48px` |
+
+#### `size/input`, `size/search`, `size/tab` (4)
+
+| Variable | Value |
+|---|---|
+| `--hx-size-input-m` | `32px` |
+| `--hx-size-search-m` | `32px` |
+| `--hx-size-tab-m` | `32px` |
+| `--hx-size-tab-l` | `40px` |
+
+#### `size` (legacy alias of `spacing-x05`/`x1`/`x150percent`/`x2`/`x250percent`/`x3`) (6)
+
+| Variable | Value |
+|---|---|
+| `--hx-size-x05` | `2px` |
+| `--hx-size-x1` | `4px` |
+| `--hx-size-x150percent` | `6px` |
+| `--hx-size-x2` | `8px` |
+| `--hx-size-x250percent` | `10px` |
+| `--hx-size-x3` | `12px` |
+
+#### `shadow` (3)
+
+| Variable | Value |
+|---|---|
+| `--hx-shadow-base` | `0px 0px 12px 0px rgba(0,0,0,0.1)` |
+| `--hx-shadow-colored` | `0px 0px 6px 0px rgba(97,168,199,0.15)` |
+| `--hx-shadow-actionpanel` | `0px 2px 6px 0px rgba(0,0,0,0.06)` |
+
+#### `radius` (legacy alias of `border-radius-small`/`-medium`/`-pill`) (3)
+
+| Variable | Value |
+|---|---|
+| `--hx-radius-small` | `3px` |
+| `--hx-radius-medium` | `5px` |
+| `--hx-radius-pill` | `9999px` |
 
 ## Anti-invention rules (read before writing ANY UI)
 
-This design system was re-based in 0.2.0 on the *real* Figma variables above,
-replacing an earlier 0.1.0 set that had invented plausible-looking tokens and
-values that did not exist in the actual design (wrong radii, an invented
-`success` hex, an invented extra "stronger brand accent" shade with no
-matching Figma variable, etc.). The rules below are the specific, recurring
-mistakes that caused that — follow them to avoid repeating the same defect
-class:
+This design system was originally re-based in 0.2.0 on hand-decoded Figma
+variables (replacing an even earlier 0.1.0 set that had invented
+plausible-looking tokens and values that did not exist in the actual
+design), and is now re-based again on the official `@hubex/design-system`
+package itself — a strictly higher-fidelity ground truth than a hand-decoded
+`.fig` export. The rules below are the specific, recurring mistakes that
+caused the *original* 0.1.0 defect class — they still apply, because the
+underlying design facts they describe (no red button, pill radius, real
+token values) haven't changed, only the source they're read from:
 
 - **`#ED1940` (the `*-error` tokens: `--hx-color-text-error`,
   `--hx-color-icon-error`, `--hx-color-border-error`,
@@ -246,57 +436,540 @@ class:
   `Button` below) — destructive actions (disable, revoke, delete, etc.) use a
   neutral **secondary** (frameless, grey-on-hover) button, exactly like any
   other secondary action. Do not reach for a red button "just in case".
-- **Buttons are pill-shaped: the base `.hx-btn` uses `--hx-radius-pill`
-  (`9999px`) for `primary`/`secondary`/`ghost`.** Never invent a button
-  radius. The one real exception, also from ground truth (not invented): the
-  `dashed` variant uses `--hx-radius-small` (`3px`), measured from the actual
-  Figma `Dashed` variant masters — if you need a pill-shaped custom control,
-  reach for `--hx-radius-pill`; don't assume every button-like shape is
-  identical.
-- **Never hardcode a hex value or a raw px number that isn't one of the 104
+- **Buttons are pill-shaped: the base `.hx-btn` uses `--hx-border-radius-pill`
+  (`9999px`, also reachable via the legacy `--hx-radius-pill` alias) for
+  `primary`/`secondary`/`ghost`.** Never invent a button radius. The one real
+  exception: the `dashed` variant uses `--hx-border-radius-small` (`3px`).
+- **Never hardcode a hex value or a raw px number that isn't one of the 195
   tokens above.** If a value you need doesn't map to an existing token,
   that's a signal to double check `packages/tokens/dist/variables.css` (or
   ask) before inventing a one-off number — do not guess a "close enough"
-  value the way 0.1.0 did.
+  value.
+- **Never invent a component prop.** Every prop documented below was read
+  directly from the component's own `.tsx` interface in
+  `packages/react/src/<Name>/<Name>.tsx` — if a prop you want isn't listed
+  here, it does not exist; check the source file yourself before assuming.
 
 ## Component index
 
-All 24 components are named exports of `@cvetkov_es/react`. Every component also
-accepts native HTML attributes for its host element (it extends the matching
-`React.*HTMLAttributes` interface) and merges any `className` you pass with
-its own `.hx-*` classes. Props shown below are only the component-specific
-ones on top of that.
+All 40 components are named exports of `@cvetkov_es/react`. Every component
+that renders a native HTML element also merges any `className` you pass with
+its own `.hx-*` classes (either by extending the matching
+`React.*HTMLAttributes` interface and spreading the rest, or — for the
+handful of components with an explicit, non-spread API, called out
+individually below — by declaring `className?: string` itself). Props shown
+below are copied verbatim from each component's own TypeScript interface;
+where a component deviates from the official `@hubex/design-system` API
+(e.g. Material glyph *names* instead of SVG render props), that deviation is
+called out inline exactly as commented in the source.
+
+27 components below are **official-DS-backed**: their props are realigned to
+`@hubex/design-system@0.4.0`'s own component types. The remaining 13 are
+**unofficial extensions** — this package's own additions with no
+`@hubex/design-system` counterpart — clearly marked in their own section
+further down.
+
+### Official-DS-backed components
 
 ### Button
 `ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>`
 - `variant?: "primary" | "secondary" | "ghost" | "dashed"` (default `"primary"`)
-- `size?: "md" | "sm"` (default `"md"`)
+- `size?: "small" | "medium" | "sm" | "md"` (default `"medium"`) — the official
+  API renamed `sm`/`md` to `small`/`medium`; both old and new names are
+  accepted at runtime (`sm`→`small`, `md`→`medium`) so 0.1.x/0.2.x call sites
+  keep working.
+- `round?: boolean` — circular icon button (`--hx-size-button-circle-s/m`
+  instead of the pill shape).
+- `loading?: boolean` — replaces content with a spinner and disables the button.
+- `fullWidth?: boolean` — stretches to 100% of the container (ignored when `round`).
+- `error?: string` — recolors the `dashed` variant's border to the error
+  token and renders a caption-sized message below the button.
+- `icon?: string`, `endIcon?: string` — **DEVIATION**: the official `icon`/
+  `endIcon` are SVG render props; here they are Material Icons glyph *names*
+  rendered as `<span class="material">{name}</span>`.
+- `iconColor?: "color-icon-accent" | "color-icon-secondary"` — recolors `icon`/`endIcon`; ignored when neither is set.
+- `ariaLabel?: string` — accessible name override; also settable via native `aria-label`.
 
-`secondary` and `ghost` render the SAME look: frameless, transparent at rest
-(text/icon only), with a light-grey fill (`--hx-color-background-subtle`,
-`#EEEEEE`) on hover — no border in any state. This is how every secondary
-action reads in HubEx (Cancel, Back, Disable, "?"). The two names are kept as
-aliases; pick whichever reads better at the call site. `primary` is the filled
-accent button; `dashed` is the add/placeholder outline.
-
-No `"danger"` variant exists — it was removed in 0.2.0 because there is no
-red/filled destructive button in the real design (the type checker rejects
-that value for `variant` at compile time). Destructive actions (Disable,
-Revoke, Delete) use a neutral `secondary` button, not a red one. All variants
-are pill-shaped (`--hx-radius-pill`) except `dashed`, which uses
-`--hx-radius-small` per the real Figma geometry — see "Anti-invention rules"
-above.
+`secondary` and `ghost` render the SAME look: frameless, transparent at rest,
+light-grey fill (`--hx-color-background-subtle`, `#EEEEEE`) on hover — no
+border in any state. They are kept as aliases; pick whichever reads better.
+`primary` is the filled accent button; `dashed` is the add/placeholder
+outline. No `"danger"` variant exists — the type checker rejects it.
 ```tsx
-<Button variant="secondary" onClick={handleDisable}>Disable</Button>
-<Button variant="ghost">Cancel</Button>
-<Button variant="dashed">Add</Button>
+<Button variant="secondary" size="small" onClick={handleDisable}>Disable</Button>
+<Button variant="dashed" icon="add">Add</Button>
+<Button loading>Saving…</Button>
 ```
 
 ### Input
-`InputProps extends React.InputHTMLAttributes<HTMLInputElement>`
-- `invalid?: boolean`
+`InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "onChange">`
+- `type?: "text" | "password" | "email" | "tel" | "url" | "search" | "number"` (default `"text"`)
+- `label?: string`
+- `errorText?: string`, `errorId?: string`
+- `allowClear?: boolean`
+- `textLimit?: number` (maps to native `maxLength`, taking precedence over a raw `maxLength` prop)
+- `fullWidth?: boolean`
+- `ariaLabel?: string`, `ariaLabelledBy?: string`, `ariaDescribedBy?: string`, `ariaControls?: string`, `ariaExpanded?: boolean`
+- `onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void`
+- `invalid?: boolean` — legacy (0.1.x/0.2.x) back-compat alias; drives the same error styling as `errorText` presence.
 ```tsx
-<Input placeholder="Email" invalid={!isValidEmail} />
+<Input label="Email" placeholder="you@hubex" allowClear errorText={emailError} />
+```
+
+### InputBase
+`InputBaseProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "value" | "maxLength" | "role">`
+- `name?: string`, `id?: string`
+- `value: string` (required — always controlled)
+- `onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void`
+- `placeholder?: string`, `required?: boolean`, `disabled?: boolean`, `fullWidth?: boolean`
+- `errorText?: string`, `hideErrorText?: boolean`, `errorId?: string`, `maxLength?: number`
+- `leftIcon?: React.ReactNode` — **DEVIATION**: official `leftIcon` is an SVG render prop; here it's a plain `ReactNode` (e.g. `<Icon name="search" />`).
+- `rightSlot?: React.ReactNode` — right-side affordance (chevron, clear button, lock, …); compose multiple yourself.
+- `rightSlotWidthPx?: number` (default `36`) — right padding reserved for `rightSlot`.
+- `type?: string` (default `"text"`)
+- `onFocusChange?: (isFocused: boolean) => void`
+- `role?: string`, `ariaLabel?: string`, `ariaLabelledBy?: string`, `ariaDescribedBy?: string`, `ariaControls?: string`, `ariaExpanded?: boolean`, `ariaHasPopup?: boolean | "dialog" | "menu" | "listbox" | "grid" | "false" | "true" | "tree"`, `ariaActivedescendant?: string`, `ariaAutocomplete?: "none" | "list" | "both"`
+
+This is the low-level primitive `Search` and `Select`'s trigger are built on
+— reach for it directly only when neither `Input` nor `Search` fits.
+```tsx
+<InputBase value={query} onChange={(e) => setQuery(e.target.value)} leftIcon={<Icon name="person" />} />
+```
+
+### Search
+`SearchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "value" | "maxLength" | "required" | "disabled">`
+- `value: string` (required — always controlled)
+- `onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void`
+- `placeholder?: string`, `fullWidth?: boolean`, `errorText?: string`, `name?: string`
+- `ariaLabel?: string` (defaults to `ariaLabel ?? placeholder ?? "Search"`)
+
+Built on `InputBase`; always renders a leading search glyph and a clear
+button (visibility-toggled, not conditionally rendered, so layout never shifts).
+```tsx
+<Search value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search plugins" />
+```
+
+### TextArea
+`TextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement>`
+- `label?: string`
+- `textLimit?: number` (maps to native `maxLength`)
+- `errorText?: string`
+- `allowClear?: boolean` — shows a clear (×) button whenever the field has a value.
+- `autoSize?: boolean` — height grows/shrinks with content (`resize: none`).
+- `maxRows?: number` — with `autoSize`, caps height (~rows); extra content scrolls.
+```tsx
+<TextArea label="Notes" autoSize maxRows={6} textLimit={500} allowClear />
+```
+
+### Checkbox
+`CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement>`
+- `label?: string`
+- `indeterminate?: boolean` — no native HTML attribute/React prop equivalent; set imperatively on the DOM node via a merged ref.
+- `ariaLabel?: string`
+```tsx
+<Checkbox label="I agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+<Checkbox indeterminate label="Select all" />
+```
+
+### Radio
+`RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">`
+- `label?: React.ReactNode` — a plain string is fine; `ReactNode` is supported for richer markup.
+- `ariaLabel?: string`
+```tsx
+<Radio name="plan" label="Pro" value="pro" checked={plan === "pro"} onChange={() => setPlan("pro")} />
+```
+
+### RadioGroup
+`RadioGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">`
+- `name: string` (required — shared across every `Radio` in the group)
+- `value?: string`, `defaultValue?: string`
+- `onChange?: (value: string, event: React.ChangeEvent<HTMLInputElement>) => void`
+- `options?: RadioGroupOption[]` where `RadioGroupOption = { value: string; label: React.ReactNode; disabled?: boolean; id?: string }`
+- `direction?: "row" | "column"` (default `"column"`)
+- `disabled?: boolean` — disables every option in the group.
+- `ariaLabel?: string`
+```tsx
+<RadioGroup
+  name="plan"
+  value={plan}
+  onChange={setPlan}
+  direction="row"
+  options={[{ value: "free", label: "Free" }, { value: "pro", label: "Pro" }]}
+/>
+```
+
+### Toggle
+`ToggleProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "onChange" | "checked">`
+- `name: string` (required — Toggle is backed by a real `<input type="checkbox" role="switch">`)
+- `label?: string`
+- `checked?: boolean` (default `false`)
+- `disabled?: boolean`
+- `ariaLabel?: string`
+- `onChange?: (checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void` — **BREAKING (post-0.2.x)**: signature gained a second `event` parameter (matching the official `@hubex/design-system` Toggle API); the boolean is still first, so callers that only used the first argument keep working, but a bare `onChange={setState}` where `setState` requires a *single* argument (rare — most `useState` setters ignore extras) must add the second parameter or ignore it.
+```tsx
+<Toggle name="notifications" checked={enabled} onChange={(checked) => setEnabled(checked)} />
+```
+
+### Select
+`SelectProps<TOption extends SelectOption = SelectOption> extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "defaultValue" | "onChange" | "onBlur" | "type" | "role" | "size">`
+
+**BREAKING (0.3.x+): Select is now a self-contained combobox**, not a styled
+native `<select>` — the old `<Select><option/></Select>` children-based API
+is gone.
+- `options: TOption[]` (required) where `SelectOption = { value: string; label: string; disabled?: boolean }`
+- `value?: string`, `defaultValue?: string`
+- `onChange?: (value: string, option: TOption | null) => void`
+- `onQueryChange?: (query: string) => void` — fires on filter-typing, including when cleared.
+- `renderOption?: (option: TOption, state: SelectOptionState) => React.ReactNode` where `SelectOptionState = { active: boolean; selected: boolean; disabled: boolean }`
+- `filterBy?: (option: TOption, searchQuery: string) => boolean` — `searchQuery` is always `inputText.trim().toLowerCase()`; not called when empty. Default: substring match on `label`.
+- `allowClear?: boolean`
+- `actions?: SelectActionItem<TOption>[]` where `SelectActionItem = { icon: string; ariaLabel: string; onClick: (option, event) => void; disabled?: boolean }` — **DEVIATION**: official `icon` is an SVG render prop; here it's a Material glyph name. Rendered in a footer row of the open menu (the official API renders them inline in the trigger row — simplified here).
+- `label?: string`, `required?: boolean`, `disabled?: boolean`
+- `onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void`
+- `invalid?: boolean` — legacy back-compat alias for error styling.
+
+Self-contained (no `floating-ui`, no portal — CSS `position: absolute` menu).
+```tsx
+<Select
+  label="Country"
+  options={[{ value: "us", label: "US" }, { value: "de", label: "DE" }]}
+  value={country}
+  onChange={(value) => setCountry(value)}
+  allowClear
+/>
+```
+
+### Pagination
+`PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange">`
+
+**BREAKING (0.3.x): rewritten to the official item-count-driven API** —
+the old `{page, pageCount, onPageChange}` (prev/next arrows, no page-size
+control) is gone; the official surface has no prev/next arrows at all.
+- `totalItems: number` (required)
+- `page?: number` (controlled, 1-indexed; out-of-range values are clamped for display, `onChange` reports the clamped page)
+- `defaultPage?: number` (default `1`, uncontrolled)
+- `pageSize?: number` (controlled)
+- `defaultPageSize?: number` (default `25`, uncontrolled)
+- `onChange?: (payload: PaginationChangePayload) => void` where `PaginationChangePayload = { page: number; pageSize: number; offset: number }` (`offset = (page - 1) * pageSize`)
+- `pageSizeLabel?: string` (default `"Content"`)
+- `pageSizeOptions?: number[]` (default `[25, 50, 100]`)
+- `hidePageSizeSelector?: boolean`
+- `buildItemsOptions?: BuildPaginationItemsOptions` where `BuildPaginationItemsOptions = { edgeCount?: number /* default 5 */; siblingCount?: number /* default 2 */; compactThreshold?: number /* default 7 */ }`
+- `disabled?: boolean`
+- `ariaLabel?: string` (default `"Pagination"`)
+- `pageSizeAriaLabel?: string` (default `pageSizeLabel`)
+- `getPageAriaLabel?: (page: number) => string` (default `` `Page ${page}` ``)
+```tsx
+<Pagination
+  totalItems={162}
+  page={page}
+  pageSize={pageSize}
+  onChange={({ page, pageSize }) => { setPage(page); setPageSize(pageSize); }}
+/>
+```
+
+### Tooltip
+`TooltipProps`: `{ content: string; children: React.ReactElement<Record<string, unknown>>; placement?: "top" | "bottom" | "left" | "right" /* default "bottom" */ }`
+(`content` is text only, matching the official API — no rich content.)
+```tsx
+<Tooltip content="Delete this item">
+  <Button onClick={handleDelete}>Delete</Button>
+</Tooltip>
+```
+
+### Popover
+`PopoverProps`:
+- `content: React.ReactNode` (required)
+- `children: React.ReactElement<Record<string, unknown>>` (required — single trigger element, cloned)
+- `placement?: "top" | "bottom" | "left" | "right"` (default `"bottom"`) — **DEVIATION**: official uses `@floating-ui/react`'s 12-value `Placement` (incl. `-start`/`-end`); this CSS-positioned implementation narrows to the 4 cardinal directions.
+- `trigger?: "click" | "hover" | "click-hover"` (default `"click"`)
+- `hoverDelay?: number | { open?: number; close?: number }` — also used as the `closeOnPointerLeave` grace period; falls back to 150ms.
+- `closeOnPointerLeave?: boolean` (default `false`) — click-mode only: also close when pointer leaves trigger+panel.
+- `size?: "m" | "l"` (default `"m"`)
+- `maxWidth?: number | string`, `maxHeight?: number | string`
+- `open?: boolean`, `onOpenChange?: (open: boolean) => void`
+- `disabled?: boolean`
+- `ariaLabel?: string`, `ariaLabelledBy?: string`
+- `role?: string | null` — INTERNAL EXTENSION (not in the official API), default `"dialog"`; `null` omits the role attribute. Lets `Dropdown`/`Info` reuse this same panel with their own role.
+- `panelClassName?: string` — INTERNAL EXTENSION; extra class(es) merged onto the panel.
+
+**OMITTED vs. the official floating-ui-based Popover** (documented on the
+component itself): no auto-flip/`fallbackPlacements`, no portal
+(`portalContainer` unsupported — the panel can be clipped by an
+`overflow: hidden` ancestor), no arrow/caret.
+```tsx
+<Popover content="Extra detail" placement="right">
+  <Button variant="secondary">Details</Button>
+</Popover>
+```
+
+### Dropdown
+`DropdownProps`:
+- `children: React.ReactElement<Record<string, unknown>>` (required — trigger, cloned)
+- `content: React.ReactNode` (required)
+- `placement?: "top" | "bottom" | "left" | "right"` (default `"bottom"` — official default is `"bottom-start"`, an alignment variant this CSS-positioned build doesn't support)
+- `trigger?: "click" | "hover" | "click-hover" | "manual"` (default `"click"`) — `"manual"` disables all built-in open/close handling; visibility is driven solely by `open`.
+- `role?: "menu" | "listbox" | "dialog" | "none"` (default `"menu"`)
+- `ariaHasPopup?: "menu" | "listbox" | "dialog" | "grid" | "tree" | "true"` (defaults to `role`, or `"dialog"` when `role="none"`)
+- `applyTriggerAria?: boolean` (default `true`) — sets `aria-haspopup`/`aria-expanded` on the trigger.
+- `open?: boolean`, `onOpenChange?: (open: boolean) => void`
+- `disabled?: boolean`
+- `ariaLabel?: string`, `ariaLabelledBy?: string`
+- `minWidth?: number | string`, `maxHeight?: number | string`
+
+Built entirely on `Popover` — inherits every omission documented there.
+`matchTriggerWidth` and `portalContainer` are OMITTED.
+```tsx
+<Dropdown content={<MyMenuList />}>
+  <Button variant="secondary">Actions</Button>
+</Dropdown>
+```
+
+### Info
+`InfoProps`:
+- `content: React.ReactNode` (required)
+- `placement?: "top" | "bottom" | "left" | "right"` (default `"bottom"`)
+- `maxWidth?: number | string`, `maxHeight?: number | string`
+- `open?: boolean`, `onOpenChange?: (open: boolean) => void`
+- `trigger?: "click" | "hover" | "click-hover"` (default `"click"`)
+- `hoverDelay?: number | { open?: number; close?: number }`
+- `closeOnPointerLeave?: boolean` (default `false`)
+- `ariaLabel?: string` (default `"Information"` — the official default is the Russian "Информация", translated to match this codebase's English-only-defaults convention)
+- `popoverAriaLabel?: string`, `popoverAriaLabelledBy?: string`
+
+Built on `Popover`. **DEVIATION**: the official trigger is a bespoke inline
+SVG "i" glyph; here it's `<Icon name="info" />` (Material Icons).
+```tsx
+<Info content="This value updates automatically." />
+```
+
+### SegmentedControl
+`SegmentedControlProps`:
+- `options: SegmentedControlOption[]` (required) where `SegmentedControlOption = { value: string; label: React.ReactNode; icon?: string; disabled?: boolean; actionIcon?: SegmentedControlActionIcon }`
+- `value?: string`, `defaultValue?: string` (falls back to the first non-disabled option)
+- `onChange?: (value: string) => void`
+- `compact?: boolean` (default `false`) — icon-only rendering; labels dropped from the DOM, exposed only via `aria-label`. **DEVIATION**: the official `compact` also auto-activates via `ResizeObserver` and wraps segments in a floating-ui `Tooltip`; both are OMITTED here (self-contained, no `ResizeObserver`, no runtime `Tooltip` dependency) — `compact` is purely an explicit caller-forced flag.
+- `disabled?: boolean`
+- `ariaLabel?: string`, `ariaLabelledby?: string`, `ariaDescribedby?: string`
+- `className?: string`
+
+`SegmentedControlActionIcon = { icon: string; iconColor?: IconColor; ariaLabel: string; onClick: (event) => void; disabled?: boolean }`
+— **DEVIATION**: official `icon` is an SVG render prop; here it's a Material
+glyph name. Shown only on the selected segment; does not change selection.
+```tsx
+<SegmentedControl
+  value={range}
+  onChange={setRange}
+  options={[{ value: "day", label: "Day" }, { value: "week", label: "Week" }, { value: "month", label: "Month" }]}
+/>
+```
+
+### Text
+`TextProps`:
+- `variant: "font-H0" | "font-H1" | "font-H2" | "font-H3" | "font-body-regular" | "font-body-medium" | "font-paragraph-regular" | "font-paragraph-medium" | "font-tooltip-regular" | "font-tooltip-medium" | "font-caption-regular"` (required)
+- `children: React.ReactNode` (required)
+- `color?: "color-text-inverse" | "color-text-subtle" | "color-text-error" | "color-text-secondary" | "color-text-primary" | "color-text-neutral" | "color-text-weak" | "color-text-accent"` (omitting falls back to `--hx-color-text-primary`)
+- `ellipsis?: boolean`
+- `className?: string`
+
+Always renders a `<p>` (the vendored bundle's `TextRoot` is `styled.p` for
+every variant, including the `paragraph-*` ones — no per-variant element switch).
+```tsx
+<Text variant="font-H2">Section title</Text>
+<Text variant="font-body-regular" color="color-text-secondary">Helper copy</Text>
+```
+
+### Link
+`LinkProps`:
+- `variant?: TextVariant` (default `"font-body-regular"` — same union as `Text`'s `variant`)
+- `color?: TextColor` (same union as `Text`'s `color`; default resolves to `"color-text-accent"`, forced to `"color-text-subtle"` when `disabled`, overriding any explicit `color`)
+- `ellipsis?: boolean`
+- `children: React.ReactNode` (required)
+- `href?: string`
+- `target?: "_blank" | "_self" | "_parent" | "_top"`
+- `rel?: string`
+- `external?: boolean` — forces `target="_blank"` even over an explicit `target`; an explicit `rel` always wins, otherwise defaults to `"noopener noreferrer"` when the resolved target is `"_blank"`.
+- `onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void`
+- `disabled?: boolean` — swallows clicks (`preventDefault`+`stopPropagation`); forces `color-text-subtle`; a disabled link with no `href` gets `role="link"` restored (loses implicit link semantics otherwise).
+- `ariaLabel?: string`
+- `dataID?: string` (rendered as `data-id`)
+- `className?: string` — house convention; not part of the official `LinkProps`.
+
+Typography/color/truncation share the exact same `.hx-text--*` modifier
+classes as `Text` (the official DS composes Link's styling directly off
+`TextProps` too).
+```tsx
+<Link href="https://example.com" external>Open documentation</Link>
+```
+
+### Loader
+`LoaderProps`:
+- `size: "small" | "medium" | "large"` (required — no default in the official API)
+- `color: "color-icon-primary" | "color-icon-secondary" | "color-icon-error"` (required — no default)
+- `className?: string` — house convention; not part of the official `LoaderProps`.
+
+Rendered as a pure-CSS bordered-ring spinner (`1.1s ease` rotation, ported
+verbatim from the vendored animation timing) — **DEVIATION**: the official
+Loader is an animated inline SVG glyph; this package never ships inline SVG.
+`role="status"` + `aria-label="Loading"` are this package's own addition (the
+vendored bundle carries no ARIA at all).
+```tsx
+<Loader size="medium" color="color-icon-primary" />
+```
+
+### Icon
+`IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `name: string` (required — Material Icons glyph name)
+- `size?: number` (px, default `20`) — snapped to the nearest `--hx-size-icon-*` step (12/14/16/18/20/24/28/32/40/48/56/60/64); never sets an inline `fontSize`.
+- `color?: "primary" | "secondary" | "tertiary" | "neutral" | "subtle" | "inverse" | "weak" | "accent" | "accent-hover" | "success" | "warning" | "error" | "rating"`
+- `ariaLabel?: string` — when set, the icon is exposed to assistive tech (`aria-hidden` is otherwise always `"true"`).
+```tsx
+<Icon name="delete" size={16} color="error" />
+```
+
+### Avatar
+`AvatarProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `src?: string`
+- `name: string` (required — used for alt text, the initials fallback, AND to pick a colour)
+- `size?: "sm" | "md"` (default `"md"`)
+
+There is no `color`/`variant` prop. `Avatar` deterministically auto-picks one
+of the **9 real colour sets** (`--hx-color-avatar-{one..nine}-{background,border,text}`)
+from `name`: sums `name`'s UTF-16 char codes, takes the result modulo 9.
+```tsx
+<Avatar name="Ada Lovelace" size="sm" />
+```
+
+### AvatarGroup
+`AvatarGroupProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children">`
+- `avatars: AvatarGroupItem[]` (required) where `AvatarGroupItem extends Omit<AvatarProps, "size" | "id"> { id?: string | number }`
+- `size?: "l" | "m" | "s"` (default `"l"`)
+- `maxVisible?: number` (default `3`) — remaining avatars collapse into a `+N` overflow chip.
+- `ariaLabel?: string`
+```tsx
+<AvatarGroup avatars={[{ name: "Eve" }, { name: "Kim" }, { name: "Xia" }, { name: "Dana" }]} maxVisible={3} />
+```
+
+### Badge
+**BREAKING (0.3.x): the old single `<Badge variant="dot|count|tag" count={n}>`
+component is gone**, split into the official DS's five-member Badge family:
+`Badge` (this entry, the semantic pill), `BadgeDot`, `BadgeCount`, `BadgeTag`,
+`BadgeShift` (below). Old call sites must migrate to the matching new component.
+
+`BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `children: React.ReactNode` (required)
+- `variant?: "neutral" | "accent" | "success" | "warning" | "error"` (default `"neutral"`)
+- `ariaLabel?: string`
+```tsx
+<Badge variant="success">Active</Badge>
+```
+
+### BadgeDot
+`BadgeDotProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `background?: BadgeBackgroundToken` (default `"error"`)
+- `ariaLabel?: string`
+
+`BadgeBackgroundToken = "primary" | "secondary" | "tertiary" | "strong" | "neutral" | "subtle" | "weak" | "page" | "hoverlist" | "inverse" | "accent" | "accent-hover" | "highlight" | "success" | "warning" | "error"` — maps 1:1 to `--hx-color-background-<suffix>`.
+```tsx
+<BadgeDot background="success" ariaLabel="Online" />
+```
+
+### BadgeCount
+`BadgeCountProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `value: string | number` (required)
+- `background?: BadgeBackgroundToken` (default `"error"`)
+- `ariaLabel?: string`
+
+Single-digit values render as a fixed 16×16 circle; multi-digit values render
+a growing pill.
+```tsx
+<BadgeCount value={5} />
+```
+
+### BadgeTag
+`BadgeTagProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `type?: "new" | "beta"` (default `"new"`)
+- `tone?: "light" | "dark"` (default `"light"`)
+- `children?: React.ReactNode` — omitted, falls back to `"Beta"`/`"New"` by `type`.
+- `ariaLabel?: string`
+```tsx
+<BadgeTag type="beta" tone="dark" />
+```
+
+### BadgeShift
+`BadgeShiftProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
+- `status?: "online" | "offline"` (default `"offline"`)
+- `size?: "xl" | "l" | "m" | "s"` (default `"xl"` — 24×24/16×16/12×12/8×8 px)
+- `tooltipContent?: string` — wraps the indicator in `Tooltip` only when set.
+- `tooltipPlacement?: "top" | "bottom" | "left" | "right"` (default `"top"`)
+- `ariaLabel?: string`
+```tsx
+<BadgeShift status="online" tooltipContent="Online now" />
+```
+
+## Extensions (not in @hubex/design-system)
+
+The 13 components below are this package's **own additions** — they exist
+because HubEx plugin UI needs them, but they have **no counterpart in
+`@hubex/design-system@0.4.0`** (confirmed by their absence from
+`tools/.official-ds-ref/package/dist/esm/src/components/`, the vendored
+reference used to verify the official-vs-extension split). Their props are
+this package's own design, still governed by "Anti-invention rules" above
+(no hardcoded values — every class they render pulls from the same `--hx-*`
+token set), but there is no upstream API to realign them to.
+
+### Alert
+`AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">`
+- `severity?: "info" | "success" | "warning" | "danger"` (default `"info"`)
+- `title?: string`
+```tsx
+<Alert severity="danger" title="Error">Something went wrong.</Alert>
+```
+
+### Breadcrumbs
+`BreadcrumbsProps extends Omit<React.HTMLAttributes<HTMLElement>, "children">`
+- `items: BreadcrumbItem[]` (required) where `BreadcrumbItem = { label: string; href?: string }`
+```tsx
+<Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Settings" }]} />
+```
+
+### Calendar
+`CalendarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">`
+- `value?: Date`
+- `onChange: (date: Date) => void` (required)
+- `month?: Date` — controls the displayed month, independent of `value`.
+```tsx
+<Calendar value={date} onChange={setDate} />
+```
+
+### Chip
+`ChipProps extends React.HTMLAttributes<HTMLSpanElement>`
+- `onRemove?: () => void`
+```tsx
+<Chip onRemove={() => removeFilter("status")}>Status: Open</Chip>
+```
+
+### DatePicker
+`DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "type" | "readOnly">`
+- `value?: Date`
+- `onChange: (date: Date) => void` (required)
+- `placeholder?: string`
+
+Trigger is a read-only `Input`; the `Calendar` popover renders into a portal
+positioned from the trigger's measured bounding box.
+```tsx
+<DatePicker value={date} onChange={setDate} placeholder="Pick a date" />
+```
+
+### Drawer
+`DrawerProps extends React.HTMLAttributes<HTMLDivElement>`
+- `open: boolean` (required)
+- `onClose: () => void` (required)
+- `side?: "right" | "left"` (default `"right"`)
+```tsx
+<Drawer open={isOpen} onClose={() => setOpen(false)} side="right">
+  Panel content
+</Drawer>
 ```
 
 ### Field
@@ -307,37 +980,39 @@ above.
 </Field>
 ```
 
-### Checkbox
-`CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement>`
-- `label?: string`
+### Label
+`LabelProps extends React.HTMLAttributes<HTMLSpanElement>` (no extra props — thin `<span className="hx-label">` wrapper, same visual as `Field`'s form label, for standalone inline label text)
 ```tsx
-<Checkbox label="I agree" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
+<Label>Optional</Label>
 ```
 
-### Radio
-`RadioProps extends React.InputHTMLAttributes<HTMLInputElement>`
-- `label?: string`
+### Menu
+`MenuProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "type" | "aria-haspopup" | "aria-expanded">`
+- `trigger: React.ReactNode` (required)
+- `items: MenuItem[]` (required) where `MenuItem = { label: string; onSelect: () => void }`
+- `className?: string` — applies to the portalled item list, not the trigger.
 ```tsx
-<Radio name="plan" label="Pro" value="pro" checked={plan === "pro"} onChange={() => setPlan("pro")} />
+<Menu trigger={<Button>Actions</Button>} items={[{ label: "Edit", onSelect: onEdit }]} />
 ```
 
-### Toggle
-`ToggleProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "onChange" | "checked">`
-- `checked?: boolean` (default `false`)
-- `onChange?: (checked: boolean) => void`
-- `disabled?: boolean`
+### Modal
+`ModalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">`
+- `open: boolean` (required)
+- `onClose: () => void` (required)
+- `title?: string`
 ```tsx
-<Toggle checked={enabled} onChange={setEnabled} />
+<Modal open={isOpen} onClose={() => setOpen(false)} title="Confirm">
+  Are you sure?
+</Modal>
 ```
 
-### Select
-`SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement>`
-- `invalid?: boolean`
+### Tabs
+`TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "children">`
+- `value: string` (required)
+- `onChange: (value: string) => void` (required)
+- `items: TabItem[]` (required) where `TabItem = { value: string; label: string }`
 ```tsx
-<Select value={country} onChange={(e) => setCountry(e.target.value)}>
-  <option value="us">US</option>
-  <option value="de">DE</option>
-</Select>
+<Tabs value={tab} onChange={setTab} items={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
 ```
 
 ### Table (+ Table.Head / Table.Row / Table.Cell / Table.HeadCell)
@@ -358,149 +1033,11 @@ above.
 </Table>
 ```
 
-### Pagination
-`PaginationProps extends Omit<React.HTMLAttributes<HTMLElement>, "onChange">`
-- `page: number`
-- `pageCount: number`
-- `onPageChange: (page: number) => void`
-```tsx
-<Pagination page={page} pageCount={10} onPageChange={setPage} />
-```
-
-### Modal
-`ModalProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">`
-- `open: boolean`
-- `onClose: () => void`
-- `title?: string`
-```tsx
-<Modal open={isOpen} onClose={() => setOpen(false)} title="Confirm">
-  Are you sure?
-</Modal>
-```
-
-### Drawer
-`DrawerProps extends React.HTMLAttributes<HTMLDivElement>`
-- `open: boolean`
-- `onClose: () => void`
-- `side?: "right" | "left"` (default `"right"`)
-```tsx
-<Drawer open={isOpen} onClose={() => setOpen(false)} side="right">
-  Panel content
-</Drawer>
-```
-
-### Tooltip
-`TooltipProps`: `{ content: React.ReactNode; children: React.ReactElement }`
-```tsx
-<Tooltip content="Delete this item">
-  <Button onClick={handleDelete}>Delete</Button>
-</Tooltip>
-```
-
-### Tabs
-`TabsProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "children">`
-- `value: string`
-- `onChange: (value: string) => void`
-- `items: TabItem[]` where `TabItem = { value: string; label: string }`
-```tsx
-<Tabs value={tab} onChange={setTab} items={[{ value: "a", label: "A" }, { value: "b", label: "B" }]} />
-```
-
-### Menu
-`MenuProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "children" | "type" | "aria-haspopup" | "aria-expanded">`
-- `trigger: React.ReactNode`
-- `items: MenuItem[]` where `MenuItem = { label: string; onSelect: () => void }`
-- `className?: string` (applies to the portalled item list, not the trigger)
-```tsx
-<Menu trigger={<Button>Actions</Button>} items={[{ label: "Edit", onSelect: onEdit }]} />
-```
-
-### Breadcrumbs
-`BreadcrumbsProps extends Omit<React.HTMLAttributes<HTMLElement>, "children">`
-- `items: BreadcrumbItem[]` where `BreadcrumbItem = { label: string; href?: string }`
-```tsx
-<Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Settings" }]} />
-```
-
 ### Tag
 `TagProps extends React.HTMLAttributes<HTMLSpanElement>`
 - `color?: "neutral" | "brand" | "danger"` (default `"neutral"`)
 ```tsx
 <Tag color="brand">New</Tag>
-```
-
-### Chip
-`ChipProps extends React.HTMLAttributes<HTMLSpanElement>`
-- `onRemove?: () => void`
-```tsx
-<Chip onRemove={() => removeFilter("status")}>Status: Open</Chip>
-```
-
-### Badge
-`BadgeProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
-- `variant?: "dot" | "count" | "tag"` (default `"tag"`)
-- `count?: number`
-- `children?: React.ReactNode`
-```tsx
-<Badge variant="count" count={3} />
-```
-
-### Avatar
-`AvatarProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
-- `src?: string`
-- `name: string` (required — used for alt text, the initials fallback, AND to
-  pick a colour — see below)
-- `size?: "sm" | "md"` (default `"md"`)
-
-There is no `color`/`variant` prop. Instead, `Avatar` deterministically
-auto-picks one of the **9 real Figma avatar colour sets**
-(`--hx-color-avatar-{one..nine}-{background,border,text}`, see `color/avatar`
-above) from `name`: it sums `name`'s UTF-16 char codes and takes the result
-modulo 9 to index the set. Same `name` always renders the same set; you
-cannot request a specific set directly, and there is no 10th/custom set —
-don't invent one.
-```tsx
-<Avatar name="Ada Lovelace" size="sm" />
-```
-
-### Label
-`LabelProps extends React.HTMLAttributes<HTMLSpanElement>` (no extra props)
-```tsx
-<Label>Optional</Label>
-```
-
-### Alert
-`AlertProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "title">`
-- `severity?: "info" | "success" | "warning" | "danger"` (default `"info"`)
-- `title?: string`
-```tsx
-<Alert severity="danger" title="Error">Something went wrong.</Alert>
-```
-
-### Icon
-`IconProps extends Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`
-- `name: string` (Material Icons glyph name)
-- `size?: number` (px)
-```tsx
-<Icon name="delete" size={16} />
-```
-
-### Calendar
-`CalendarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange">`
-- `value?: Date`
-- `onChange: (date: Date) => void`
-- `month?: Date` (controls the displayed month, independent of `value`)
-```tsx
-<Calendar value={date} onChange={setDate} />
-```
-
-### DatePicker
-`DatePickerProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "value" | "onChange" | "type" | "readOnly">`
-- `value?: Date`
-- `onChange: (date: Date) => void`
-- `placeholder?: string`
-```tsx
-<DatePicker value={date} onChange={setDate} placeholder="Pick a date" />
 ```
 
 ## Rules
@@ -511,12 +1048,16 @@ DO:
 - `import "@cvetkov_es/css"` exactly once, at your app's entry point.
 - Use `--hx-*` CSS variables (or the existing `.hx-*` classes) for any custom
   element that isn't covered by a component.
-- Use the Roboto font stack, 13px base size, and accent color `#32B4EB` —
-  i.e. `var(--hx-font-family)`, `var(--hx-font-size-base)`,
-  `var(--hx-color-text-accent)` (or `-background-accent` / `-border-accent` /
-  `-icon-accent`, depending on role) — rather than restating these literals.
+- Use the Roboto font stack, 13px base body size, and accent color `#32B4EB`
+  — i.e. `var(--hx-font-family)`, `var(--hx-font-body-regular-size)` (or the
+  legacy `var(--hx-font-size-base)` alias), `var(--hx-color-text-accent)`
+  (or `-background-accent` / `-border-accent` / `-icon-accent`, depending on
+  role) — rather than restating these literals.
 - Load the Material Icons font yourself (aliased to family `"material"`) if
-  you use `Icon`.
+  you use `Icon` or any icon-accepting prop (`Button.icon`, `InputBase.leftIcon`, etc.).
+- Check `packages/react/src/<Name>/<Name>.tsx` directly if you need to verify
+  a prop this file might have gotten stale on — it is the single source of
+  truth, this file is a snapshot of it.
 
 DON'T:
 - Don't hardcode colors, fonts, radii, or spacing — reference the tokens
@@ -526,6 +1067,13 @@ DON'T:
   components; only the consumer app imports `@cvetkov_es/css`, once.
 - Don't `require("@cvetkov_es/react")` or `require("@cvetkov_es/css")` — both packages
   are ESM-only (`"type": "module"`, no CJS build). Use `import`.
+- Don't pass an SVG render-prop to an `icon`/`leftIcon`/`icon`-shaped prop —
+  every icon slot in this package is a Material Icons glyph *name* string,
+  never a component/render-function, even where the official
+  `@hubex/design-system` API takes one.
+- Don't read `docs/design-source/figma-variables.{json,txt}` for current
+  values or props — it's a historical record of the pre-rebase Figma source,
+  superseded by `@hubex/design-system@0.4.0` everywhere in this file.
 
 ### Good vs bad
 
@@ -546,18 +1094,30 @@ Good — a one-off custom element still styled from tokens:
 ```tsx
 <div style={{
   padding: "var(--hx-spacing-x4)",
-  borderRadius: "var(--hx-radius-medium)",
+  borderRadius: "var(--hx-border-radius-medium)",
   background: "var(--hx-color-background-subtle)",
   color: "var(--hx-color-text-secondary)",
   fontFamily: "var(--hx-font-family)",
-  fontSize: "var(--hx-font-size-sm)"
+  fontSize: "var(--hx-font-body-regular-size)"
 }}>
   Empty state
 </div>
 ```
 Bad — same element with hardcoded values that will drift from the design system:
 ```tsx
-<div style={{ padding: 16, borderRadius: 5, background: "#EEEEEE", color: "#777777", fontFamily: "Arial", fontSize: 11 }}>
+<div style={{ padding: 16, borderRadius: 5, background: "#EEEEEE", color: "#777777", fontFamily: "Arial", fontSize: 13 }}>
   Empty state
 </div>
+```
+
+Good — the new `Select` combobox API (`options` + `value`/`onChange`):
+```tsx
+<Select options={[{ value: "us", label: "US" }]} value={country} onChange={(v) => setCountry(v)} />
+```
+Bad — the old 0.2.x children-based API no longer compiles (`options` is
+required, `<option>` children are not read):
+```tsx
+<Select value={country} onChange={(e) => setCountry(e.target.value)}>
+  <option value="us">US</option>
+</Select>
 ```

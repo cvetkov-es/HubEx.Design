@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import * as React from "react";
 import { Radio } from "./Radio";
 
@@ -18,9 +18,27 @@ test("renders associated label text", () => {
   expect(el).toHaveClass("hx-radio");
 });
 
-test("forwards native props", () => {
-  render(<Radio aria-label="option-a" disabled />);
-  expect(screen.getByRole("radio", { name: "option-a" })).toBeDisabled();
+test("supports a ReactNode label", () => {
+  render(
+    <Radio
+      label={
+        <>
+          Option <strong>A</strong>
+        </>
+      }
+    />
+  );
+  expect(screen.getByRole("radio", { name: "Option A" })).toBeInTheDocument();
+});
+
+test("forwards native props (name, value, disabled, required, tabIndex)", () => {
+  render(<Radio aria-label="option-a" name="grp" value="a" disabled required tabIndex={-1} />);
+  const el = screen.getByRole("radio", { name: "option-a" });
+  expect(el).toBeDisabled();
+  expect(el).toHaveAttribute("name", "grp");
+  expect(el).toHaveAttribute("value", "a");
+  expect(el).toBeRequired();
+  expect(el).toHaveAttribute("tabindex", "-1");
 });
 
 test("forwards ref to the underlying input element", () => {
@@ -32,4 +50,17 @@ test("forwards ref to the underlying input element", () => {
 test("preserves custom className alongside base class", () => {
   render(<Radio aria-label="option-a" className="custom" />);
   expect(screen.getByRole("radio", { name: "option-a" })).toHaveClass("hx-radio", "custom");
+});
+
+test("supports the ariaLabel prop as an alias for aria-label", () => {
+  render(<Radio ariaLabel="option via prop" />);
+  expect(screen.getByRole("radio", { name: "option via prop" })).toBeInTheDocument();
+});
+
+test("fires onChange with a ChangeEvent when clicked", () => {
+  const onChange = vi.fn();
+  render(<Radio aria-label="option-a" onChange={onChange} />);
+  fireEvent.click(screen.getByRole("radio", { name: "option-a" }));
+  expect(onChange).toHaveBeenCalledTimes(1);
+  expect(onChange.mock.calls[0][0]).toMatchObject({ target: expect.anything() });
 });

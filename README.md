@@ -3,7 +3,8 @@
 HubEx UI is the design system for HubEx plugins: a set of React components
 that reproduce the patterns already used across the HubEx product, so a
 plugin built against it looks and behaves consistently with the rest of the
-system.
+system. Its tokens and component APIs are derived from the official
+`@hubex/design-system@0.4.0` package — see "Source of truth" below.
 
 If you're pointing an AI at this repo to build plugin UI, give it
 [`llms.txt`](./llms.txt) — it's the single reference for every component's
@@ -34,40 +35,131 @@ dependency chain:
   `@cvetkov_es/tokens` only as `dependencies` for typing/tooling purposes — at
   runtime the consumer app is the one that loads the stylesheet (see below).
 
-## 0.2.0: re-based on real Figma variables
+## Source of truth: the official `@hubex/design-system` package
+
+**As of this release, the source of truth for every token value and every
+component's API is the official `@hubex/design-system@0.4.0` npm package
+(`themes.HubEx` branch) — not Figma.** Earlier releases (0.2.0–0.3.x)
+re-based this system on hand-decoded Figma variables, which was itself a big
+step up from 0.1.0's invented values, but Figma export is still one remove
+from the real product: the official package is HubEx's own product team's
+design-system code, a strictly higher-fidelity ground truth. Tokens were
+regenerated from `tokens.HubEx` (see `packages/tokens/src/tokens.json`), and
+every component was re-audited against the official package's real
+TypeScript component types (vendored for reference at
+`tools/.official-ds-ref/package/dist/esm/src/components/`).
+
+`docs/design-source/figma-variables.json` and
+`docs/design-source/figma-variables.txt` are kept in the repo only as a
+**historical record** of the earlier Figma-variable export this system used
+before the rebase — they are no longer read by the token build and should
+not be treated as current. If you need current values, read
+`packages/tokens/dist/variables.css` or [`llms.txt`](./llms.txt); if you need
+current component APIs, read the component's own `.tsx` file or
+[`llms.txt`](./llms.txt).
+
+**Component split — official-DS-backed vs. unofficial extensions.** Of the
+40 components this package exports, **27 have a real counterpart in
+`@hubex/design-system`** and are realigned to its actual props (Avatar,
+AvatarGroup, Badge, BadgeCount, BadgeDot, BadgeShift, BadgeTag, Button,
+Checkbox, Dropdown, Icon, Info, Input, InputBase, Link, Loader, Pagination,
+Popover, Radio, RadioGroup, Search, SegmentedControl, Select, Text, TextArea,
+Toggle, Tooltip). **13 are this package's own extensions**, with no
+`@hubex/design-system` counterpart — they exist because HubEx plugin UI needs
+them, but there is no upstream API to realign them to: Alert, Breadcrumbs,
+Calendar, Chip, DatePicker, Drawer, Field, Label, Menu, Modal, Table, Tabs,
+Tag. [`llms.txt`](./llms.txt) marks the split explicitly with an "Extensions
+(not in @hubex/design-system)" section.
+
+### Breaking changes (rebase onto `@hubex/design-system`)
+
+- **Token renames, with back-compat aliases kept.** The token set grew from
+  104 to **195 tokens** (full spacing/size/typography/shadow scales that
+  didn't exist before, plus the existing color/border/radius sets). Two
+  groups were renamed to match the official package's own naming, with the
+  *old* name kept as a real, working alias so nothing silently breaks:
+  `--hx-radius-small/-medium/-pill` → `--hx-border-radius-small/-medium/-pill`
+  (`--hx-radius-*` still resolves, unchanged in value); `--hx-size-x05/-x1/
+  -x150percent/-x2/-x250percent/-x3` → the same steps now live in the larger
+  `--hx-spacing-x*` scale (`--hx-size-x*` still resolves to the identical
+  value). Prefer the new names in new code; the old ones are not deprecated
+  on any timeline, just superseded.
+- **Typo fix carried forward, now confirmed upstream too.** The
+  `backgroundg` typo (`--hx-color-backgroundg-error`/`-warning`) is corrected
+  to `--hx-color-background-error`/`-warning` — this was already fixed in
+  0.3.0, and the official `@hubex/design-system` package itself was
+  independently confirmed to carry the same upstream typo, so the fix stays.
+- **`Button.size` renamed, old values kept as aliases.** The official API
+  uses `size?: "small" | "medium"`; this package's `size` type is now
+  `"small" | "medium" | "sm" | "md"` and normalizes `sm`→`small`, `md`→`medium`
+  at runtime, so old call sites keep compiling and rendering correctly.
+- **`Toggle.onChange` gained a second parameter.** Was
+  `(checked: boolean) => void`; now
+  `(checked: boolean, event: React.ChangeEvent<HTMLInputElement>) => void`,
+  matching the official API. The boolean is still first. `Toggle` also now
+  requires a `name` prop (it's backed by a real `<input type="checkbox">`).
+- **`Select` is now a self-contained combobox, not a styled native
+  `<select>`.** The old `<Select><option value="a">A</option></Select>`
+  children-based API is gone; `Select` now takes `options: SelectOption[]`
+  plus `value`/`onChange`, `allowClear`, `renderOption`, `filterBy`, and
+  more. See `llms.txt`'s `Select` entry for the full API.
+- **`Badge` split into a five-member family.** The old
+  `<Badge variant="dot" | "count" | "tag" count={n}>` is gone, replaced by
+  the official DS's actual Badge family: `Badge` (semantic pill —
+  `variant: "neutral" | "accent" | "success" | "warning" | "error"`),
+  `BadgeDot`, `BadgeCount`, `BadgeTag`, `BadgeShift` — each its own export
+  with its own props.
+- **`Pagination` rewritten to the official item-count-driven API.** The old
+  `{page, pageCount, onPageChange}` (prev/next arrow buttons, no page-size
+  control) is gone; `Pagination` now takes `{totalItems, page, pageSize,
+  onChange}`, drives its own page-number list from `totalItems`/`pageSize`,
+  and includes a page-size selector by default.
+- **10 new components**, all official-DS-backed: `Text`, `Link`, `Loader`,
+  `InputBase`, `Search`, `TextArea`, `Info`, `SegmentedControl`, `Popover`,
+  `Dropdown`.
+
+See [`llms.txt`](./llms.txt) for the complete, verbatim-from-source current
+token table and component prop reference — it is regenerated directly from
+`packages/tokens/dist/variables.css` and each component's own `.tsx` file,
+not hand-written.
+
+## 0.2.0: re-based on real Figma variables (historical)
+
+*This section describes the 0.1.0 → 0.2.0 transition and is kept for
+history. As of the rebase described above, the source of truth has moved
+again, from hand-decoded Figma variables to the official
+`@hubex/design-system` package — see the previous section for what's
+current.*
 
 0.1.0's design tokens and part of its component API were **invented** —
 plausible-looking values that didn't actually match the design. 0.2.0
-re-bases everything on the real, named Figma variables. If anything you
-wrote (or any AI-generated code) targets 0.1.0, read this before upgrading.
+re-based everything on the real, named Figma variables that were available
+at the time. If anything you wrote (or any AI-generated code) targets 0.1.0,
+read this before upgrading.
 
 ### Breaking changes
 
 - **Every token name changed, and most values did too.** 0.1.0 had ~27
   invented tokens — plausible-looking names and values with no real Figma
-  variable behind them. They're gone. In their place: **104 tokens** in
-  `packages/tokens/dist/variables.css` — **100 map 1:1 to real Figma
-  variables**, plus 4 `font/*` tokens that still have no Figma equivalent
-  (census-derived, unchanged carry-over from 0.1.0). See
-  [`llms.txt`](./llms.txt)'s "Design tokens" section for the complete,
-  current table, grouped by namespace. For the exact old-name → new-name
-  mapping used during the re-base — including the handful of old values
-  that turned out to be simply wrong rather than just renamed (an invented
-  success color, an invented stronger-brand shade with no real counterpart,
-  an invented border color, invented radii) — see the token-name legend
-  comment at the top of `packages/css/src/index.css`. Do not reuse an old
-  token name from memory or from anything written against 0.1.0, and don't
-  assume old → new is a 1:1 renaming: re-check each call site rather than
-  search/replace (the radius and spacing scales were renumbered too).
+  variable behind them. They're gone. In their place (at the time): 104
+  tokens — 100 mapped 1:1 to real Figma variables, plus 4 `font/*` tokens
+  that still had no Figma equivalent (census-derived, unchanged carry-over
+  from 0.1.0). For the exact old-name → new-name mapping used during the
+  re-base — including the handful of old values that turned out to be simply
+  wrong rather than just renamed (an invented success color, an invented
+  stronger-brand shade with no real counterpart, an invented border color,
+  invented radii) — see the token-name legend comment at the top of
+  `packages/css/src/index.css`. Do not reuse an old token name from memory or
+  from anything written against 0.1.0.
 - **`Button`'s `variant` prop dropped its one destructive option and gained
-  two new ones:** now `variant?: "primary" | "secondary" | "ghost" |
-  "dashed"`. There is no red/filled destructive button anywhere in the real
-  design — code passing the old destructive value to `variant` no longer
-  compiles. Destructive actions (Disable, Revoke, Delete) use a neutral
-  `secondary` button. `secondary` and `ghost` share one look: frameless,
-  transparent at rest, light-grey (`--hx-color-background-subtle`) fill on
-  hover — no border in any state. They are kept as aliases; use whichever name
-  reads better.
+  two new ones:** `variant?: "primary" | "secondary" | "ghost" | "dashed"`.
+  There is no red/filled destructive button anywhere in the real design —
+  code passing the old destructive value to `variant` no longer compiles.
+  Destructive actions (Disable, Revoke, Delete) use a neutral `secondary`
+  button. `secondary` and `ghost` share one look: frameless, transparent at
+  rest, light-grey (`--hx-color-background-subtle`) fill on hover — no
+  border in any state. They are kept as aliases; use whichever name reads
+  better.
 - **Buttons are pill-shaped**: `border-radius: var(--hx-radius-pill)`
   (`9999px`) for `primary`/`secondary`/`ghost`, replacing 0.1.0's invented
   fixed radius. The `dashed` variant is a real, measured exception —
@@ -75,22 +167,8 @@ wrote (or any AI-generated code) targets 0.1.0, read this before upgrading.
 - **`Avatar` now auto-colors itself from `name`.** There is no `color` prop
   and never was one, but 0.1.0's single flat placeholder fill is gone: each
   `name` now deterministically resolves (a simple hash, not user-chosen) to
-  one of **9 real Figma colour sets**. `AvatarProps` itself is unchanged
-  (`src?`, `name` required, `size?`) — this is a visual-only change.
-
-### Figma-variable naming convention
-
-Every `--hx-*` token name (barring the 4 `font/*` exceptions above) is
-`--hx-` plus the real Figma variable's own path, flattened with hyphens —
-e.g. Figma variable `colors/text/color-text-primary` became
-`--hx-color-text-primary`. Names mirror the real Figma variable paths. The
-one deliberate correction: Figma misspells its error/warning background
-variables as `colors/background/color-backgroundg-error`/`-warning` (an extra
-"g"); these ship here as `--hx-color-background-error` /
-`--hx-color-background-warning` so they are reachable by the expected name
-(the fix belongs in the Figma macro too). Otherwise, when Figma adds or
-renames a variable, mirror it exactly rather than choosing a name that
-merely reads better.
+  one of 9 colour sets. `AvatarProps` itself is unchanged (`src?`, `name`
+  required, `size?`) — this is a visual-only change.
 
 ## Install (plugin authors)
 
