@@ -635,30 +635,97 @@
 .hx-chip__remove:hover { background: var(--hx-color-border-primary); color: var(--hx-color-text-primary); }
 .hx-chip__remove:focus-visible { outline: 2px solid var(--hx-color-border-accent); outline-offset: 1px; }
 
-/* Badge — Task 2 ground truth: Badge-Count radius 9999 (--hx-radius-pill), fill #ED1940
-   (--hx-color-background-error; the upstream Figma "backgroundg" typo is corrected to
-   "background" here as of 0.2.x — see tokens.json). Badge-Dot/Badge-Tag have
-   no explicit ground truth in Task 2; their prior hardcoded 999px literals are replaced
-   with the same --hx-radius-pill token (999 and 9999 collapse identically, see the
-   Radio/Toggle note above) and their var() names fixed. */
+/* Badge family (Task 7) — BREAKING restructure of the old single Badge
+   (variant: dot|count|tag + count) into five components: Badge (semantic
+   pill), BadgeDot, BadgeCount, BadgeTag, BadgeShift. Task 2 ground truth:
+   Badge-Count radius 9999 (--hx-radius-pill), fill #ED1940
+   (--hx-color-background-error; the upstream Figma "backgroundg" typo is
+   corrected to "background" as of 0.2.x — see tokens.json). Prior hardcoded
+   6px/16px/4px/20px/3px/6px/14px literals are now mapped onto their exact
+   --hx-spacing-*/--hx-font-caption-regular-line-height token matches (all of
+   6/16/4/20/3 exist on the spacing scale, and 14px is the caption line-height
+   token) — Badge-Dot/Count/Tag/Shift still have no explicit Figma ground
+   truth beyond Badge-Count, so geometry is otherwise unchanged from 0.1.0/0.2.0. */
 .hx-badge {
   display: inline-flex; align-items: center; justify-content: center;
-  font-family: var(--hx-font-family);
+  height: var(--hx-spacing-x5); padding: 0 var(--hx-spacing-x150percent); /* 20px / 0 6px */
+  border-radius: var(--hx-radius-pill);
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  line-height: var(--hx-font-caption-regular-line-height);
 }
-.hx-badge--dot {
-  width: 6px; height: 6px; padding: 0; border-radius: var(--hx-radius-pill);
-  background: var(--hx-color-background-error);
+.hx-badge--neutral { background: var(--hx-color-background-neutral); color: var(--hx-color-text-primary); }
+.hx-badge--accent { background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); }
+.hx-badge--success { background: var(--hx-color-background-success); color: var(--hx-color-text-inverse); }
+.hx-badge--warning { background: var(--hx-color-background-warning); color: var(--hx-color-text-inverse); }
+.hx-badge--error { background: var(--hx-color-background-error); color: var(--hx-color-text-inverse); }
+
+.hx-badge-dot {
+  display: inline-flex; flex: none;
+  width: var(--hx-spacing-x150percent); height: var(--hx-spacing-x150percent); /* 6px, Task 2/0.1.0 geometry */
+  border-radius: var(--hx-radius-pill);
 }
-.hx-badge--count {
-  min-width: 16px; height: 16px; padding: 0 4px; border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
-  background: var(--hx-color-background-error); color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 */
-  font-size: var(--hx-font-size-sm); line-height: 14px;
+.hx-badge-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: var(--hx-spacing-x4); height: var(--hx-spacing-x4); padding: 0 var(--hx-spacing-x1); /* 16px / 0 4px */
+  border-radius: var(--hx-radius-pill); /* Task 2: Badge-Count radius 9999 */
+  color: var(--hx-color-text-inverse); /* Task 2: Badge-Count fill #ED1940 is applied via --bg-error below */
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  line-height: var(--hx-font-caption-regular-line-height);
 }
-.hx-badge--tag {
-  height: 20px; padding: 3px 6px; border-radius: var(--hx-radius-pill);
-  border: 1px solid var(--hx-color-border-error); color: var(--hx-color-text-secondary);
-  font-size: var(--hx-font-size-sm); line-height: 14px;
+/* `background` (BadgeDotProps/BadgeCountProps) selects one of the
+   --hx-color-background-* tokens (BadgeBackgroundToken); one modifier class
+   per token value, shared between Dot and Count so the token set is declared
+   exactly once. */
+.hx-badge-dot--bg-primary, .hx-badge-count--bg-primary { background: var(--hx-color-background-primary); }
+.hx-badge-dot--bg-secondary, .hx-badge-count--bg-secondary { background: var(--hx-color-background-secondary); }
+.hx-badge-dot--bg-tertiary, .hx-badge-count--bg-tertiary { background: var(--hx-color-background-tertiary); }
+.hx-badge-dot--bg-strong, .hx-badge-count--bg-strong { background: var(--hx-color-background-strong); }
+.hx-badge-dot--bg-neutral, .hx-badge-count--bg-neutral { background: var(--hx-color-background-neutral); }
+.hx-badge-dot--bg-subtle, .hx-badge-count--bg-subtle { background: var(--hx-color-background-subtle); }
+.hx-badge-dot--bg-weak, .hx-badge-count--bg-weak { background: var(--hx-color-background-weak); }
+.hx-badge-dot--bg-page, .hx-badge-count--bg-page { background: var(--hx-color-background-page); }
+.hx-badge-dot--bg-hoverlist, .hx-badge-count--bg-hoverlist { background: var(--hx-color-background-hoverlist); }
+.hx-badge-dot--bg-inverse, .hx-badge-count--bg-inverse { background: var(--hx-color-background-inverse); }
+.hx-badge-dot--bg-accent, .hx-badge-count--bg-accent { background: var(--hx-color-background-accent); }
+.hx-badge-dot--bg-accent-hover, .hx-badge-count--bg-accent-hover { background: var(--hx-color-background-accent-hover); }
+.hx-badge-dot--bg-highlight, .hx-badge-count--bg-highlight { background: var(--hx-color-background-highlight); }
+.hx-badge-dot--bg-success, .hx-badge-count--bg-success { background: var(--hx-color-background-success); }
+.hx-badge-dot--bg-warning, .hx-badge-count--bg-warning { background: var(--hx-color-background-warning); }
+.hx-badge-dot--bg-error, .hx-badge-count--bg-error { background: var(--hx-color-background-error); }
+
+.hx-badge-tag {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: var(--hx-spacing-x5); padding: 0 var(--hx-spacing-x150percent); /* 20px / 0 6px, ex .hx-badge--tag */
+  border-radius: var(--hx-radius-pill); border: 1px solid transparent;
+  font-family: var(--hx-font-family); font-size: var(--hx-font-size-sm);
+  line-height: var(--hx-font-caption-regular-line-height);
 }
+/* type=new/beta x tone=light/dark: no Figma ground truth for Tag colour-by-type
+   (new/beta didn't exist pre-Task-7); picked the closest semantic pairing —
+   new=accent blue (re-using the existing --background-highlight light-accent
+   tint), beta=warning orange (no light-warning tint token exists, so `light`
+   falls back to the neutral --background-subtle fill with a warning border/text).
+   Flagged CANT-TELL, a designer call. */
+.hx-badge-tag--new.hx-badge-tag--light { background: var(--hx-color-background-highlight); border-color: var(--hx-color-border-accent); color: var(--hx-color-text-accent); }
+.hx-badge-tag--new.hx-badge-tag--dark { background: var(--hx-color-background-accent); color: var(--hx-color-text-inverse); }
+.hx-badge-tag--beta.hx-badge-tag--light { background: var(--hx-color-background-subtle); border-color: var(--hx-color-border-warning); color: var(--hx-color-text-warning); }
+.hx-badge-tag--beta.hx-badge-tag--dark { background: var(--hx-color-background-warning); color: var(--hx-color-text-inverse); }
+
+.hx-badge-shift {
+  display: inline-flex; flex: none;
+  border-radius: var(--hx-border-radius-circle);
+  border: 1px solid var(--hx-color-border-primary);
+}
+/* size (BadgeShiftProps): xl 24x24, l 16x16, m 12x12, s 8x8 — per the official
+   doc comment; all four exact --hx-spacing-* matches. */
+.hx-badge-shift--xl { width: var(--hx-spacing-x6); height: var(--hx-spacing-x6); }
+.hx-badge-shift--l { width: var(--hx-spacing-x4); height: var(--hx-spacing-x4); }
+.hx-badge-shift--m { width: var(--hx-spacing-x3); height: var(--hx-spacing-x3); }
+.hx-badge-shift--s { width: var(--hx-spacing-x2); height: var(--hx-spacing-x2); }
+/* status: online=success green, offline=neutral grey — no Figma ground truth,
+   the obvious semantic mapping onto existing background tokens. */
+.hx-badge-shift--online { background: var(--hx-color-background-success); }
+.hx-badge-shift--offline { background: var(--hx-color-background-neutral); }
 
 /* Avatar (base) — no ground truth in Task 2's list (the 9-colour palette is Task 4's
    job); only var() names fixed. Prior hardcoded 999px radius literal replaced with the

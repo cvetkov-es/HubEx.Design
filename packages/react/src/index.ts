@@ -38,7 +38,22 @@ export type { TagProps } from "./Tag/Tag";
 export { Chip } from "./Chip/Chip";
 export type { ChipProps } from "./Chip/Chip";
 export { Badge } from "./Badge/Badge";
-export type { BadgeProps } from "./Badge/Badge";
+export type { BadgeProps, BadgeVariant } from "./Badge/Badge";
+export { BadgeDot } from "./Badge/BadgeDot";
+export type { BadgeDotProps } from "./Badge/BadgeDot";
+export { BadgeCount } from "./Badge/BadgeCount";
+export type { BadgeCountProps } from "./Badge/BadgeCount";
+export { BadgeTag } from "./Badge/BadgeTag";
+export type { BadgeTagProps } from "./Badge/BadgeTag";
+export { BadgeShift } from "./Badge/BadgeShift";
+export type { BadgeShiftProps } from "./Badge/BadgeShift";
+export type {
+  BadgeBackgroundToken,
+  BadgeTagType,
+  BadgeTagTone,
+  BadgeShiftStatus,
+  BadgeShiftSize,
+} from "./Badge/Badge.types";
 export { Avatar } from "./Avatar/Avatar";
 export type { AvatarProps } from "./Avatar/Avatar";
 export { Label } from "./Label/Label";

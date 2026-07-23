@@ -2,22 +2,27 @@ import { render, screen } from "@testing-library/react";
 import * as React from "react";
 import { Badge } from "./Badge";
 
-test("defaults to the tag variant", () => {
+test("defaults to the neutral variant", () => {
   render(<Badge>New</Badge>);
-  expect(document.querySelector(".hx-badge")).toHaveClass("hx-badge", "hx-badge--tag");
+  expect(document.querySelector(".hx-badge")).toHaveClass("hx-badge", "hx-badge--neutral");
 });
 
-test("variant=count renders the count", () => {
-  render(<Badge variant="count" count={5} />);
-  expect(screen.getByText("5")).toBeInTheDocument();
-  expect(document.querySelector(".hx-badge")).toHaveClass("hx-badge--count");
+test.each(["neutral", "accent", "success", "warning", "error"] as const)(
+  "variant=%s renders the matching modifier class",
+  (variant) => {
+    render(<Badge variant={variant}>Label</Badge>);
+    expect(document.querySelector(".hx-badge")).toHaveClass(`hx-badge--${variant}`);
+  }
+);
+
+test("renders children as content", () => {
+  render(<Badge variant="accent">5 new</Badge>);
+  expect(screen.getByText("5 new")).toBeInTheDocument();
 });
 
-test("variant=dot renders no visible count text", () => {
-  render(<Badge variant="dot" />);
-  const badge = document.querySelector(".hx-badge");
-  expect(badge).toHaveClass("hx-badge--dot");
-  expect(badge?.textContent).toBe("");
+test("sets aria-label when provided", () => {
+  render(<Badge ariaLabel="Five new items">5</Badge>);
+  expect(screen.getByLabelText("Five new items")).toBeInTheDocument();
 });
 
 test("preserves custom className alongside the base class", () => {
@@ -28,4 +33,14 @@ test("preserves custom className alongside the base class", () => {
 test("passes native attributes like data-testid through to the root", () => {
   render(<Badge data-testid="badge-el">New</Badge>);
   expect(screen.getByTestId("badge-el")).toBeInTheDocument();
+});
+
+test("forwards ref to the underlying span element", () => {
+  const ref = React.createRef<HTMLSpanElement>();
+  render(
+    <Badge ref={ref} data-testid="badge-el">
+      New
+    </Badge>
+  );
+  expect(ref.current).toBe(screen.getByTestId("badge-el"));
 });
