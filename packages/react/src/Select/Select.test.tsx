@@ -113,3 +113,58 @@ test("renders a label associated with the trigger", () => {
   const combobox = screen.getByRole("combobox", { name: "Country" });
   expect(combobox).toBeInTheDocument();
 });
+
+// Regression test for the chevron being unclickable: the chevron span is
+// aria-hidden and has no onClick of its own, so it must never intercept
+// pointer events — CSS `pointer-events: none` (packages/css/src/index.css)
+// lets clicks fall through to the input beneath it. jsdom doesn't apply CSS
+// layout/pointer-events, so a fireEvent.click on the chevron element itself
+// can't exercise that fall-through the way a real browser would; instead we
+// lock the behavioral contract that matters: the chevron carries no click
+// handler (clicking it directly does nothing, i.e. it doesn't stop/steal the
+// interaction), and the input/combobox underneath it is what actually opens
+// the menu.
+test("chevron is non-interactive and clicking the trigger (which the chevron overlays) opens the menu", () => {
+  render(<Select options={options} />);
+  const combobox = screen.getByRole("combobox");
+  const chevron = document.querySelector(".hx-select__chevron");
+  expect(chevron).toBeInTheDocument();
+  expect(chevron).toHaveAttribute("aria-hidden", "true");
+  expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+  // Clicking the chevron directly should not itself open anything (it has
+  // no handler); the fix relies on pointer-events:none letting the click
+  // reach the input instead, which we verify separately below.
+  fireEvent.click(chevron as Element);
+  expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+  fireEvent.click(combobox);
+  expect(screen.getByRole("listbox")).toBeInTheDocument();
+});
+
+test("consumer onFocus fires and the menu still opens", () => {
+  const onFocus = vi.fn();
+  render(<Select options={options} onFocus={onFocus} />);
+  const combobox = screen.getByRole("combobox");
+  fireEvent.focus(combobox);
+  expect(onFocus).toHaveBeenCalledTimes(1);
+  expect(screen.getByRole("listbox")).toBeInTheDocument();
+});
+
+test("consumer onClick fires and the menu still opens", () => {
+  const onClick = vi.fn();
+  render(<Select options={options} onClick={onClick} />);
+  const combobox = screen.getByRole("combobox");
+  fireEvent.click(combobox);
+  expect(onClick).toHaveBeenCalledTimes(1);
+  expect(screen.getByRole("listbox")).toBeInTheDocument();
+});
+
+test("consumer onKeyDown fires and keyboard navigation still works", () => {
+  const onKeyDown = vi.fn();
+  const onChange = vi.fn();
+  render(<Select options={options} onChange={onChange} onKeyDown={onKeyDown} />);
+  const combobox = openCombobox();
+  fireEvent.keyDown(combobox, { key: "ArrowDown" });
+  fireEvent.keyDown(combobox, { key: "Enter" });
+  expect(onKeyDown).toHaveBeenCalledTimes(2);
+  expect(onChange).toHaveBeenCalledWith("fr", options[1]);
+});

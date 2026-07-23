@@ -101,6 +101,9 @@ function SelectImpl<TOption extends SelectOption = SelectOption>(props: SelectPr
     required,
     disabled,
     onBlur,
+    onFocus,
+    onClick,
+    onKeyDown,
     invalid,
     className,
     id,
@@ -187,7 +190,22 @@ function SelectImpl<TOption extends SelectOption = SelectOption>(props: SelectPr
     onQueryChange?.(next);
   }
 
+  function handleFocus(event: React.FocusEvent<HTMLInputElement>) {
+    openMenu();
+    onFocus?.(event);
+  }
+
+  function handleClick(event: React.MouseEvent<HTMLInputElement>) {
+    openMenu();
+    onClick?.(event);
+  }
+
   function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    handleKeyDownInternal(event);
+    onKeyDown?.(event);
+  }
+
+  function handleKeyDownInternal(event: React.KeyboardEvent<HTMLInputElement>) {
     if (disabled) return;
     switch (event.key) {
       case "ArrowDown": {
@@ -271,8 +289,8 @@ function SelectImpl<TOption extends SelectOption = SelectOption>(props: SelectPr
           aria-invalid={hasError || undefined}
           {...(open ? { "aria-controls": listboxId } : {})}
           {...(open && activeIndex >= 0 ? { "aria-activedescendant": optionId(activeIndex) } : {})}
-          onFocus={openMenu}
-          onClick={openMenu}
+          onFocus={handleFocus}
+          onClick={handleClick}
           onChange={handleInputChange}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}

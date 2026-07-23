@@ -316,6 +316,9 @@
   font-family: 'material'; font-style: normal; font-size: var(--hx-size-icon-x4);
   color: var(--hx-color-icon-tertiary);
 }
+/* aria-hidden and non-interactive: let clicks fall through to the input
+   beneath it instead of swallowing them (it has no onClick of its own). */
+.hx-select__chevron { pointer-events: none; }
 .hx-select__clear { border: none; background: transparent; padding: 0; cursor: pointer; }
 .hx-select__clear:hover { color: var(--hx-color-icon-secondary); }
 .hx-select-menu {
